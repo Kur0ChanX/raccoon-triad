@@ -1,3 +1,4 @@
 tools/triad-server/.wrangler/
 tools/triad-server/node_modules/
 _site/
+tools/triad-raw/
