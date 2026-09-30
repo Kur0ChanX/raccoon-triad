@@ -20,7 +20,7 @@
   function boot(){
     if(booted) return booted;
     booted = (async ()=>{
-      await Promise.all([loadCSS('triad.css'), loadJS('triad-cards.js'), loadJS('triad-exp.js'), loadJS('triad-core.js'), loadJS('triad-chars.js').catch(()=>{}), loadJS('triad-imgs.js').catch(()=>{})]);
+      await Promise.all([loadCSS('triad.css'), loadJS('triad-cards.js'), loadJS('triad-exp.js'), loadJS('triad-core.js'), loadJS('triad-cosm.js').catch(()=>{}), loadJS('triad-chars.js').catch(()=>{}), loadJS('triad-imgs.js').catch(()=>{})]);
       loadJS('triad-art.js').catch(()=>{}); await loadJS('triad-play.js');
       try{ await loadJS('triad-config.js'); }catch(e){}
       initCards();
@@ -31,7 +31,7 @@
 
   // ---------------------------------------------------------------- preferenze
   const PK = 'jrpg_triad_prefs';
-  const P = Object.assign({style: 'classico', board: 'verde', sound: true, vol: .7, fast: false, confirm: true, hide: true, auto: true, art: {}, st: {}, decks: []}, LS.get(PK, {}) || {});
+  const P = Object.assign({style: 'classico', board: 'verde', sound: true, vol: .7, fast: false, confirm: true, hide: true, auto: true, art: {}, st: {}, decks: [], cosm: {}}, LS.get(PK, {}) || {});
   const saveP = ()=> LS.set(PK, P);
   TT.P = P; TT.saveP = saveP;
   const VARIANTS = ['Normale', 'Holo', 'Reverse Holo', 'Full Art', 'Oro', 'Segreta'], VLAB = ['', 'HOLO', 'REVERSE', 'FULL ART', 'ORO', 'SEGRETA'];
@@ -196,6 +196,10 @@
   }
   const getRoot = ()=> root;
   TT.root = getRoot;
+  // cosmetici (catalogo in triad-cosm.js): classe della cornice, titolo e dorso delle carte. cs = {b, f, t} (id oppure null)
+  TT.csFrame = cs=> (cs && cs.f && cs.f !== 'f_base') ? ' fr-' + cs.f : '';
+  TT.csTitle = cs=>{ const it = cs && cs.t && window.TRIAD_COSM ? window.TRIAD_COSM.get(cs.t) : null; return it ? it.name : ''; };
+  TT.applyBack = cs=>{ if(root){ if(cs && cs.b) root.dataset.bk = cs.b; else delete root.dataset.bk; } };
   function screen(title, body, o){
     o = o || {};
     root.innerHTML = `<div class="tt2-top">${o.back === false ? '<span class="tt2-ib" style="visibility:hidden"></span>' : '<button class="tt2-ib" data-back aria-label="Indietro">‹</button>'}<b>${title}</b>${o.right || '<button class="tt2-ib" data-x aria-label="Chiudi">✕</button>'}</div><div class="tt2-scr" id="ttScr">${body}</div>`;
@@ -234,7 +238,7 @@
 
   // ---------------------------------------------------------------- sala
   function home(){
-    loadSave(); refill();
+    loadSave(); refill(); TT.applyBack(P.cosm);
     const st = S.stats, uniq = ownedIds().length;
     screen('Triple Triad', `
       <div class="tt2-hero"><div class="tt2-title">TRIPLE TRIAD</div><div class="mut">di Frugu · 200 carte di giochi famosi</div>${fanHtml()}</div>
@@ -244,13 +248,16 @@
         <button class="tt2-tile" data-go="npc"><span class="ic">🤖</span><b>Allenamento</b><small>11 avversari, IA da 1 a 5</small></button>
         <button class="tt2-tile" data-go="tower"><span class="ic">🗼</span><b>Torre infinita</b><small>Sali senza fine, carte in premio</small></button>
         <button class="tt2-tile" data-go="arena"><span class="ic">🏟️</span><b>Arena</b><small>Pesca il mazzo: tutti alla pari</small></button>
+        <button class="tt2-tile" data-go="tourn"><span class="ic">🏆</span><b>Torneo</b><small>8 sfidanti, 3 turni, coppe e trofei</small></button>
         <button class="tt2-tile" data-go="hot"><span class="ic">👥</span><b>Due giocatori</b><small>Sullo stesso telefono</small></button>
         <button class="tt2-tile" data-go="album"><span class="ic">📚</span><b>Album</b><small>${uniq} di 200 carte</small></button>
         <button class="tt2-tile" data-go="gfx"><span class="ic">🎨</span><b>Grafica delle carte</b><small>6 stili e l'immagine di ogni carta</small></button>
+        <button class="tt2-tile" data-go="cosm"><span class="ic">🎭</span><b>Cosmetici</b><small>Dorsi, cornici e titoli</small></button>
+        <button class="tt2-tile" data-go="replay"><span class="ic">🎞️</span><b>Replay</b><small>Rivedi le ultime partite</small></button>
         <button class="tt2-tile" data-go="rules"><span class="ic">📖</span><b>Regole</b><small>Same, Plus, Combo, Elementi…</small></button>
         <button class="tt2-tile" data-go="settings"><span class="ic">⚙️</span><b>Tavolo e suoni</b><small>Temi, volume, animazioni</small></button>
       </div>`, {back: false});
-    $$('[data-go]', root).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const k = b.dataset.go; if(k === 'online') openOnline(); else if(k === 'npc') go(TT.npcList); else if(k === 'tower') go(TT.tower); else if(k === 'arena') go(TT.arena); else if(k === 'hot') go(TT.hotseat); else if(k === 'album') go(albumLocal); else if(k === 'gfx') go(gfxPage); else if(k === 'rules') go(rulesPage); else if(k === 'settings') go(settingsPage); }));
+    $$('[data-go]', root).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const k = b.dataset.go; if(k === 'online') openOnline(); else if(k === 'npc') go(TT.npcList); else if(k === 'tower') go(TT.tower); else if(k === 'arena') go(TT.arena); else if(k === 'hot') go(TT.hotseat); else if(k === 'album') go(albumLocal); else if(k === 'gfx') go(gfxPage); else if(k === 'rules') go(rulesPage); else if(k === 'settings') go(settingsPage); else openExtra(k); }));
     try{ if(LS.get('jrpg_triad_acct', null)){ if(window.TT_ONLINE_BADGE) window.TT_ONLINE_BADGE(); else loadJS('triad-online.js').then(()=> window.TT_ONLINE_BADGE && window.TT_ONLINE_BADGE()).catch(()=>{}); } }catch(e){}
   }
   function fanHtml(){
@@ -263,6 +270,12 @@
     try{ await loadJS('triad-online.js'); go(TT.online); }catch(e){ TT.toast('Non riesco a caricare la parte online: controlla la connessione'); go(home); }
   }
   TT.openOnline = openOnline;
+  // pezzi caricati solo quando servono (triad-extra.js: torneo, replay, cosmetici): name = tourn | replay | cosm
+  async function openExtra(name){
+    loading('Preparo…');
+    try{ await loadJS('triad-extra.js'); go(TT.extra[name]); }catch(e){ TT.toast('Non riesco a caricare questa parte: controlla la connessione'); go(home); }
+  }
+  TT.openExtra = openExtra;
 
   // ---------------------------------------------------------------- album
   function albumLocal(){

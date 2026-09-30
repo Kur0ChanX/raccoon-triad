@@ -249,10 +249,30 @@
     return top[Math.floor(rnd() * top.length)].m;
   }
 
+  // ---- replay ----
+  // Da una partita finita (o in corso) si ricava una registrazione: regole, seme, chi apriva, le 10 carte di partenza e le mosse [giocatore, carta, casella].
+  // hands0 = le carte all'inizio [[{id, v, e} x5], [x5]] (l'app le prende dalla partita appena creata; il server le ricostruisce dal catalogo con st.stake).
+  function recOf(st, hands0){
+    var first0 = ((st.round || 1) - 1) % 2 ? 1 - st.first : st.first;          // ogni morte improvvisa scambia chi apre
+    return {v: 1, rules: st.rules, seed: st.seed, first: first0, hands: hands0.map(function(h){ return h.map(function(c){ return {id: c.id, v: c.v.slice(), e: c.e || null}; }); }), log: st.log.map(function(m){ return [m[0], m[1], m[2]]; })};
+  }
+  // Rigioca la registrazione: ritorna i fotogrammi [{state, events}]: il primo è la partenza, poi uno per mossa. Se la registrazione non torna, ok = false.
+  function replay(rec){
+    var frames = [], st;
+    try{ st = newGame({rules: rec.rules, seed: rec.seed, first: rec.first, hands: rec.hands}); }catch(e){ return {ok: false, error: 'registrazione non valida', frames: frames}; }
+    frames.push({state: st, events: []});
+    for(var i = 0; i < rec.log.length; i++){
+      var m = rec.log[i], r = st.turn === m[0] ? play(st, {hi: m[1], cell: m[2]}) : {ok: false};
+      if(!r.ok) return {ok: false, error: 'mossa ' + (i + 1) + ' non valida', frames: frames};
+      st = r.state; frames.push({state: st, events: r.events});
+    }
+    return {ok: true, frames: frames};
+  }
+
   var api = {
     ELEMENTS: ELEMENTS, MAX_ROUNDS: MAX_ROUNDS, DEFAULT_RULES: DEFAULT_RULES, NB: NB,
     normRules: normRules, newGame: newGame, play: play, legalMoves: legalMoves, score: score, holders: holders, eff: eff,
-    tradeInfo: tradeInfo, tradeResolve: tradeResolve, ai: ai, makeSquares: makeSquares, mulberry: mulberry
+    tradeInfo: tradeInfo, tradeResolve: tradeResolve, ai: ai, makeSquares: makeSquares, mulberry: mulberry, recOf: recOf, replay: replay
   };
   if(typeof module === 'object' && module.exports) module.exports = api; else root.TriadCore = api;
 })(typeof self !== 'undefined' ? self : this);

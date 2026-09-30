@@ -277,5 +277,36 @@ test('caselle speciali: +2 sulla casella boost, -2 sulla trappola, uguali per il
   assert.strictEqual(run([null, 'boost', null, null, null, null, null, null, null]).slice(0, 2), '00');
   assert.strictEqual(run([null, 'trap', null, null, null, null, null, null, null]).slice(0, 2), '10');
 });
+console.log('Replay');
+test('la registrazione rigioca la stessa partita, anche con la morte improvvisa', ()=>{
+  const hands = ()=> [0, 1].map(p=> [0, 1, 2, 3, 4].map(i=> ({id: 'r' + p + i, v: [3 + (i % 3), 4, 2 + p, 5 - i % 2], e: i === 2 ? 'fuoco' : null})));
+  let sudden = 0;
+  for(let seed = 1; seed <= 400; seed++){
+    const h0 = hands(), rules = {elemental: seed % 2 === 0, same: true, plus: seed % 3 === 0, combo: true, sudden: true, special: seed % 5 === 0};
+    let st = T.newGame({rules, seed, first: seed % 2, hands: h0}); const start = st;
+    while(!st.over){ const mv = T.legalMoves(st); st = T.play(st, mv[Math.floor(T.mulberry(seed + st.moveNo * 31 + st.round)() * mv.length)]).state; }
+    const rec = JSON.parse(JSON.stringify(T.recOf(st, start.hands.map(h=> h.map(c=> ({id: c.id, v: c.v, e: c.e}))))));
+    const rp = T.replay(rec); assert(rp.ok, rp.error + ' seed ' + seed);
+    const end = rp.frames[rp.frames.length - 1].state;
+    assert.strictEqual(rp.frames.length, st.log.length + 1);
+    assert.deepStrictEqual(end.result, st.result); assert.deepStrictEqual(end.board.map(b=> b && [b.owner, b.card.id]), st.board.map(b=> b && [b.owner, b.card.id]));
+    if(st.round > 1) sudden++;
+  }
+  assert(sudden > 0, 'nessuna partita con la morte improvvisa provata');
+});
+test('una registrazione manomessa viene rifiutata', ()=>{
+  const st = T.newGame({seed: 5, hands: [filler(), filler()]}), rec = T.recOf(st, st.hands);
+  rec.log = [[0, 0, 4], [1, 0, 4]]; assert.strictEqual(T.replay(rec).ok, false);
+  rec.log = [[1, 0, 4]]; assert.strictEqual(T.replay(rec).ok, false);
+});
+console.log('Cosmetici');
+test('il catalogo dei cosmetici è coerente', ()=>{
+  const C = require('../triad-cosm.js'), ids = new Set();
+  C.ITEMS.forEach(it=>{ assert(!ids.has(it.id), 'id doppio ' + it.id); ids.add(it.id); assert(C.KINDS[it.kind], 'tipo ' + it.kind); assert(it.id.startsWith(it.kind + '_'), it.id); assert(it.name && it.how, it.id); assert(it.free || it.stat || it.price, it.id + ' non si può ottenere'); });
+  ['b', 'f', 't'].forEach(k=> assert(C.ITEMS.some(i=> i.kind === k && i.free), 'serve un oggetto gratuito per tipo ' + k));
+  assert(C.get(C.DEFAULT.b).free && C.get(C.DEFAULT.f).free);
+  const it = C.get('b_brace'); assert.strictEqual(C.have(it, {wins: 9}), false); assert.strictEqual(C.have(it, {wins: 10}), true); assert.strictEqual(C.prog(it, {wins: 99}), 10);
+  assert.strictEqual(C.have(C.get('b_reale'), {wins: 999}), false, 'a pagamento: mai da statistiche');
+});
 console.log('\n' + ok + ' prove riuscite, ' + bad + ' fallite');
 process.exit(bad ? 1 : 0);

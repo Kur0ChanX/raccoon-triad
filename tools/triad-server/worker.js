@@ -86,9 +86,11 @@ export class Hub extends DurableObject {
     q(`CREATE TABLE IF NOT EXISTS season(id TEXT PRIMARY KEY, started INTEGER)`);
     q(`CREATE TABLE IF NOT EXISTS season_top(season TEXT, pos INTEGER, acc TEXT, nick TEXT, elo INTEGER, PRIMARY KEY(season, pos))`);
     q(`CREATE TABLE IF NOT EXISTS claims(acc TEXT, key TEXT, at INTEGER, PRIMARY KEY(acc, key))`);
+    q(`CREATE TABLE IF NOT EXISTS cosm(acc TEXT, id TEXT, at INTEGER, how TEXT, PRIMARY KEY(acc, id))`);
     const addCol = (t, c, def)=>{ if(!this.rows('PRAGMA table_info(' + t + ')').some(r=> r.name === c)) this.run('ALTER TABLE ' + t + ' ADD COLUMN ' + c + ' ' + def); };
     addCol('accounts', 'coins', 'INTEGER DEFAULT 150'); addCol('accounts', 'dust', 'INTEGER DEFAULT 0'); addCol('accounts', 'xp', 'INTEGER DEFAULT 0'); addCol('accounts', 'inv', "TEXT DEFAULT '{}'");
     addCol('accounts', 'pity', "TEXT DEFAULT '{}'"); addCol('accounts', 'steals', 'INTEGER DEFAULT 0'); addCol('accounts', 'packs_n', 'INTEGER DEFAULT 0'); addCol('cards', 'foil', 'INTEGER DEFAULT 0');
+    addCol('accounts', 'eq_back', 'TEXT'); addCol('accounts', 'eq_frame', 'TEXT'); addCol('accounts', 'eq_title', 'TEXT'); addCol('accounts', 'ltower', 'INTEGER DEFAULT 0'); addCol('accounts', 'ltourn', 'INTEGER DEFAULT 0');
   }
   rows(q, ...a){ return this.sql.exec(q, ...a).toArray(); }
   row(q, ...a){ return this.rows(q, ...a)[0] || null; }
@@ -141,6 +143,10 @@ export class Hub extends DurableObject {
     if(m === 'GET' && p === '/api/me') return this.me(a);
     if(m === 'GET' && p === '/api/collection') return this.collection(a);
     if(m === 'GET' && p === '/api/shop') return this.shop(a);
+    if(m === 'GET' && p === '/api/cosmetics') return this.cosmList(a);
+    if(m === 'POST' && p === '/api/cosmetics/buy') return this.cosmBuy(a, body);
+    if(m === 'POST' && p === '/api/cosmetics/equip') return this.cosmEquip(a, body);
+    if(m === 'POST' && p === '/api/cosmetics/report') return this.cosmReport(a, body);
     if(m === 'POST' && p === '/api/packs/open') return this.openPack(a, body);
     if(m === 'GET' && p === '/api/missions') return this.missionList(a);
     if(m === 'POST' && p === '/api/missions/claim') return this.missionClaim(a, body);
@@ -232,7 +238,7 @@ export class Hub extends DurableObject {
     const act = this.row(`SELECT id FROM matches WHERE (p0=?1 OR p1=?1) AND status IN ('active','picking') ORDER BY created DESC LIMIT 1`, a.id);
     const now = Date.now(), next = a.daily_at + DAILY_MS;
     return {id: a.id, nick: a.nick, code: a.code, elo: a.elo, rank: rankOf(a.elo), wins: a.wins, losses: a.losses, draws: a.draws, streak: a.streak, best: a.best, ranked: a.ranked,
-      cards: cards.length, power, daily: {ready: now >= next, nextAt: next, n: a.daily_n}, match: act ? act.id : null,
+      cs: this.cosmEq(a.id), cards: cards.length, power, daily: {ready: now >= next, nextAt: next, n: a.daily_n}, match: act ? act.id : null,
       coins: a.coins, dust: a.dust, level: lvOf(a.xp).lvl, xp: lvOf(a.xp), tickets: this.inv(a.id), event: this.eventInfo(), missions: this.missionsReady(a.id), packs: a.packs_n, steals: a.steals,
       news: this.row('SELECT COUNT(*) n FROM news WHERE acc=? AND seen=0', a.id).n,
       requests: this.row(`SELECT COUNT(*) n FROM friends WHERE b=? AND status='pending'`, a.id).n,
@@ -241,7 +247,7 @@ export class Hub extends DurableObject {
   profile(id){
     const a = this.row('SELECT * FROM accounts WHERE id=?', id); if(!a) fail(404, 'Giocatore non trovato', 'nf');
     const cards = this.rows('SELECT cid FROM cards WHERE owner=?', id).map(c=> CARD[c.cid]).sort((x, y)=> y.lv - x.lv || (y.v[0] + y.v[1] + y.v[2] + y.v[3]) - (x.v[0] + x.v[1] + x.v[2] + x.v[3]));
-    return {id: a.id, nick: a.nick, elo: a.elo, rank: rankOf(a.elo), wins: a.wins, losses: a.losses, draws: a.draws, best: a.best, cards: cards.length, power: cards.reduce((s, c)=> s + c.lv * c.lv, 0), top: cards.slice(0, 5).map(c=> c.id), online: this.online(a.id), seen: a.seen};
+    return {id: a.id, nick: a.nick, elo: a.elo, rank: rankOf(a.elo), wins: a.wins, losses: a.losses, draws: a.draws, best: a.best, cards: cards.length, power: cards.reduce((s, c)=> s + c.lv * c.lv, 0), top: cards.slice(0, 5).map(c=> c.id), online: this.online(a.id), seen: a.seen, cs: this.cosmEq(a.id)};
   }
 
   // ------------------------------------------------------------------ carte
@@ -326,7 +332,7 @@ export class Hub extends DurableObject {
   friendList(a){
     const out = this.rows('SELECT a,b,status FROM friends WHERE a=?1 OR b=?1', a.id).map(r=>{
       const other = r.a === a.id ? r.b : r.a, o = this.row('SELECT id,nick,elo,seen FROM accounts WHERE id=?', other); if(!o) return null;
-      return {id: o.id, nick: o.nick, elo: o.elo, rank: rankOf(o.elo), online: this.online(o.id), seen: o.seen, state: r.status === 'accepted' ? 'friend' : (r.a === a.id ? 'sent' : 'incoming')};
+      return {id: o.id, nick: o.nick, elo: o.elo, rank: rankOf(o.elo), online: this.online(o.id), seen: o.seen, cs: this.cosmEq(o.id), state: r.status === 'accepted' ? 'friend' : (r.a === a.id ? 'sent' : 'incoming')};
     }).filter(Boolean);
     return {friends: out};
   }
@@ -383,9 +389,9 @@ export class Hub extends DurableObject {
     if(by === 'collection'){
       const rows = this.rows('SELECT a.id,a.nick,a.elo,c.cid FROM accounts a JOIN cards c ON c.owner=a.id');
       const m = {}; rows.forEach(r=>{ const o = m[r.id] = m[r.id] || {id: r.id, nick: r.nick, power: 0, cards: 0, best: 0}; const lv = CARD[r.cid].lv; o.power += lv * lv; o.cards++; if(lv > o.best) o.best = lv; });
-      return {by: 'collection', players: Object.values(m).sort((x, y)=> y.power - x.power).slice(0, 50)};
+      return {by: 'collection', players: Object.values(m).sort((x, y)=> y.power - x.power).slice(0, 50).map(o=> Object.assign(o, {cs: this.cosmEq(o.id)}))};
     }
-    return {by: 'elo', players: this.rows('SELECT id,nick,elo,wins,losses,draws,best FROM accounts WHERE ranked>0 ORDER BY elo DESC LIMIT 50').map(r=> Object.assign(r, {rank: rankOf(r.elo)}))};
+    return {by: 'elo', players: this.rows('SELECT id,nick,elo,wins,losses,draws,best FROM accounts WHERE ranked>0 ORDER BY elo DESC LIMIT 50').map(r=> Object.assign(r, {rank: rankOf(r.elo), cs: this.cosmEq(r.id)}))};
   }
 
   // ------------------------------------------------------------------ sfide e stanze
@@ -460,8 +466,8 @@ export class Hub extends DurableObject {
     return m;
   }
   pinfo(id){
-    if(String(id).startsWith('boss')){ const b = BOSSES[+id.slice(4) - 1]; return {id, nick: b.name, title: b.title, boss: b.n, elo: 0, rank: 'Custode'}; }
-    const a = this.row('SELECT id,nick,elo FROM accounts WHERE id=?', id); return a ? {id: a.id, nick: a.nick, elo: a.elo, rank: rankOf(a.elo)} : {id, nick: '?', elo: 0, rank: ''};
+    if(String(id).startsWith('boss')){ const b = BOSSES[+id.slice(4) - 1]; return {id, nick: b.name, title: b.title, boss: b.n, elo: 0, rank: 'Custode', cs: {b: null, f: null, t: null}}; }
+    const a = this.row('SELECT id,nick,elo FROM accounts WHERE id=?', id); return a ? {id: a.id, nick: a.nick, elo: a.elo, rank: rankOf(a.elo), cs: this.cosmEq(a.id)} : {id, nick: '?', elo: 0, rank: '', cs: {b: null, f: null, t: null}};
   }
   view(m, me){
     const st = JSON.parse(m.state), res = m.result ? JSON.parse(m.result) : null, out = {id: m.id, mode: m.mode, boss: m.boss, status: m.status, ver: m.ver, deadline: m.deadline, turnMs: this.turnMs,

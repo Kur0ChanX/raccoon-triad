@@ -360,6 +360,59 @@ const rnd = st=>{ const mv = Core.legalMoves(st); return mv[Math.floor(Math.rand
     const s = await api('GET', '/api/supply'); Object.values(s.supply).forEach(([minted, cap])=> assert(minted <= cap && minted >= 0));
   });
 
+  await test('replay: dalla partita finita si ricostruisce ogni mossa (regole, seme, carte di partenza e mosse)', async ()=>{
+    const CAT = {}; require('../../triad-cards.js').concat(EXP.cards).forEach(c=> CAT[c[0]] = {id: c[0], v: c[5], e: c[6]});
+    const g = (await api('GET', '/api/match/' + U.m.id, null, U.a.tok)).match, st = g.state;
+    assert(st.over && st.log.length >= 9 && Array.isArray(st.stake) && st.stake[0].length === 5, 'la partita conserva mosse e carte di partenza');
+    const rec = Core.recOf(st, st.stake.map(h=> h.map(id=> CAT[id])));
+    const rp = Core.replay(rec); assert(rp.ok, rp.error);
+    const end = rp.frames[rp.frames.length - 1].state; assert.deepStrictEqual(end.result, st.result); assert.strictEqual(rp.frames.length, st.log.length + 1);
+    const o = await api('GET', '/api/matches', null, U.a.tok); assert(o.matches.some(m=> m.id === U.m.id), 'la partita è nella cronologia');
+  });
+
+  console.log('Cosmetici: dorsi, cornici, titoli');
+  await test('elenco: gli oggetti gratuiti sono tuoi, gli altri chiedono un traguardo o monete', async ()=>{
+    const c = await api('GET', '/api/cosmetics', null, U.a.tok); assert.strictEqual(c._s, 200);
+    assert(c.items.length >= 30 && ['b', 'f', 't'].every(k=> c.items.some(i=> i.kind === k)));
+    const it = id=> c.items.find(i=> i.id === id);
+    assert(it('b_classic').owned && it('f_base').owned && it('t_recluta').owned); assert(!it('b_reale').owned && it('b_reale').price === 600 && !it('t_campione').owned);
+    assert.deepStrictEqual(c.equipped, {b: null, f: null, t: null});
+  });
+  await test('mettere un oggetto: solo se è tuo e del tipo giusto; lo vedono anche gli altri', async ()=>{
+    await expectErr(api('POST', '/api/cosmetics/equip', {b: 'b_reale'}, U.a.tok), 403, 'locked');
+    await expectErr(api('POST', '/api/cosmetics/equip', {b: 'f_base'}, U.a.tok), 400, 'bad');
+    await expectErr(api('POST', '/api/cosmetics/equip', {t: 'inventato'}, U.a.tok), 400, 'bad');
+    const e = await api('POST', '/api/cosmetics/equip', {b: 'b_procione', f: 'f_base', t: 't_recluta'}, U.a.tok); assert.strictEqual(e._s, 200); assert.strictEqual(e.equipped.b, 'b_procione');
+    assert.strictEqual((await api('GET', '/api/me', null, U.a.tok)).cs.t, 't_recluta');
+    const m = await api('GET', '/api/match/' + U.m.id, null, U.b.tok); assert.strictEqual(m.match.players.find(p=> p.id === U.a.me.id).cs.b, 'b_procione', 'l\'avversario vede il dorso');
+    const off = await api('POST', '/api/cosmetics/equip', {t: null}, U.a.tok); assert.strictEqual(off.equipped.t, null); assert.strictEqual(off.equipped.b, 'b_procione', 'gli altri campi non cambiano');
+  });
+  await test('acquisto con le monete: una volta sola, e solo per gli oggetti in vendita', async ()=>{
+    const before = (await api('GET', '/api/me', null, U.a.tok)).coins;
+    await expectErr(api('POST', '/api/cosmetics/buy', {id: 'b_brace'}, U.a.tok), 400, 'nobuy');
+    await expectErr(api('POST', '/api/cosmetics/buy', {id: 'nulla'}, U.a.tok), 404, 'nf');
+    const r = await api('POST', '/api/cosmetics/buy', {id: 'b_reale'}, U.a.tok); assert.strictEqual(r._s, 200, JSON.stringify(r));
+    assert.strictEqual(r.coins, before - 600); assert(r.items.find(i=> i.id === 'b_reale').owned);
+    await expectErr(api('POST', '/api/cosmetics/buy', {id: 'b_reale'}, U.a.tok), 409, 'owned');
+    const e = await api('POST', '/api/cosmetics/equip', {b: 'b_reale'}, U.a.tok); assert.strictEqual(e.equipped.b, 'b_reale');
+    const poor = await reg('Povero' + Math.floor(Math.random() * 999)); const got = await api('POST', '/api/cosmetics/buy', {id: 'b_reale'}, poor.tok); assert(got._s === 200 || got._s === 402);
+  });
+  await test('Torre e Tornei: il telefono comunica i record, che sbloccano oggetti ma non tornano indietro', async ()=>{
+    const u = await reg('Scalatore' + Math.floor(Math.random() * 999));
+    const r = await api('POST', '/api/cosmetics/report', {tower: 16, tourn: 1}, u.tok); assert.strictEqual(r._s, 200);
+    const own = id=> r.items.find(i=> i.id === id).owned;
+    assert(own('b_torre') && own('t_scalatore') && own('t_campione') && own('b_corona') && !own('f_torre') && !own('f_alloro'));
+    const r2 = await api('POST', '/api/cosmetics/report', {tower: 3, tourn: 0}, u.tok); assert(r2.items.find(i=> i.id === 't_scalatore').owned, 'un record più basso non toglie nulla');
+    const r3 = await api('POST', '/api/cosmetics/report', {tower: 99999, tourn: -4}, u.tok); assert.strictEqual(r3._s, 200); assert(r3.items.find(i=> i.id === 'f_torre').owned);
+    const n = await api('GET', '/api/news', null, u.tok); assert(n.news.some(x=> x.kind === 'cosm' && x.data.id === 't_campione'), 'notizia dello sblocco');
+    const eq = await api('POST', '/api/cosmetics/equip', {t: 't_campione', f: 'f_torre'}, u.tok); assert.strictEqual(eq.equipped.t, 't_campione');
+    await expectErr(api('GET', '/api/cosmetics'), 401, 'auth');
+  });
+  await test('vittorie e livello sbloccano da soli i cosmetici dei traguardi', async ()=>{
+    const c = await api('GET', '/api/cosmetics', null, U.w.tok), w = c.items.find(i=> i.id === 'f_bronzo'), me = await api('GET', '/api/me', null, U.w.tok);
+    assert.strictEqual(w.stat, 'wins'); assert.strictEqual(w.prog, Math.min(w.target, me.wins)); assert.strictEqual(w.owned, me.wins >= w.target);
+  });
+
   console.log('Limiti e sicurezza');
   await test('le carte fuori dalla quantità mondiale non si creano più', async ()=>{
     const s = await api('GET', '/api/supply'); Object.values(s.supply).forEach(([minted, cap])=> assert(minted <= cap, 'oltre il limite'));
