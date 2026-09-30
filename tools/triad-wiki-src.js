@@ -7,7 +7,9 @@ const WIKIS = {
   sf: F('streetfighter'), pacman: F('pacman'), doom: F('doom'), minecraft: F('minecraft'), gta: F('gta'), hl: F('half-life'), mgs: F('metalgear'), witcher: F('witcher'),
   ds: F('darksouls'), elden: F('eldenring'), rdr: F('reddead'), mm: F('megaman'), re: F('residentevil'), sh: F('silenthill'), alien: F('avp'), smb: F('supermeatboy'),
   braid: F('braid'), isaac: F('bindingofisaac'), es: F('elderscrolls'), tetris: F('tetris'), bulba: 'https://bulbapedia.bulbagarden.net/w/api.php', uesp: 'https://en.uesp.net/w/api.php',
-  commons: 'https://commons.wikimedia.org/w/api.php'
+  commons: 'https://commons.wikimedia.org/w/api.php',
+  gow: F('godofwar'), halo: 'https://www.halopedia.org/api.php', tlou: F('thelastofus'), metroid: F('metroid'), cv: F('castlevania'), me: F('masseffect'), diablo: F('diablo'), sc: F('starcraft'),
+  kh: F('kingdomhearts'), sui: F('suikoden'), ewj: F('earthwormjim'), gradius: F('gradius'), wow: F('wowpedia'), bond: F('jamesbond'), persona: F('megamitensei')
 };
 const SRC = {
   'super-mario-bros': [['mariowiki', 'Mario']],
@@ -41,6 +43,37 @@ const SRC = {
   'alien-isolation': [['steam', 214490]],
   'super-meat-boy': [['smb', 'Meat Boy'], ['smb', 'Bandage Girl']],
   'braid': [['steam', 26800]],
-  'the-binding-of-isaac': [['isaac', 'Isaac']]
+  'the-binding-of-isaac': [['isaac', 'Isaac']],
+  // ---- livello 9
+  'the-legend-of-zelda-a-link-to-the-past': [['zelda', 'Link', {q: 'ALttP Link Artwork', re: /ALttP|LttP|Link to the Past/i}]],
+  'super-mario-world': [['mariowiki', 'Yoshi', {file: 'File:SMW Caped Mario Yoshi Artwork.png'}]],
+  'resident-evil-4': [['re', 'Leon S. Kennedy', {re: /RE4|4/}]],
+  'world-of-warcraft': [['wow', 'Varian Wrynn', {file: 'File:Varian portrait Legion art.jpg'}]],
+  'god-of-war': [['steam', 1593500]],
+  'halo-combat-evolved': [['halo', 'Master Chief', {q: 'Halo CE Master Chief render'}]],
+  'final-fantasy-x': [['ff', 'Tidus', {file: 'File:FFX-TidusYuna artwork.jpg'}]],
+  'the-last-of-us': [['steam', 1888930]],
+  'super-metroid': [['metroid', 'Samus Aran', {q: 'Super Metroid Samus artwork', re: /Super/i}]],
+  'final-fantasy-vi': [['ff', 'Terra Branford', {re: /FFVI|VI/}]],
+  'castlevania-symphony-of-the-night': [['cv', 'Alucard', {file: 'File:Alucard HD.jpg'}]],
+  'portal-2': [['steam', 620]],
+  'mass-effect-2': [['steam', 1328670]],
+  'diablo-ii': [['diablo', 'Diablo', {file: 'File:Dark Wanderer-resurrected.jpg'}]],
+  'starcraft': [['sc', 'James Raynor', {q: 'Jim Raynor StarCraft render'}]],
+  'super-mario-galaxy': [['mariowiki', 'Rosalina', {file: 'File:Princess Rosalina Super Mario Galaxy.png'}]],
+  'persona-5': [['steam', 1687950]],
+  'kingdom-hearts': [['kh', 'Sora', {q: 'Sora Kingdom Hearts render artwork'}]],
+  'sonic-the-hedgehog': [['sonic', 'Sonic the Hedgehog', {file: 'File:Sonic 1 USA Sonic.png'}]],
+  'baldur-s-gate-3': [['steam', 1086940]],
+  'final-fantasy-v': [['ff', 'Bartz Klauser', {re: /FFV/}], ['ff', 'Krile Mayer Baldesion', {re: /FFV/}]],
+  'dragon-quest-iv': [['dq', 'Hero (Dragon Quest IV)']],
+  'suikoden-ii': [['sui', 'Riou'], ['sui', 'Jowy Atreides']],
+  'gradius': [['gradius', 'Vic Viper']],
+  'amnesia-the-dark-descent': [['steam', 57300]],
+  'resident-evil-7': [['steam', 418370]],
+  'dead-space-2': [['steam', 47780]],
+  'disco-elysium': [['steam', 632470]],
+  'outer-wilds': [['steam', 753640]],
+  'slay-the-spire': [['steam', 646570]]
 };
 module.exports = {WIKIS, SRC};
