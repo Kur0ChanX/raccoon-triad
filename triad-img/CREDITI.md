@@ -1,0 +1,46 @@
+# Crediti delle illustrazioni
+
+Immagini ufficiali dei giochi prese dalle wiki dei fan e da Steam, usate per un gioco privato tra amici. I diritti sono dei rispettivi autori e case produttrici.
+
+- `alien-isolation` ← Steam app 214490 — https://cdn.cloudflare.steamstatic.com/steam/apps/214490/library_600x900.jpg
+- `braid` ← Steam app 26800 — https://cdn.cloudflare.steamstatic.com/steam/apps/26800/library_600x900.jpg
+- `chrono-cross` ← chrono: Serge (File:CC Serge Artwork Remaster.png) — https://static.wikia.nocookie.net/chrono/images/1/10/CC_Serge_Artwork_Remaster.png/revision/latest?cb=20220411230142
+- `chrono-cross` ← chrono: Kid (File:CC Kid Artwork Remaster.png) — https://static.wikia.nocookie.net/chrono/images/a/af/CC_Kid_Artwork_Remaster.png/revision/latest?cb=20220411232228
+- `chrono-trigger` ← chrono: Crono (File:CronoArtwork.png) — https://static.wikia.nocookie.net/chrono/images/3/3c/CronoArtwork.png/revision/latest?cb=20221231002136
+- `chrono-trigger` ← chrono: Marle (File:Marle2.png) — https://static.wikia.nocookie.net/chrono/images/0/01/Marle2.png/revision/latest?cb=20100619171721
+- `chrono-trigger` ← chrono: Lucca (File:Lucca2.png) — https://static.wikia.nocookie.net/chrono/images/6/6a/Lucca2.png/revision/latest?cb=20100617164745
+- `dark-souls` ← ds: Black Knight (File:Dark Souls Black Knight Official Art HD.jpg) — https://static.wikia.nocookie.net/darksouls/images/1/13/Dark_Souls_Black_Knight_Official_Art_HD.jpg/revision/latest?cb=20200802005337
+- `doom` ← doom: Doomguy (File:Doom Slayer concept art 1.png) — https://static.wikia.nocookie.net/doom/images/f/f9/Doom_Slayer_concept_art_1.png/revision/latest?cb=20250612100044
+- `dragon-quest-iii` ← dq: Hero/Heroine (Dragon Quest III) (File:DragonQuestIIIRender.png) — https://static.wikia.nocookie.net/dragonquest/images/5/5f/DragonQuestIIIRender.png/revision/latest?cb=20190830150704
+- `elden-ring` ← elden: Tarnished (File:ER_Godfrey.png) — https://static.wikia.nocookie.net/eldenring/images/7/7a/ER_Godfrey.png/revision/latest?cb=20220204222224
+- `final-fantasy-iv` ← ff: Cecil Harvey (File:Cecil_FF4DS_CG_Art.png) — https://static.wikia.nocookie.net/finalfantasy/images/c/c9/Cecil_FF4DS_CG_Art.png/revision/latest?cb=20130423172229
+- `final-fantasy-vii` ← ff: Cloud Strife (File:Cloud_Strife_from_FFVII_Revelation_promo_render.png) — https://static.wikia.nocookie.net/finalfantasy/images/e/e8/Cloud_Strife_from_FFVII_Revelation_promo_render.png/revision/latest?cb=20260904175026
+- `grand-theft-auto-v` ← Steam app 271590 — https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900.jpg
+- `half-life-2` ← Steam app 220 — https://cdn.cloudflare.steamstatic.com/steam/apps/220/library_600x900.jpg
+- `mega-man-x` ← mm: X (File:X standard armor.jpg) — https://static.wikia.nocookie.net/megaman/images/2/23/X_standard_armor.jpg/revision/latest?cb=20210716065812
+- `metal-gear-solid` ← mgs: Solid Snake (File:Mgsart2.png) — https://static.wikia.nocookie.net/metalgear/images/c/cd/Mgsart2.png/revision/latest?cb=20050824125726
+- `minecraft` ← minecraft: Player (File:Alex Artwork 2.png) — https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Alex_Artwork_2.png/revision/latest?cb=20220228072156
+- `minecraft` ← minecraft: Creeper (File:CreeperArtwork.png) — https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/19/CreeperArtwork.png/revision/latest?cb=20210401045743
+- `pac-man` ← pacman: Pac-Man (File:Pac-Man World Render.jpg) — https://static.wikia.nocookie.net/pacman/images/f/fc/Pac-Man_World_Render.jpg/revision/latest?cb=20250628214645
+- `pokemon-rosso-e-blu` ← bulba: Charizard (Pokémon) (File:0006Charizard.png) — https://archives.bulbagarden.net/media/upload/3/38/0006Charizard.png
+- `pokemon-rosso-e-blu` ← bulba: Blastoise (Pokémon) (File:0009Blastoise.png) — https://archives.bulbagarden.net/media/upload/0/0a/0009Blastoise.png
+- `pokemon-rosso-e-blu` ← bulba: Venusaur (Pokémon) (File:0003Venusaur.png) — https://archives.bulbagarden.net/media/upload/6/6b/0003Venusaur.png
+- `red-dead-redemption-2` ← rdr: Arthur Morgan (File:Arthur_Morgan_Level_2.jpg) — https://static.wikia.nocookie.net/reddeadredemption/images/3/30/Arthur_Morgan_Level_2.jpg/revision/latest?cb=20250123181952
+- `resident-evil` ← re: Jill Valentine (File:RE1JillConceptArtwork.png) — https://static.wikia.nocookie.net/residentevil/images/1/13/RE1JillConceptArtwork.png/revision/latest?cb=20231001165852
+- `resident-evil` ← re: Chris Redfield (File:RE1ChrisConceptArtwork.png) — https://static.wikia.nocookie.net/residentevil/images/0/05/RE1ChrisConceptArtwork.png/revision/latest?cb=20241228141407
+- `silent-hill` ← sh: Harry Mason (File:Harry cheryl.PNG) — https://static.wikia.nocookie.net/silent/images/0/07/Harry_cheryl.PNG/revision/latest?cb=20131115221612
+- `sonic-the-hedgehog-2` ← sonic: Sonic the Hedgehog (File:Sonic 2 Japanese artwork Sonic and Tails.png) — https://static.wikia.nocookie.net/sonic/images/e/e2/Sonic_2_Japanese_artwork_Sonic_and_Tails.png/revision/latest?cb=20241204144236
+- `street-fighter-ii` ← sf: Ryu (File:Sf6-ryu.png) — https://static.wikia.nocookie.net/streetfighter/images/3/3a/Sf6-ryu.png/revision/latest?cb=20220603010542
+- `street-fighter-ii` ← sf: Ken Masters (File:Ken_SF6_Render.png) — https://static.wikia.nocookie.net/streetfighter/images/1/14/Ken_SF6_Render.png/revision/latest?cb=20220915164810
+- `super-mario-64` ← mariowiki: Mario (File:Mario Victory Pose Artwork - Super Mario 64.png) — https://mario.wiki.gallery/images/1/1e/Mario_Victory_Pose_Artwork_-_Super_Mario_64.png
+- `super-mario-bros` ← mariowiki: Mario (File:MarioAlternateJamboreeRender.png) — https://mario.wiki.gallery/images/0/0d/MarioAlternateJamboreeRender.png
+- `super-mario-kart` ← mariowiki: Mario (File:Metal Mario Artwork - Mario Kart 7.png) — https://mario.wiki.gallery/images/3/3f/Metal_Mario_Artwork_-_Mario_Kart_7.png
+- `super-mario-kart` ← mariowiki: Luigi (File:MK8 Luigi E3 Standard Kart Artwork.png) — https://mario.wiki.gallery/images/a/a8/MK8_Luigi_E3_Standard_Kart_Artwork.png
+- `super-meat-boy` ← smb: Meat Boy (File:MeatBoyHD.png) — https://static.wikia.nocookie.net/supermeatboy/images/e/ed/MeatBoyHD.png/revision/latest?cb=20220809105817
+- `super-meat-boy` ← smb: Bandage Girl (File:BandageGirlHD.png) — https://static.wikia.nocookie.net/supermeatboy/images/a/a8/BandageGirlHD.png/revision/latest?cb=20220809110447
+- `tetris` ← Steam app 1003590 — https://cdn.cloudflare.steamstatic.com/steam/apps/1003590/library_600x900.jpg
+- `the-binding-of-isaac` ← isaac: Isaac (File:IsaacHD.png) — https://static.wikia.nocookie.net/bindingofisaac/images/a/a0/IsaacHD.png/revision/latest?cb=20260815160642
+- `the-elder-scrolls-v-skyrim` ← Steam app 489830 — https://cdn.cloudflare.steamstatic.com/steam/apps/489830/library_600x900.jpg
+- `the-legend-of-zelda-breath-of-the-wild` ← zelda: Link (File:BotW Link Shooting Artwork 2.png) — https://static.wikia.nocookie.net/zelda_gamepedia_en/images/0/08/BotW_Link_Shooting_Artwork_2.png/revision/latest?cb=20180429123129
+- `the-legend-of-zelda-ocarina-of-time` ← zelda: Link (File:OoT Link Portrait.png) — https://static.wikia.nocookie.net/zelda_gamepedia_en/images/7/78/OoT_Link_Portrait.png/revision/latest?cb=20130804223815
+- `the-witcher-3-wild-hunt` ← witcher: Geralt of Rivia (File:Tw3 Geralt of Rivia newest render.png) — https://static.wikia.nocookie.net/witcher/images/a/a0/Tw3_Geralt_of_Rivia_newest_render.png/revision/latest?cb=20170606064646
