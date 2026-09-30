@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(triad-cards.js)",
+      "Read(triad-exp.js)",
+      "Read(triad-chars.js)",
+      "Read(triad-imgs.js)",
+      "Read(triad-art.js)",
+      "Read(qrcode.min.js)"
+    ]
+  }
+}

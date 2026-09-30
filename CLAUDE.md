@@ -20,6 +20,7 @@ Gioco di carte in stile Triple Triad (regole FF8) con 320 carte di personaggi di
 `jrpg_triad_prefs` (stile/tavolo/suoni), `jrpg_triad2` (collezione dell'allenamento), `jrpg_triad_tower`, `jrpg_triad_arena`, `jrpg_triad_daily`, `jrpg_triad_tourn` (Torneo: trofei e torneo in corso), `jrpg_triad_replays` (ultime 12 partite), `jrpg_triad_acct` (TOKEN dell'account online: segreto, mai nel codice né nei commit), `jrpg_triad_server`, `jrpg_triad_photos`. Il nome `jrpg_` resta per compatibilità: il dominio `kur0chanx.github.io` è lo stesso della Tier List, quindi la collezione già fatta si ritrova qui.
 
 ## Regole di lavoro
+- Risparmia token: una sessione per lavoro, risposte corte, niente screenshot inutili. I file dati (`triad-cards/exp/chars/imgs/art.js`) sono enormi: il Read è bloccato in `.claude/settings.json`, usa script Node o i `tools/build-*.js`.
 - Ad OGNI versione cambia `<meta name="build">` in `index.html` e la cache `CACHE` in `sw.js`.
 - Ogni nuovo file JS va in `index.html` (o caricato da `triad.js`), `sw.js` (SHELL) e `.github/workflows/pages.yml`.
 - Non leggere file enormi per intero: Grep con `-o`/`head_limit` o script Node.
