@@ -1,0 +1,38 @@
+name: Pubblica su GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prove delle regole
+        run: node tools/test-triad-core.js
+      - name: Prepara il sito
+        run: |
+          mkdir _site
+          cp index.html shell.js sw.js manifest.webmanifest qrcode.min.js _site/
+          cp triad.js triad.css triad-core.js triad-cards.js triad-exp.js triad-chars.js triad-imgs.js triad-art.js triad-play.js triad-online.js triad-config.js _site/
+          cp -r icons _site/icons
+          cp -r triad-img _site/triad-img
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

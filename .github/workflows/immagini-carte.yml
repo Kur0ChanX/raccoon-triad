@@ -1,0 +1,40 @@
+name: Immagini delle carte (settimanale)
+# Ogni lunedì rifà triad-art.js (Steam → Libretro → Wikipedia) dal server, dove il browser non ha blocchi.
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: immagini-carte
+  cancel-in-progress: false
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Immagini delle carte
+        run: node tools/build-triad-art.js
+        continue-on-error: true
+      - name: Salva e ripubblica il sito
+        run: |
+          git config user.name "raccoon-bot"
+          git config user.email "raccoon-bot@users.noreply.github.com"
+          git add triad-art.js
+          if git diff --cached --quiet; then
+            echo "Nessuna novità."
+          else
+            git commit -m "Immagini delle carte aggiornate"
+            git push
+            gh workflow run pages.yml --ref main
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
