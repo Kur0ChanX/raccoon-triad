@@ -33,7 +33,7 @@
         <div class="mut" id="ttInfo" style="text-align:center;font-size:.74rem;min-height:1.1em"></div>
       </div>`;
     const play = $('#ttPlay', R), g3 = $('#g3', R);
-    const seatPanel = (seat, id)=>{ const n = opt.names[seat] || {nick: '?', av: '🙂'}; $(id, R).className = 'tt2-pl' + (seat === 1 ? ' o' : '') + (st.turn === seat ? ' turn' : ''); $(id, R).innerHTML = `<div class="av">${n.av || '🙂'}</div><div class="nm">${esc(n.nick)}${n.sub ? `<small>${esc(n.sub)}</small>` : ''}</div><div class="tt2-tm" id="tm${seat}" style="display:none"></div><div class="sc" id="sc${seat}">5</div>`; };
+    const seatPanel = (seat, id)=>{ const n = opt.names[seat] || {nick: '?', av: '🙂'}; $(id, R).className = 'tt2-pl' + (seat === 1 ? ' o' : '') + (st.turn === seat ? ' turn' : ''); const ttl = TT.csTitle ? TT.csTitle(n.cs) : ''; $(id, R).innerHTML = `<div class="av${TT.csFrame ? TT.csFrame(n.cs) : ''}">${n.av || '🙂'}</div><div class="nm">${esc(n.nick)}${ttl || n.sub ? `<small>${esc(ttl ? ttl + (n.sub ? ' · ' + n.sub : '') : n.sub)}</small>` : ''}</div><div class="tt2-tm" id="tm${seat}" style="display:none"></div><div class="sc" id="sc${seat}">5</div>`; };
     const elMods = (card, cell, s)=>{ const el = s.squares[cell]; if(el === 'boost') return [2, 2, 2, 2]; if(el === 'trap') return [-2, -2, -2, -2]; if(!s.rules.elemental || !el) return [0, 0, 0, 0]; const d = card.e === el ? 1 : -1; return [d, d, d, d]; };
     const hidden = seat=> opt.hidden ? opt.hidden(seat, st) : false, fo = c=> (opt.foil && c ? opt.foil(c.u) | 0 : 0);
     function handHtml(seat){ const hide = hidden(seat); return sim.hands[seat].map((c, hi)=> `<div class="sl${hide ? ' back' : ''}" data-hi="${hi}" data-seat="${seat}">${c ? cardHtml(c.id, {owner: seat, foil: fo(c)}) : '<div class="ttc used"></div>'}</div>`).join(''); }
@@ -104,7 +104,7 @@
     // dimensioni: la carta si adatta allo schermo
     function fit(){
       const H = play.clientHeight, W = play.clientWidth; if(!H) return;
-      const extra = 46 + 46 + 18 + (opt.emotes ? 40 : 0) + 34 + 30;
+      const extra = 46 + 46 + 18 + (opt.emotes ? 40 : 0) + 34 + 30 + (opt.extraH || 0);
       const cw = Math.max(54, Math.min(132, Math.floor(Math.min((H - extra) / 5.94, (W - 44) / 3))));
       play.style.setProperty('--cw', cw + 'px');
     }
@@ -186,6 +186,20 @@
     renderAll();
     if(opt.timer) startTimer(opt.timer.deadline, opt.timer.total);
     return ctrl;
+  };
+
+  // registrazioni delle ultime partite (per il Replay): regole, seme, carte di partenza e mosse, poche centinaia di byte ciascuna. Le mostra triad-extra.js
+  const RP_KEY = 'jrpg_triad_replays';
+  TT.saveReplay = function(kind, title, names, st0, st){
+    try{
+      if(!st || !st.over || !st0 || !st0.hands) return null;
+      const list = TT.LS.get(RP_KEY, []) || [], e = {id: 'r' + Date.now().toString(36), t: Date.now(), kind, title, names: names.map(n=> ({nick: n.nick, av: n.av})), rec: Core.recOf(st, st0.hands), win: st.result.winner, sc: st.result.score};
+      list.unshift(e); TT.LS.set(RP_KEY, list.slice(0, 12)); return e.id;
+    }catch(err){ return null; }
+  };
+  // guarda la partita appena finita: al ritorno rimette la schermata che serve
+  TT.watchReplay = async function(entry, back){
+    try{ await TT.loadJS('triad-extra.js'); TT.extra.replayView(entry, {back}); }catch(e){ TT.toast('Non riesco ad aprire il replay'); }
   };
 
   // =====================================================================================================
@@ -271,7 +285,7 @@
   function startLocal(cfg){
     const rules = Core.normRules(cfg.rules), seed = Math.floor(Math.random() * 4294967296);
     let st = Core.newGame({rules, seed, first: Math.random() < .5 ? 1 : 0, hands: [cfg.hands[0].map(TT.cobj), cfg.hands[1].map(TT.cobj)]});
-    let board = null, over = false, veil = false;
+    const st0 = st; let board = null, over = false, veil = false;
     const cover = (seat, cb)=>{                                   // «passa il telefono» tra un turno e l'altro nei due giocatori
       veil = true; if(board) board.renderAll();
       const m = TT.modal(`<div style="text-align:center"><div style="font-size:2.6rem">${seat ? '🔴' : '🔵'}</div><h3>Tocca a ${esc(cfg.names[seat].nick)}</h3><p class="mut">Passa il telefono: le carte dell'altro restano coperte.</p><button class="tt2-btn pri w" data-go>Sono pronto</button></div>`, {center: true, sticky: true});
@@ -280,7 +294,7 @@
     function mount(){
       veil = !!(cfg.hot && P.hide);
       board = TT.mountBoard({
-        state: st, me: 0, names: cfg.names, title: cfg.title,
+        state: st, me: 0, names: cfg.names.map((n, i)=> i === 0 && !cfg.hot && !n.cs ? Object.assign({}, n, {cs: P.cosm}) : n), title: cfg.title,
         hidden: (seat, s)=> cfg.hot && P.hide ? (veil || s.turn !== seat) : false,
         canPlay: (seat, s)=> !s.over && (cfg.hot ? true : seat === 0),
         onPlay: async (hi, cell)=>{ const r = Core.play(st, {hi, cell}); if(!r.ok) throw new Error(r.error); st = r.state; setTimeout(after, 0); return r; },
@@ -309,10 +323,11 @@
       if(over) return; over = true; await sleep(P.fast ? 200 : 700);
       const res = st.result, S = TT.save(), w = res.winner, sc = res.score;
       const won = w === 0, draw = w == null, info = Core.tradeInfo(st);
+      const rid = TT.saveReplay(cfg.hot ? 'hot' : cfg.arena || cfg.onEnd ? 'cup' : 'npc', cfg.title, cfg.names, st0, st);
       if(!cfg.hot && !cfg.arena){ S.stats[won ? 'w' : draw ? 'd' : 'l']++; if(won){ S.stats.streak++; S.stats.best = Math.max(S.stats.best || 0, S.stats.streak); } else if(!draw) S.stats.streak = 0; if(cfg.npc && cfg.npc.daily && won) dailyWin(); if(cfg.npc){ const r = S.npc[cfg.npc.id] = S.npc[cfg.npc.id] || {w: 0, l: 0}; if(won) r.w++; else if(!draw) r.l++; } }
-      const btns = [{label: 'Rivincita', cls: 'pri', fn: ()=>{ board.destroy(); if(cfg.npc) cfg.hands[1] = npcDeck(cfg.npc); startLocal(cfg); }}, {label: 'Esci', fn: ()=>{ board.destroy(); TT.saveS(); TT.back(); }}];
+      const btns = (rid ? [{label: '🎞️ Replay', fn: ()=>{ const e = (TT.LS.get(RP_KEY, []) || []).find(x=> x.id === rid); if(e){ board.destroy(); TT.watchReplay(e, ()=>{ TT.back(); }); } }}] : []).concat([{label: 'Rivincita', cls: 'pri', fn: ()=>{ board.destroy(); if(cfg.npc) cfg.hands[1] = npcDeck(cfg.npc); startLocal(cfg); }}, {label: 'Esci', fn: ()=>{ board.destroy(); TT.saveS(); TT.back(); }}]);
       const gain = ids=>{ ids.forEach(id=>{ S.owned[id] = (S.owned[id] || 0) + 1; }); TT.saveS(); };
-      if(cfg.arena){ board.destroy(); cfg.arena(won, draw, sc); return; }
+      if(cfg.arena || cfg.onEnd){ board.destroy(); (cfg.arena || cfg.onEnd)(won, draw, sc, rid); return; }
       if(!cfg.hot && won && info.pick > 0){
         const sel = [], choices = [0, 1, 2, 3, 4].map(i=> ({u: 5 + i, cid: cfg.hands[1][i]}));
         const el = board.showEnd({kind: 'win', title: 'HAI VINTO!', sub: `${sc[0]} a ${sc[1]}`, pick: {n: info.pick, choices, sel, by: 0, onPick: list=>{ gain(list.map(u=> cfg.hands[1][u - 5])); TT.snd('coin'); el.remove(); board.showEnd({kind: 'win', title: 'CARTE PRESE!', sub: 'Sono nel tuo album', cards: list.map(u=> ({cid: cfg.hands[1][u - 5], label: 'Nuova nel mazzo'})), buttons: btns}); }}});
@@ -408,7 +423,7 @@
     const T = tload(), run = T.run, rules = Core.normRules(Object.assign({sudden: true, trade: 'one'}, o.rules));
     let st = Core.newGame({rules, seed: Math.floor(Math.random() * 4294967296), first: run.first ? 0 : (Math.random() < .5 ? 1 : 0), hands: [run.deck.map((_, i)=> tcard(run, i)), o.deck.map(TT.cobj)]});
     run.first = false; tsave(T);
-    let board = null, over = false;
+    const st0 = st; let board = null, over = false;
     board = TT.mountBoard({
       state: st, me: 0, names: [{nick: 'Tu', av: '🦝', sub: 'Piano ' + run.floor}, {nick: o.name, av: o.face, sub: 'IA ' + AI_N[o.ai]}], title: '🗼 Piano ' + run.floor,
       canPlay: (seat, s)=> !s.over && seat === 0,
@@ -426,6 +441,7 @@
     async function finish(){
       if(over) return; over = true; await sleep(P.fast ? 200 : 700);
       const won = st.result.winner === 0, T2 = tload(), sc = st.result.score;
+      TT.saveReplay('tower', 'Torre · piano ' + run.floor, [{nick: 'Tu', av: '🦝'}, {nick: o.name, av: o.face}], st0, st);
       if(won){
         T2.run.floor++; T2.best = Math.max(T2.best, T2.run.floor - 1); tsave(T2);
         board.showEnd({kind: 'win', title: 'PIANO ' + (T2.run.floor - 1) + ' SUPERATO!', sub: `${sc[0]} a ${sc[1]}`, buttons: [{label: 'Scegli il potenziamento', cls: 'pri', fn: ()=>{ board.destroy(); towerBoonScreen(); }}]});

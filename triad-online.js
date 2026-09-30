@@ -7,6 +7,8 @@
   const AK = 'jrpg_triad_acct', SK = 'jrpg_triad_server', SITE = 'https://kur0chanx.github.io/raccoon-triad/';
   const AV = ['🦝', '🐱', '🐺', '🦊', '🐸', '🐙', '🦄', '🐲', '🦉', '🐧', '🐼', '🦁'];
   const avOf = id=> AV[TT.hash(String(id)) % AV.length];
+  TT.avOf = avOf;
+  const csT = cs=> TT.csTitle ? TT.csTitle(cs) : '', csF = cs=> TT.csFrame ? TT.csFrame(cs) : '';      // titolo e cornice scelti nei Cosmetici
   let acct = LS.get(AK, null), me = null, cfg = null, ws = null, want = false, retry = 0, wsTimer = 0, pingT = 0, wsOK = false, board = null, cur = null, waiting = null, lobbyAt = 0, endShown = '';
   const server = ()=> String(LS.get(SK, '') || window.TRIAD_SERVER || '').replace(/\/+$/, '');
   TT.server = server;
@@ -56,7 +58,7 @@
   }
   function newsToast(it){
     const c = it.data && it.data.cid && TT.CARD[it.data.cid] ? TT.CARD[it.data.cid].name : '';
-    const map = {friend_req: `👋 ${it.data.nick} ti ha chiesto l'amicizia`, friend_ok: `🤝 ${it.data.nick} è ora tuo amico`, challenge: `🎴 ${it.data.from} ti sfida!`, stolen: `⚠️ ${it.data.by} ti ha rubato ${c}!`, won: `🏆 Hai preso ${c} a ${it.data.from}`, boss: `👑 Ricompensa del Custode: ${c}`, refill: '🎁 Ti ho dato carte comuni per poter giocare', season: `🏆 Stagione ${it.data.season}: sei ${it.data.pos}º! +${it.data.coins} 🪙`, level: `⭐ Livello ${it.data.lvl}! +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`, ach: `🏅 Traguardo: ${it.data.name} (+${it.data.coins} 🪙)`, set: `🗂️ Collezione completata: ${it.data.name}`};
+    const map = {friend_req: `👋 ${it.data.nick} ti ha chiesto l'amicizia`, friend_ok: `🤝 ${it.data.nick} è ora tuo amico`, challenge: `🎴 ${it.data.from} ti sfida!`, stolen: `⚠️ ${it.data.by} ti ha rubato ${c}!`, won: `🏆 Hai preso ${c} a ${it.data.from}`, boss: `👑 Ricompensa del Custode: ${c}`, refill: '🎁 Ti ho dato carte comuni per poter giocare', season: `🏆 Stagione ${it.data.season}: sei ${it.data.pos}º! +${it.data.coins} 🪙`, level: `⭐ Livello ${it.data.lvl}! +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`, ach: `🏅 Traguardo: ${it.data.name} (+${it.data.coins} 🪙)`, set: `🗂️ Collezione completata: ${it.data.name}`, cosm: `🎭 Nuovo cosmetico: ${it.data.name}`};
     if(map[it.kind]){ TT.toast(map[it.kind], 3500); if(it.kind === 'stolen'){ TT.snd('steal'); TT.vib([80, 60, 80]); } else if(it.kind === 'won' || it.kind === 'boss') TT.snd('coin'); }
   }
   function badges(){ const b = $('#ttOnBd'); if(b && me){ const n = (me.news || 0) + (me.requests || 0); b.style.display = n ? '' : 'none'; b.textContent = n; } const l = $('#lbNews'); if(l && me){ l.style.display = me.news ? '' : 'none'; l.textContent = me.news; } const f = $('#lbFr'); if(f && me){ f.style.display = me.requests ? '' : 'none'; f.textContent = me.requests; } }
@@ -139,9 +141,10 @@
   }
   function lobby(){
     if(!me) return;
+    TT.applyBack(me.cs);
     const dailyBtn = me.daily && me.daily.ready ? `<button class="tt2-btn gold w" id="lbDaily">🎁 Ritira la ricompensa di oggi</button>` : `<div class="mut" style="text-align:center">Prossima ricompensa tra ${Math.max(1, Math.ceil(((me.daily ? me.daily.nextAt : 0) - Date.now()) / 3600000))} ore · serie ${me.daily ? me.daily.n : 0}</div>`;
     TT.screen('Online', `
-      <div class="tt2-box" style="display:flex;gap:12px;align-items:center"><div class="tt2-item" style="width:auto;padding:0;background:none;border:0"><div class="av" style="width:58px;height:58px;font-size:1.9rem">${avOf(me.id)}</div></div><div style="flex:1;min-width:0"><b style="font-size:1.1rem">${esc(me.nick)}</b><div class="tt2-row" style="margin:4px 0">${rankChip(me.rank)}<span class="tt2-chip r">ELO ${me.elo}</span></div><div class="mut">${me.wins}V ${me.losses}S ${me.draws}P · serie ${me.streak} · ${me.cards} carte</div></div></div>
+      <div class="tt2-box" style="display:flex;gap:12px;align-items:center"><div class="tt2-item" style="width:auto;padding:0;background:none;border:0"><div class="av${csF(me.cs)}" style="width:58px;height:58px;font-size:1.9rem">${avOf(me.id)}</div></div><div style="flex:1;min-width:0"><b style="font-size:1.1rem">${esc(me.nick)}</b>${csT(me.cs) ? `<div class="mut" style="font-size:.74rem">${esc(csT(me.cs))}</div>` : ''}<div class="tt2-row" style="margin:4px 0">${rankChip(me.rank)}<span class="tt2-chip r">ELO ${me.elo}</span></div><div class="mut">${me.wins}V ${me.losses}S ${me.draws}P · serie ${me.streak} · ${me.cards} carte</div></div></div>
       ${me.event && me.event.mul > 1 ? `<div class="tt2-event">🎉 ${esc(me.event.name)}</div>` : ''}${curHtml(me)}${lvHtml(me)}
       ${me.match ? `<button class="tt2-btn red w" id="lbResume" style="margin-bottom:8px">▶ Riprendi la partita in corso</button>` : ''}
       ${dailyBtn}
@@ -156,12 +159,14 @@
         <button class="tt2-tile" data-a="sets"><span class="ic">🗂️</span><b>Collezioni</b><small>Completa i set e vinci</small></button>
         <button class="tt2-tile" data-a="work"><span class="ic">⚗️</span><b>Officina</b><small>Smonta le doppie, crea le mancanti</small></button>
         <button class="tt2-tile" data-a="ach"><span class="ic">🏅</span><b>Traguardi</b><small>Medaglie e premi</small></button>
+        <button class="tt2-tile" data-a="cosm"><span class="ic">🎭</span><b>Cosmetici</b><small>Dorsi, cornici e titoli</small></button>
+        <button class="tt2-tile" data-a="replay"><span class="ic">🎞️</span><b>Replay</b><small>Rivedi le tue partite</small></button>
         <button class="tt2-tile" data-a="top"><span class="ic">🏆</span><b>Classifica</b><small>ELO e collezioni</small></button>
         <button class="tt2-tile" data-a="news"><span class="ic">📰</span><b>Novità</b><small>Furti, vittorie, sfide</small><span class="bd" id="lbNews" style="display:${me.news ? '' : 'none'}">${me.news || 0}</span></button>
         <button class="tt2-tile" data-a="acct"><span class="ic">⚙️</span><b>Account</b><small>Codice amico e recupero</small></button>
       </div>`);
     const GO = {friends: friendsPage, shop: shopPage, mis: missionsPage, join: joinPage, boss: bossPage, cards: cardsPage, sets: setsPage, work: workshopPage, ach: achPage, top: topPage, news: newsPage, acct: acctPage};
-    $$('[data-a]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const a = b.dataset.a; if(a === 'room') TT.go(()=> challengeSetup({})); else TT.go(GO[a]); }));
+    $$('[data-a]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const a = b.dataset.a; if(a === 'room') TT.go(()=> challengeSetup({})); else if(a === 'cosm' || a === 'replay') TT.openExtra(a); else TT.go(GO[a]); }));
     const lv = $('#lbLv'); if(lv) lv.addEventListener('click', levelModal);
     const d = $('#lbDaily'); if(d) d.addEventListener('click', async ()=>{ d.disabled = true; try{ const r = await api('POST', '/api/daily'); TT.snd('coin'); me.daily = {ready: false, nextAt: Date.now() + 20 * 3600000, n: r.streak}; me = await api('GET', '/api/me'); lobby(); showNewCard(r.card, 'Ricompensa di oggi', 'Serie: ' + r.streak + (r.streak % 7 === 0 ? ' 🔥 giorno 7: busta in regalo!' : '') + (r.gain ? ' · +' + r.gain.coins + ' 🪙' : '')); }catch(e){ errToast(e); d.disabled = false; } });
     const r = $('#lbResume'); if(r) r.addEventListener('click', ()=> resumeMatch(me.match));
@@ -293,7 +298,7 @@
       <div class="tt2-box"><b>Aggiungi un amico</b><div class="tt2-row" style="margin-top:6px;flex-wrap:nowrap"><input type="text" id="frIn" placeholder="Codice amico o nome" autocapitalize="off" autocorrect="off" style="flex:1"><button class="tt2-btn pri" id="frAdd">Aggiungi</button></div><div id="frRes"></div></div>
       ${inc.length ? `<h3>Richieste ricevute</h3><div class="tt2-list">${inc.map(f=> `<div class="tt2-item"><div class="av">${avOf(f.id)}</div><div class="tx"><b>${esc(f.nick)}</b><small>${esc(f.rank)} · ELO ${f.elo}</small></div><button class="tt2-btn sm pri" data-ok="${f.id}">Accetta</button><button class="tt2-btn sm" data-no="${f.id}">✕</button></div>`).join('')}</div>` : ''}
       <h3>I tuoi amici <small>(${fs.length})</small></h3>
-      <div class="tt2-list">${fs.length ? fs.map(f=> `<button class="tt2-item" data-f="${f.id}"><div class="av${f.online ? ' on' : ''}">${avOf(f.id)}</div><div class="tx"><b>${esc(f.nick)}</b><small>${esc(f.rank)} · ELO ${f.elo} · ${f.online ? 'online' : 'offline'}</small></div><div class="rt">Sfida ›</div></button>`).join('') : '<p class="mut">Ancora nessuno: mostra il QR ai tuoi amici o mandagli il link!</p>'}</div>
+      <div class="tt2-list">${fs.length ? fs.map(f=> `<button class="tt2-item" data-f="${f.id}"><div class="av${f.online ? ' on' : ''}${csF(f.cs)}">${avOf(f.id)}</div><div class="tx"><b>${esc(f.nick)}</b><small>${csT(f.cs) ? esc(csT(f.cs)) + ' · ' : ''}${esc(f.rank)} · ELO ${f.elo} · ${f.online ? 'online' : 'offline'}</small></div><div class="rt">Sfida ›</div></button>`).join('') : '<p class="mut">Ancora nessuno: mostra il QR ai tuoi amici o mandagli il link!</p>'}</div>
       ${sent.length ? `<h3>Richieste inviate</h3><div class="tt2-list">${sent.map(f=> `<div class="tt2-item"><div class="av">${avOf(f.id)}</div><div class="tx"><b>${esc(f.nick)}</b><small>In attesa…</small></div></div>`).join('')}</div>` : ''}`);
     $('#frQr').addEventListener('click', ()=> showQr('Il tuo codice amico', link, me.code));
     $('#frShare').addEventListener('click', ()=> share('Aggiungimi su Triple Triad! Il mio codice amico: ' + me.code, link));
@@ -312,7 +317,7 @@
   async function showProfile(id){
     try{
       const p = await api('GET', '/api/player/' + id);
-      TT.modal(`<div style="text-align:center"><b style="font-size:1.15rem">${avOf(p.id)} ${esc(p.nick)}</b><div class="tt2-row c" style="margin:6px 0">${rankChip(p.rank)}<span class="tt2-chip r">ELO ${p.elo}</span><span class="tt2-chip r">${p.online ? '🟢 online' : '⚫ offline'}</span></div><div class="mut">${p.wins}V ${p.losses}S ${p.draws}P · record serie ${p.best} · ${p.cards} carte · potenza ${p.power}</div></div>
+      TT.modal(`<div style="text-align:center"><b style="font-size:1.15rem"><span class="av${csF(p.cs)}" style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:2px solid transparent;vertical-align:middle">${avOf(p.id)}</span> ${esc(p.nick)}</b>${csT(p.cs) ? `<div class="mut">${esc(csT(p.cs))}</div>` : ''}<div class="tt2-row c" style="margin:6px 0">${rankChip(p.rank)}<span class="tt2-chip r">ELO ${p.elo}</span><span class="tt2-chip r">${p.online ? '🟢 online' : '⚫ offline'}</span></div><div class="mut">${p.wins}V ${p.losses}S ${p.draws}P · record serie ${p.best} · ${p.cards} carte · potenza ${p.power}</div></div>
         <h3>Le sue carte migliori</h3><div class="tt2-grid s">${p.top.map(c=> `<div class="cw">${cardHtml(c, {})}</div>`).join('')}</div><p class="mut" style="text-align:center">Vinci contro di lui in una Sfida vera per prendertene una!</p>
         <div class="tt2-row c"><button class="tt2-btn pri" data-mclose>Chiudi</button></div>`);
     }catch(e){ errToast(e); }
@@ -430,7 +435,7 @@
       const d = await api('GET', '/api/leaderboard?by=' + by); let se = null; try{ se = await api('GET', '/api/season'); }catch(e){}
       const left = se ? Math.max(0, Math.ceil((se.ends - Date.now()) / 864e5)) : 0, hall = se && se.hall && se.hall.length ? '<details class="tt2-box"><summary><b>🏛️ Albo d\'oro</b></summary>' + se.hall.map(h=> `<div class="mut">${esc(h.season)} · ${['🥇', '🥈', '🥉'][h.pos - 1]} ${esc(h.nick)} (${h.elo})</div>`).join('') + '</details>' : '';
       TT.screen('Classifica', `${se && by === 'elo' ? `<div class="tt2-box" style="text-align:center"><b>Stagione ${esc(se.id)}</b> · ancora ${left} giorni<br><small class="mut">A fine mese l'ELO si dimezza verso 1000 e i primi 3 vincono ${se.prizes.join(' / ')} 🪙</small></div>${hall}` : ''}<div class="tt2-row c" style="margin-bottom:8px"><button class="tt2-chip${by === 'elo' ? ' on' : ''}" data-t="elo">⚔️ Sfide (ELO)</button><button class="tt2-chip${by === 'collection' ? ' on' : ''}" data-t="collection">📚 Collezioni</button></div>
-        <div class="tt2-list">${d.players.length ? d.players.map((p, i)=> `<button class="tt2-item${p.id === me.id ? '" style="border-color:#ffe27a' : ''}" data-p="${p.id}"><div class="n" style="font:900 1.1rem system-ui;width:30px;text-align:center">${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</div><div class="av">${avOf(p.id)}</div><div class="tx"><b>${esc(p.nick)}</b><small>${by === 'elo' ? esc(p.rank) + ' · ' + p.wins + 'V ' + p.losses + 'S' : p.cards + ' carte · migliore livello ' + p.best}</small></div><div class="rt">${by === 'elo' ? p.elo : p.power}</div></button>`).join('') : '<p class="mut" style="text-align:center">Nessuno in classifica: gioca una Sfida vera!</p>'}</div>`);
+        <div class="tt2-list">${d.players.length ? d.players.map((p, i)=> `<button class="tt2-item${p.id === me.id ? '" style="border-color:#ffe27a' : ''}" data-p="${p.id}"><div class="n" style="font:900 1.1rem system-ui;width:30px;text-align:center">${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</div><div class="av${csF(p.cs)}">${avOf(p.id)}</div><div class="tx"><b>${esc(p.nick)}</b><small>${csT(p.cs) ? esc(csT(p.cs)) + ' · ' : ''}${by === 'elo' ? esc(p.rank) + ' · ' + p.wins + 'V ' + p.losses + 'S' : p.cards + ' carte · migliore livello ' + p.best}</small></div><div class="rt">${by === 'elo' ? p.elo : p.power}</div></button>`).join('') : '<p class="mut" style="text-align:center">Nessuno in classifica: gioca una Sfida vera!</p>'}</div>`);
       $$('[data-t]').forEach(b=> b.addEventListener('click', ()=> topPage(b.dataset.t)));
       $$('[data-p]').forEach(b=> b.addEventListener('click', ()=> showProfile(b.dataset.p)));
     }catch(e){ errToast(e); TT.back(); }
@@ -440,8 +445,8 @@
     try{
       const d = await api('GET', '/api/news'); if(me){ me.news = 0; }
       const txt = it=>{ const c = it.data.cid && TT.CARD[it.data.cid] ? TT.CARD[it.data.cid].name : '';
-        return {friend_req: ['👋', `<b>${esc(it.data.nick)}</b> ti ha chiesto l'amicizia`], friend_ok: ['🤝', `<b>${esc(it.data.nick)}</b> è ora tuo amico`], challenge: ['🎴', `<b>${esc(it.data.from)}</b> ti ha sfidato`], stolen: ['⚠️', `<b>${esc(it.data.by)}</b> ti ha rubato <b>${esc(c)}</b>`], won: ['🏆', `Hai preso <b>${esc(c)}</b> a ${esc(it.data.from)}`], boss: ['👑', `Custode ${it.data.boss} (${esc(it.data.name)}) battuto${it.data.first ? ' per la prima volta' : ''}: <b>${esc(c)}</b>`], refill: ['🎁', 'Ti ho dato ' + it.data.n + ' carte comuni per poter giocare'], season: ['🏆', `Stagione <b>${esc(it.data.season)}</b>: hai chiuso al <b>${it.data.pos}º posto</b>: +${it.data.coins} 🪙`], level: ['⭐', `Sei al <b>livello ${it.data.lvl}</b>: +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`], ach: ['🏅', `Traguardo <b>${esc(it.data.name)}</b>: +${it.data.coins} 🪙${it.data.ticket ? ' + busta' : ''}`], set: ['🗂️', `Collezione completata: <b>${esc(it.data.name)}</b>`]}[it.kind] || ['•', esc(it.kind)]; };
-      TT.screen('Novità', `${d.news.length ? d.news.map(it=>{ const [ic, t] = txt(it); const cls = it.kind === 'stolen' ? 'bad' : (['won', 'boss', 'level', 'ach', 'set'].includes(it.kind)) ? 'good' : ''; return `<div class="tt2-news ${cls}"><span style="font-size:1.4rem">${ic}</span><div style="flex:1">${t}<small>${new Date(it.ts).toLocaleString('it-IT', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'})}</small>${it.kind === 'stolen' && it.data.byId ? `<button class="tt2-btn sm red" data-rev="${it.data.byId}" data-n="${esc(it.data.by)}" style="margin-top:6px">⚔️ Riprendila!</button>` : ''}</div>${it.data.cid ? cardHtml(it.data.cid, {}) : ''}</div>`; }).join('') : '<p class="mut" style="text-align:center;margin-top:30px">Nessuna novità.</p>'}`);
+        return {friend_req: ['👋', `<b>${esc(it.data.nick)}</b> ti ha chiesto l'amicizia`], friend_ok: ['🤝', `<b>${esc(it.data.nick)}</b> è ora tuo amico`], challenge: ['🎴', `<b>${esc(it.data.from)}</b> ti ha sfidato`], stolen: ['⚠️', `<b>${esc(it.data.by)}</b> ti ha rubato <b>${esc(c)}</b>`], won: ['🏆', `Hai preso <b>${esc(c)}</b> a ${esc(it.data.from)}`], boss: ['👑', `Custode ${it.data.boss} (${esc(it.data.name)}) battuto${it.data.first ? ' per la prima volta' : ''}: <b>${esc(c)}</b>`], refill: ['🎁', 'Ti ho dato ' + it.data.n + ' carte comuni per poter giocare'], season: ['🏆', `Stagione <b>${esc(it.data.season)}</b>: hai chiuso al <b>${it.data.pos}º posto</b>: +${it.data.coins} 🪙`], level: ['⭐', `Sei al <b>livello ${it.data.lvl}</b>: +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`], ach: ['🏅', `Traguardo <b>${esc(it.data.name)}</b>: +${it.data.coins} 🪙${it.data.ticket ? ' + busta' : ''}`], set: ['🗂️', `Collezione completata: <b>${esc(it.data.name)}</b>`], cosm: ['🎭', `Cosmetico sbloccato: <b>${esc(it.data.name)}</b>`]}[it.kind] || ['•', esc(it.kind)]; };
+      TT.screen('Novità', `${d.news.length ? d.news.map(it=>{ const [ic, t] = txt(it); const cls = it.kind === 'stolen' ? 'bad' : (['won', 'boss', 'level', 'ach', 'set', 'cosm'].includes(it.kind)) ? 'good' : ''; return `<div class="tt2-news ${cls}"><span style="font-size:1.4rem">${ic}</span><div style="flex:1">${t}<small>${new Date(it.ts).toLocaleString('it-IT', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'})}</small>${it.kind === 'stolen' && it.data.byId ? `<button class="tt2-btn sm red" data-rev="${it.data.byId}" data-n="${esc(it.data.by)}" style="margin-top:6px">⚔️ Riprendila!</button>` : ''}</div>${it.data.cid ? cardHtml(it.data.cid, {}) : ''}</div>`; }).join('') : '<p class="mut" style="text-align:center;margin-top:30px">Nessuna novità.</p>'}`);
       $$('[data-rev]').forEach(b=> b.addEventListener('click', ()=> TT.go(()=> challengeSetup({to: b.dataset.rev, toNick: b.dataset.n}))));
     }catch(e){ errToast(e); TT.back(); }
   }
@@ -457,10 +462,10 @@
   const resetHist = ()=>{ const h = TT.hist(); h.length = 0; h.push({fn: TT.home, args: []}, {fn: TT.online, args: []}); };
   async function resumeMatch(id){ try{ const r = await api('GET', '/api/match/' + id); if(r.match) openMatch(r.match, []); }catch(e){} }
   async function syncMatch(){ if(!cur) return; try{ const r = await api('GET', '/api/match/' + cur.id + '?ver=' + cur.ver, null, {quiet: true, timeout: 6000}); if(r.match && r.match.ver > cur.ver) handleView(r.match, null); }catch(e){} }
-  const namesOf = v=> v.players.map((p, i)=> ({nick: p.nick, av: p.boss ? '👑' : avOf(p.id), sub: p.boss ? p.title : (p.rank + ' · ' + p.elo)}));
+  const namesOf = v=> v.players.map((p, i)=> ({nick: p.nick, av: p.boss ? '👑' : avOf(p.id), sub: p.boss ? p.title : (p.rank + ' · ' + p.elo), cs: p.cs}));
   function openMatch(view, events){
     if(board){ board.destroy(); board = null; }
-    waiting = null; endShown = ''; cur = view; resetHist(); TT.ensureRoot();
+    waiting = null; endShown = ''; cur = view; resetHist(); TT.ensureRoot(); if(me) TT.applyBack(me.cs);
     const you = view.you;
     board = TT.mountBoard({
       state: view.state, me: you, names: namesOf(view), title: view.boss ? 'Custode: ' + view.players[1].nick : (view.mode === 'ranked' ? 'Sfida vera' : 'Amichevole'),
@@ -522,9 +527,13 @@
     const gn = res.gain && res.gain[you], gnT = gn ? `<br><b style="color:#ffe27a">${gainText(gn)}</b>` : '';
     const sub = `${res.score[you]} a ${res.score[1 - you]}${gnT}${res.forfeit ? (won ? ' · avversario ritirato' : ' · abbandono o tempo scaduto') : ''}${res.round > 1 ? ' · dopo la morte improvvisa' : ''}${elo != null ? `<br>ELO ${elo >= 0 ? '+' : ''}${elo}` : ''}${v.boss && won && !res.reward ? '<br><small>Il premio di oggi l\'hai già ritirato: torna domani!</small>' : ''}${v.boss && !won && !draw ? '<br><small>Contro il Custode non perdi carte. Riprova!</small>' : ''}`;
     if(lost) { TT.snd('steal'); }
-    btns.push({label: v.boss ? 'Sfida ancora' : 'Rivincita', cls: 'pri', fn: ()=> rematch(v)}, {label: 'Esci', fn: ()=> leave()});
+    btns.push({label: '🎞️ Replay', fn: ()=> watchReplay(v)}, {label: v.boss ? 'Sfida ancora' : 'Rivincita', cls: 'pri', fn: ()=> rematch(v)}, {label: 'Esci', fn: ()=> leave()});
     board.showEnd({kind: draw ? 'draw' : won ? 'win' : 'lose', title: draw ? 'PAREGGIO' : won ? 'HAI VINTO!' : 'HAI PERSO', sub, cards, buttons: btns});
     TT.onlineBadge();
+  }
+  async function watchReplay(v){
+    try{ await TT.loadJS('triad-extra.js'); const e = TT.extra.entryFromView(v); if(board){ board.destroy(); board = null; } TT.extra.replayView(e, {back: leave}); }
+    catch(err){ TT.toast('Non riesco ad aprire il replay'); }
   }
   async function rematch(v){
     if(board){ board.destroy(); board = null; } cur = null; TT.onLeave = null;

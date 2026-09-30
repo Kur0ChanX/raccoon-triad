@@ -1,5 +1,6 @@
 // Triple Triad di Frugu — economia del gioco: monete, XP e livelli, buste, missioni, collezioni, traguardi, polvere (officina), eventi.
 // Tutto sta nel server: nessuno può darsi monete o carte da solo. Questi metodi vengono aggiunti alla classe Hub in worker.js.
+import COSM from '../../triad-cosm.js';
 const GENRE_N = {plat: 'Platform', rpg: 'GDR', act: 'Azione', fps: 'Sparatutto', fight: 'Picchiaduro', horror: 'Horror', strat: 'Strategia', race: 'Corse', puzzle: 'Puzzle', arcade: 'Arcade', sport: 'Sport', mobile: 'Mobile', online: 'Online', indie: 'Indie', stealth: 'Stealth', sandbox: 'Sandbox'};
 const LV_XP = L=> 100 + 40 * L;                                    // XP per passare dal livello L al successivo
 export function lvOf(xp){ let L = 1, n = Math.max(0, xp | 0); while(n >= LV_XP(L) && L < 500){ n -= LV_XP(L); L++; } return {lvl: L, cur: n, need: LV_XP(L)}; }
@@ -219,7 +220,7 @@ export function makeEconomy(D){
     const a = this.row('SELECT * FROM accounts WHERE id=?', acc), cs = this.rows('SELECT cid,foil FROM cards WHERE owner=?', acc), own = new Set(cs.map(c=> c.cid));
     return {wins: a.wins, streak: a.best, games: a.wins + a.losses + a.draws, uniq: own.size, legend: cs.some(c=> CARD[c.cid].lv >= 9) ? 1 : 0, mythic: cs.some(c=> CARD[c.cid].lv === 10) ? 1 : 0,
       boss: this.row('SELECT COUNT(*) n FROM boss WHERE acc=? AND wins>0', acc).n, steals: a.steals, elo: a.elo, lvl: lvOf(a.xp).lvl, packs: a.packs_n, foil: cs.filter(c=> c.foil > 0).length, gold: cs.filter(c=> c.foil === 4).length, secret: cs.filter(c=> c.foil === 5).length, variants: new Set(cs.filter(c=> c.foil > 0).map(c=> c.cid + ':' + c.foil)).size,
-      sets: this.row(`SELECT COUNT(*) n FROM claims WHERE acc=? AND key LIKE 'set:%'`, acc).n};
+      sets: this.row(`SELECT COUNT(*) n FROM claims WHERE acc=? AND key LIKE 'set:%'`, acc).n, tower: a.ltower || 0, tourn: a.ltourn || 0};
   };
   M.checkAch = function(acc){
     if(!acc || String(acc).startsWith('boss')) return;
@@ -230,10 +231,67 @@ export function makeEconomy(D){
       this.award(acc, {coins: d.coins, ticket: d.ticket, xp: 30, noEvent: true});
       this.news(acc, 'ach', {id: d.id, name: d.name, coins: d.coins, ticket: d.ticket});
     });
+    this.cosmCheck(acc, st);
   };
   M.achList = function(a){
     const st = this.statsOf(a.id), done = new Set(this.rows(`SELECT key FROM claims WHERE acc=? AND key LIKE 'ach:%'`, a.id).map(r=> r.key));
     return {ach: ACH.map(d=> ({id: d.id, name: d.name, desc: d.desc, target: d.target, prog: Math.min(d.target, st[d.stat] || 0), done: done.has('ach:' + d.id), coins: d.coins, ticket: d.ticket}))};
+  };
+
+  // ---------------- cosmetici (dorsi, cornici, titoli): catalogo in ../../triad-cosm.js. Comprati o sbloccati restano dell'account per sempre.
+  const eqKey = {b: 'eq_back', f: 'eq_frame', t: 'eq_title'};
+  M.cosmOwned = function(acc){ return new Set(this.rows('SELECT id FROM cosm WHERE acc=?', acc).map(r=> r.id)); };
+  // registra i nuovi oggetti sbloccati dai traguardi (con una novità per ognuno)
+  M.cosmCheck = function(acc, st){
+    if(!acc || String(acc).startsWith('boss')) return [];
+    st = st || this.statsOf(acc); const own = this.cosmOwned(acc), fresh = [];
+    COSM.ITEMS.forEach(it=>{
+      if(it.free || own.has(it.id) || !COSM.have(it, st)) return;
+      this.run('INSERT OR IGNORE INTO cosm(acc,id,at,how) VALUES(?,?,?,?)', acc, it.id, Date.now(), 'stat'); fresh.push(it);
+      this.news(acc, 'cosm', {id: it.id, kind: it.kind, name: it.name});
+    });
+    return fresh;
+  };
+  M.cosmEq = function(acc){
+    const a = this.row('SELECT eq_back,eq_frame,eq_title FROM accounts WHERE id=?', acc);
+    return a ? {b: a.eq_back || null, f: a.eq_frame || null, t: a.eq_title || null} : {b: null, f: null, t: null};
+  };
+  // versione breve per gli altri giocatori (dorso, cornice, titolo)
+  M.cosmOf = function(acc){ if(String(acc).startsWith('boss')) return {b: null, f: null, t: null}; return this.cosmEq(acc); };
+  M.cosmList = function(a){
+    this.cosmCheck(a.id);
+    const st = this.statsOf(a.id), own = this.cosmOwned(a.id), acc = this.row('SELECT coins FROM accounts WHERE id=?', a.id);
+    return {items: COSM.ITEMS.map(it=> ({id: it.id, kind: it.kind, name: it.name, how: it.how, stat: it.stat, target: it.target, prog: COSM.prog(it, st), price: it.price, owned: it.free || own.has(it.id)})),
+      equipped: this.cosmEq(a.id), coins: acc.coins};
+  };
+  M.cosmBuy = function(a, body){
+    const it = COSM.get(String(body.id || '')); if(!it) fail(404, 'Oggetto sconosciuto', 'nf');
+    if(!it.price) fail(400, 'Questo oggetto non si compra: si sblocca giocando', 'nobuy');
+    if(this.cosmOwned(a.id).has(it.id)) fail(409, 'Ce l\'hai già', 'owned');
+    const acc = this.row('SELECT coins FROM accounts WHERE id=?', a.id); if(acc.coins < it.price) fail(402, 'Monete insufficienti', 'coins');
+    this.run('UPDATE accounts SET coins=coins-? WHERE id=?', it.price, a.id); this.run('INSERT INTO cosm(acc,id,at,how) VALUES(?,?,?,?)', a.id, it.id, Date.now(), 'buy');
+    return this.cosmList(a);
+  };
+  // body: {b, f, t}: un id per metterlo, null per toglierlo, campo assente = non cambia
+  M.cosmEquip = function(a, body){
+    this.hit('cosm:' + a.id, 120, 3600000);
+    this.cosmCheck(a.id); const own = this.cosmOwned(a.id), set = {};
+    ['b', 'f', 't'].forEach(k=>{
+      if(!(k in body)) return; const v = body[k];
+      if(v === null || v === '') { set[eqKey[k]] = null; return; }
+      const it = COSM.get(String(v)); if(!it || it.kind !== k) fail(400, 'Oggetto non valido', 'bad');
+      if(!it.free && !own.has(it.id)) fail(403, 'Non hai ancora questo oggetto', 'locked');
+      set[eqKey[k]] = it.id;
+    });
+    Object.keys(set).forEach(c=> this.run('UPDATE accounts SET ' + c + '=? WHERE id=?', set[c], a.id));
+    return this.cosmList(a);
+  };
+  // Torre e Tornei si giocano solo sul telefono: il telefono comunica i record, il server li accetta solo per i cosmetici (non danno monete né carte).
+  M.cosmReport = function(a, body){
+    this.hit('cosmr:' + a.id, 60, 3600000);
+    const cl = (v, max)=> Math.max(0, Math.min(max, v | 0));
+    this.run('UPDATE accounts SET ltower=MAX(ltower,?), ltourn=MAX(ltourn,?) WHERE id=?', cl(body.tower, 200), cl(body.tourn, 500), a.id);
+    return this.cosmList(a);
   };
   return M;
 }
