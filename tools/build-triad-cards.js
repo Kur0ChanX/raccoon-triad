@@ -22,7 +22,8 @@ function hash(s){ let h = 2166136261; for(const c of s){ h ^= c.charCodeAt(0); h
 function rng(seed){ let a = seed >>> 0; return ()=>{ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
 // ---------------------------------------------------------------- regole dei numeri
-const SUM = {1: [12, 13], 2: [14, 15], 3: [16, 17], 4: [18, 18], 5: [19, 20], 6: [21, 21], 7: [22, 23], 8: [24, 24], 9: [25, 26], 10: [27, 28]};
+// dove il tetto del lato sale (livelli 2, 4, 6, 8, 9) la somma sale meno, dove resta uguale sale di più: così ogni livello vale circa lo stesso salto
+const SUM = {1: [12, 13], 2: [13, 15], 3: [16, 16], 4: [17, 18], 5: [19, 20], 6: [20, 21], 7: [22, 23], 8: [23, 24], 9: [25, 26], 10: [27, 28]};
 const MAXS = {1: 5, 2: 6, 3: 6, 4: 7, 5: 7, 6: 8, 7: 8, 8: 9, 9: 10, 10: 10};
 const MINS = {1: 1, 2: 1, 3: 1, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2};
 const ACE = {9: .5, 10: 1};                                            // quota di carte con una A (10): metà al livello 9, tutte al 10
