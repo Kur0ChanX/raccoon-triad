@@ -266,3 +266,44 @@ html.tt2-open,html.tt2-open body{overflow:hidden !important}
 .tn-cup{display:grid; grid-template-columns:1fr; gap:8px}
 .tn-cup .tt2-item .av{font-size:1.5rem}
 .tn-deck{display:grid; grid-template-columns:repeat(5,1fr); gap:4px; margin:6px 0} .tn-deck .cw .ttc{width:100%}
+
+/* ---- immagini personali: editor (triad-photo.js) ---- */
+.ph-steps{font-size:.78rem; text-align:center; margin:0 0 8px; opacity:.9} .ph-steps b{display:inline-grid; place-items:center; width:1.35em; height:1.35em; border-radius:50%; background:#ffe27a; color:#1a1240; font-size:.72rem}
+.ph-wrap{position:relative; width:min(68%,260px); margin:10px auto 0; aspect-ratio:5/7; border-radius:16px; overflow:hidden; box-shadow:0 0 0 2px rgba(255,255,255,.5),0 10px 30px rgba(0,0,0,.6); touch-action:none}
+.ph-cv{width:100%; height:100%; display:block; cursor:grab; touch-action:none} .ph-cv:active{cursor:grabbing}
+.ph-hint{position:absolute; left:0; right:0; bottom:0; padding:14px 6px 6px; font-size:.62rem; text-align:center; background:linear-gradient(transparent,rgba(0,0,0,.7)); pointer-events:none}
+.ph-pulse{animation:phPulse 1s ease-in-out infinite} @keyframes phPulse{50%{box-shadow:0 0 0 6px rgba(255,226,122,.45)}}
+
+/* ---- rilievo dei foil: luci e ombre che seguono l'inclinazione, arcobaleno solo su contorni e zone chiare ---- */
+.ttc-rl{position:absolute; inset:0; z-index:3; pointer-events:none}
+.ttc-rl b{position:absolute; inset:0; -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat}
+.ttc-rl .a1,.ttc-rl .a2{-webkit-mask-image:var(--ra); mask-image:var(--ra)} .ttc-rl .b1,.ttc-rl .b2{-webkit-mask-image:var(--rb); mask-image:var(--rb)}
+.ttc-rl .a1,.ttc-rl .b2{background:#fff; mix-blend-mode:soft-light} .ttc-rl .b1,.ttc-rl .a2{background:#000; mix-blend-mode:soft-light}
+.ttc-rl .a1,.ttc-rl .b1{opacity:clamp(0, calc((115 - var(--mx) - var(--my)) / 70), 1)} .ttc-rl .b2,.ttc-rl .a2{opacity:clamp(0, calc((var(--mx) + var(--my) - 85) / 70), 1)}
+.ttc-rl .e{-webkit-mask-image:var(--re); mask-image:var(--re); mix-blend-mode:color-dodge; opacity:.55; background:linear-gradient(calc(110deg + var(--mx) * .7deg),hsla(0,100%,65%,.9),hsla(55,100%,62%,.9) 17%,hsla(130,100%,58%,.9) 34%,hsla(195,100%,62%,.9) 51%,hsla(265,100%,68%,.9) 68%,hsla(330,100%,66%,.9) 85%,hsla(0,100%,65%,.9)); background-size:240% 240%; background-position:calc(var(--mx) * 1%) calc(var(--my) * 1%)}
+.ttc[data-fo="2"] .ttc-rl .e{opacity:.25} .ttc[data-fo="4"] .ttc-rl .e{background:linear-gradient(calc(110deg + var(--mx) * .7deg),#7a4a05,#ffe58a 30%,#fff8d0 50%,#e8b23a 70%,#7a4a05); background-size:240% 240%; mix-blend-mode:overlay; opacity:.95}
+.ttc[data-fo="5"] .ttc-rl .e{opacity:.8}
+/* col rilievo il velo arcobaleno uniforme si abbassa: brilla la forma, non tutta l'immagine */
+.ttc[data-fo]:has(.ttc-rl) .ttc-in::before{opacity:.18}
+.ttc[data-fo="4"]:has(.ttc-rl) .ttc-art img{filter:sepia(.35) saturate(1.35) contrast(1.08)}
+
+/* ---- cornice moderna: bordo metallico smussato, filo di luce, numeri e nome più puliti ---- */
+.ttc{padding:1.8cqw; border-radius:6.5cqw; background:linear-gradient(150deg,var(--f1) 0%,var(--f2) 48%,var(--f1) 78%,var(--f2) 100%);
+  box-shadow:inset 0 0 0 .35cqw rgba(255,255,255,.45), inset 0 -1cqw 2cqw rgba(0,0,0,.35), 0 0 0 .4cqw rgba(0,0,0,.55), 0 2cqw 5cqw rgba(0,0,0,.45), 0 0 6cqw var(--glow)}
+.ttc-in{border-radius:5cqw; box-shadow:0 0 0 .45cqw rgba(0,0,0,.7)}
+.ttc-in>.ttc-shade{background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 60%,rgba(0,0,0,.82) 100%)}
+.ttc-v{border-radius:5cqw; background:radial-gradient(closest-side,rgba(6,6,22,.55),rgba(6,6,22,.25) 70%,transparent)}
+.ttc-nm{font:800 7.6cqw/1.1 system-ui,-apple-system,sans-serif; letter-spacing:.02em; padding:3.4cqw 4cqw 3cqw}
+.ttc-nm::before{content:''; position:absolute; left:16%; right:16%; top:.4cqw; height:.45cqw; border-radius:1cqw; background:linear-gradient(90deg,transparent,var(--f1),transparent); opacity:.9}
+.ttc-tier{border-radius:99px; padding:1.1cqw 2.6cqw; background:rgba(8,8,24,.62); border:.45cqw solid rgba(255,255,255,.35); box-shadow:0 .6cqw 1.6cqw rgba(0,0,0,.5)}
+.ttc-el{background:radial-gradient(circle at 35% 30%,rgba(60,60,110,.85),rgba(8,8,25,.85)); border:.6cqw solid rgba(255,255,255,.55)}
+
+/* ---- in gioco: blu o rosso solo sulla cornice, l'illustrazione resta pulita ---- */
+.ttc[data-o] .ttc-tint{display:none}
+.ttc[data-o="0"]{--own:#3d8bff; --ownd:#0f2f9a; --ownl:#bcd6ff} .ttc[data-o="1"]{--own:#ff4659; --ownd:#8f0f1d; --ownl:#ffc4ca}
+.ttc[data-o]:not([data-st=neon]):not([data-st=pixel]){padding:2.4cqw; background:linear-gradient(150deg,var(--ownl) 0%,var(--own) 22%,var(--ownd) 55%,var(--own) 85%,var(--ownl) 100%);
+  box-shadow:inset 0 0 0 .35cqw rgba(255,255,255,.5), 0 0 0 .4cqw rgba(0,0,0,.6), 0 0 5cqw var(--own), 0 2cqw 5cqw rgba(0,0,0,.45)}
+.ttc[data-o][data-st=pixel]{--f1:var(--own)}
+.ttc[data-o].sel:not([data-st=neon]):not([data-st=pixel]){box-shadow:inset 0 0 0 .35cqw rgba(255,255,255,.5), 0 0 0 .8cqw #ffe27a, 0 4cqw 9cqw rgba(0,0,0,.6), 0 0 9cqw rgba(255,226,122,.8)}
+.ttc[data-o] .ttc-in::after{box-shadow:inset 0 0 0 .5cqw rgba(255,255,255,.28), inset 0 0 4cqw rgba(0,0,0,.25)}
+.ttc[data-o] .ttc-nm::before{background:linear-gradient(90deg,transparent,var(--own),transparent)}

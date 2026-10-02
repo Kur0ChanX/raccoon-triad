@@ -20,7 +20,7 @@
   function boot(){
     if(booted) return booted;
     booted = (async ()=>{
-      await Promise.all([loadCSS('triad.css'), loadJS('triad-cards.js'), loadJS('triad-exp.js'), loadJS('triad-core.js'), loadJS('triad-cosm.js').catch(()=>{}), loadJS('triad-chars.js').catch(()=>{}), loadJS('triad-imgs.js').catch(()=>{})]);
+      await Promise.all([loadCSS('triad.css'), loadJS('triad-cards.js'), loadJS('triad-exp.js'), loadJS('triad-core.js'), loadJS('triad-cosm.js').catch(()=>{}), loadJS('triad-chars.js').catch(()=>{}), loadJS('triad-imgs.js').catch(()=>{}), loadJS('triad-photo.js').then(()=> TT.photo && TT.photo.load()).catch(()=>{})]);
       loadJS('triad-art.js').catch(()=>{}); await loadJS('triad-play.js');
       try{ await loadJS('triad-config.js'); }catch(e){}
       initCards();
@@ -83,7 +83,7 @@
   const V = n=> n >= 10 ? 'A' : String(n);
   Object.assign(TT, {slug, hash, sum, V, rarKey: lv=> RAR[lv] || 'c', starsOf: lv=> '★'.repeat(Math.ceil(lv / 2))});
   const autoArt = ()=> LS.get('jrpg_triad_autoart', {}) || {};
-  const photos = ()=> LS.get('jrpg_triad_photos', {}) || {};
+  const photos = ()=> Object.assign({}, LS.get('jrpg_triad_photos', {}) || {}, TT.photo ? TT.photo.urls() : {});
   const hasImg = k=> (window.TRIAD_IMGS || []).indexOf(k) >= 0;
   function arts(cid){
     const list = ((window.TRIAD_ART || {})[cid] || []).slice(), a = autoArt()[cid];
@@ -144,7 +144,7 @@
     if(ch.kind === 'em' || st === 'emblema') return '';
     if(vr >= 3 && ch.kind === 'img' && ch.i === 0 && hasImg(cid + '-full')) ch = Object.assign({}, ch, {url: 'triad-img/' + cid + '-full.webp'});
     const src = ch.kind === 'photo' ? ch.url : (st === 'pixel' ? pix(ch.url) : (/^triad-img\//.test(ch.url) ? ch.url : thumb(ch.url, 360)));
-    return `<img src="${esc(src)}" data-cid="${cid}" data-kind="${ch.kind}" data-i="${ch.i || 0}" data-orig="${esc(ch.url)}" alt="" decoding="async" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok')" onerror="TT.artErr(this)">`;
+    return `<img src="${esc(src)}" data-cid="${cid}" data-kind="${ch.kind}" data-i="${ch.i || 0}" data-orig="${esc(ch.url)}" alt="" decoding="async" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok');if(TT.photo)TT.photo.relOn(this)" onerror="TT.artErr(this)">${vr && TT.photo && TT.photo.relFor(src) ? TT.photo.relHtml(TT.photo.relFor(src)) : ''}`;
   }
   // HTML di una carta. o: {owner 0/1, style, mods[4], sel, cnt, lock, cls}
   function cardHtml(cid, o){
@@ -324,7 +324,7 @@
         <h3>Stile della carta</h3><div class="tt2-stylegrid">${STYLES.map(s=> `<button data-s="${s[0]}" class="${st === s[0] ? 'on' : ''}">${cardHtml(cid, {style: s[0]})}${s[1]}</button>`).join('')}</div>
         <label class="chk"><input type="checkbox" id="ttAll"> Usa questo stile per tutte le carte</label>
         <h3>Immagine <small>(scegli quella che preferisci)</small></h3>
-        <div class="tt2-arts">${list.map((u, i)=> `<button data-a="${i}" class="${ch.kind === 'img' && ch.i === i ? 'on' : ''}" style="background-image:url('${esc(thumb(u, 200))}')"></button>`).join('')}<button data-a="e" class="${ch.kind === 'em' ? 'on' : ''}" style="background-image:${emblem(cid)}">Emblema</button>${ph ? `<button data-a="f" class="${ch.kind === 'photo' ? 'on' : ''}" style="background-image:url('${ph}')"></button>` : ''}<button data-photo>📷<br>La mia foto</button></div>
+        <div class="tt2-arts">${list.map((u, i)=> `<button data-a="${i}" class="${ch.kind === 'img' && ch.i === i ? 'on' : ''}" style="background-image:url('${esc(thumb(u, 200))}')"></button>`).join('')}<button data-a="e" class="${ch.kind === 'em' ? 'on' : ''}" style="background-image:${emblem(cid)}">Emblema</button>${ph ? `<button data-a="f" class="${ch.kind === 'photo' ? 'on' : ''}" style="background-image:url('${ph}')"></button>` : ''}<button data-photo>🖼️<br>Cambia immagine</button></div>
         ${list.length ? '' : '<p class="mut">Per questa carta non c\'è ancora un\'immagine ufficiale: uso l\'Emblema disegnato. Puoi metterci una tua foto.</p>'}
         <div class="tt2-row c" style="margin-top:10px">${P.st[cid] || P.art[cid] != null ? '<button class="tt2-btn sm" data-reset>Ripristina automatico</button>' : ''}${g && window.openModal ? '<button class="tt2-btn sm" data-open>Apri nella Tier List</button>' : ''}<button class="tt2-btn" data-insp>🔍 Ingrandisci</button><button class="tt2-btn pri" data-mclose>Fatto</button></div>
         <input type="file" accept="image/*" id="ttPh" style="display:none">`, {onClose: ()=>{}});
@@ -338,7 +338,7 @@
       $('[data-insp]', m).addEventListener('click', ()=> inspect(cid, {src, foil: src && src.foils ? src.foils[cid] : 0}));
       const rs = $('[data-reset]', m); if(rs) rs.addEventListener('click', ()=>{ delete P.st[cid]; delete P.art[cid]; saveP(); m.remove(); draw(); });
       const op = $('[data-open]', m); if(op) op.addEventListener('click', ()=>{ try{ close(); window.openModal(g); }catch(e){} });
-      $('[data-photo]', m).addEventListener('click', ()=> $('#ttPh', m).click());
+      $('[data-photo]', m).addEventListener('click', ()=>{ if(TT.photo) TT.photo.edit(cid, {done: saved=>{ if(saved != null){ m.remove(); draw(); } }}); else $('#ttPh', m).click(); });
       $('#ttPh', m).addEventListener('change', e=> photoPick(cid, e.target.files && e.target.files[0], ()=>{ m.remove(); draw(); }));
     };
     draw();
@@ -346,6 +346,7 @@
   Object.assign(TT, {cardDetail});
   function photoPick(cid, f, done){
     if(!f) return;
+    if(TT.photo) return TT.photo.edit(cid, {file: f, done: saved=>{ if(saved && done) done(); }});
     const fr = new FileReader();
     fr.onload = ()=>{
       const im = new Image();
@@ -426,10 +427,13 @@
       <label class="chk"><input type="checkbox" id="sConf" ${P.confirm ? 'checked' : ''}> Anteprima della mossa: tocca la casella per vedere cosa prendi, tocca ancora per giocare</label>
       <label class="chk"><input type="checkbox" id="sHide" ${P.hide ? 'checked' : ''}> Due giocatori: nascondi le carte di chi non è di turno</label>
       <h3>Tavolo</h3><div class="tt2-strip">${BOARDS.map(b=> `<button class="tt2-chip${P.board === b[0] ? ' on' : ''}" data-b="${b[0]}">${b[1]}</button>`).join('')}</div>
+      ${TT.photo ? `<h3>Immagini delle carte <small>(tue: ${TT.photo.count()})</small></h3><p class="mut">Una carta dopo l'altra: cerco io l'immagine nel browser, tu la copi e torni qui, io la incollo e la ritaglio. Le carte senza illustrazione vengono prima.</p>
+      <div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn pri sm" id="sPhN">🖼️ Carte senza illustrazione</button><button class="tt2-btn sm" id="sPhA">Tutte le carte</button><button class="tt2-btn sm" id="sPhE">📤 Esporta</button><button class="tt2-btn sm" id="sPhI">📥 Importa</button></div>` : ''}
       <h3>Dati</h3><div class="tt2-row"><button class="tt2-btn sm" id="sRes">Azzera la collezione dell'allenamento</button></div><p class="mut">L'account online e le sue carte stanno sul server e non si toccano da qui.</p>`);
     const bind = (id, k, num)=> $('#' + id, root).addEventListener('input', e=>{ P[k] = num ? +e.target.value : e.target.checked; saveP(); if(k === 'sound' && P.sound) TT.snd('click'); });
     bind('sSnd', 'sound'); bind('sVol', 'vol', true); bind('sFast', 'fast'); bind('sConf', 'confirm'); bind('sHide', 'hide');
     $$('[data-b]', root).forEach(b=> b.addEventListener('click', ()=>{ P.board = b.dataset.b; saveP(); settingsPage(); }));
+    if(TT.photo){ $('#sPhN', root).addEventListener('click', ()=> TT.photo.series('none')); $('#sPhA', root).addEventListener('click', ()=> TT.photo.series('all')); $('#sPhE', root).addEventListener('click', ()=> TT.photo.exportAll()); $('#sPhI', root).addEventListener('click', ()=> TT.photo.importAll()); }
     $('#sRes', root).addEventListener('click', async ()=>{ if(await ask('Azzero la collezione e i record dell\'allenamento? Ricominci con 5 carte.', 'Azzera', 'Annulla')){ LS.set(SK, null); S = null; loadSave(); TT.toast('Collezione azzerata'); back(); } });
   }
 
