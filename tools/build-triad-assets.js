@@ -4,9 +4,9 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const CARDS = require(path.join(ROOT, 'triad-cards.js')).map(c=> c.concat(['base'])).map(c=> c.slice(0, 8).concat([c[8] === 'base' ? 'base' : c[8]])).concat(require(path.join(ROOT, 'triad-exp.js')).cards);
-const CH = require('./triad-chars-src.js');
+const CH = require('./triad-chars-gen.json');   // id -> [personaggio, scena], scritto da tools/build-triad-cards.js
 const chars = {};
-CARDS.forEach(c=>{ const e = CH[c[1]]; if(!e) throw new Error('manca il personaggio di ' + c[1]); chars[c[0]] = e; });
+CARDS.forEach(c=>{ const e = CH[c[0]]; if(!e) throw new Error('manca il personaggio di ' + c[0] + ' (rilancia tools/build-triad-cards.js)'); chars[c[0]] = e; });
 fs.writeFileSync(path.join(ROOT, 'triad-chars.js'), `// Triple Triad: personaggio e scena di ogni carta (generato da tools/build-triad-assets.js). id -> [personaggio, scena]\n(function(root){\n  var TRIAD_CHARS = ${JSON.stringify(chars)};\n  if(typeof module === 'object' && module.exports) module.exports = TRIAD_CHARS; else root.TRIAD_CHARS = TRIAD_CHARS;\n})(typeof self !== 'undefined' ? self : this);\n`);
 const PAL = {fuoco: 'warm reds and oranges', ghiaccio: 'icy blues and white', tuono: 'electric yellow and deep violet', terra: 'earthy browns and ochre', veleno: 'toxic green and purple', vento: 'teal and pale sky', acqua: 'deep ocean blues', sacro: 'gold and soft white'};
 const GP = {plat: 'bright saturated primary colors', rpg: 'epic fantasy palette', act: 'high-contrast action palette', fps: 'gritty steel and orange', fight: 'bold red and blue arena lights', horror: 'dark desaturated with one sickly accent', strat: 'earthy strategic map tones', race: 'speed blur, sunset colors', puzzle: 'clean candy colors', arcade: 'neon on black', sport: 'stadium lights', mobile: 'friendly bright colors', online: 'vivid competitive palette', indie: 'stylised limited palette', stealth: 'cold shadows and a single warm light', sandbox: 'blocky bright biomes'};

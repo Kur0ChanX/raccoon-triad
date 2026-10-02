@@ -179,6 +179,12 @@
       }catch(e){}
       LS.set(SK, S);
     }
+    // set base rifatto (build t6): le carte tolte diventano la carta nuova dello stesso livello
+    const lg = (window.TRIAD_CARDS || {}).legacy;
+    if(lg && Object.keys(S.owned).some(k=> !CARD[k] && lg[k])){
+      Object.keys(S.owned).forEach(k=>{ const to = !CARD[k] && lg[k]; if(to && CARD[to]){ S.owned[to] = (S.owned[to] || 0) + S.owned[k]; delete S.owned[k]; if(P.art[k] != null) delete P.art[k]; if(P.st[k]) delete P.st[k]; } });
+      LS.set(SK, S); saveP();
+    }
     return S;
   }
   const saveS = ()=> LS.set(SK, S);
