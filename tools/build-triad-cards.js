@@ -12,6 +12,7 @@
 //
 // Uso: node tools/build-triad-cards.js                 genera (le carte nuove ricevono valori di partenza)
 //      node tools/build-triad-cards.js --balance [N]   simula e corregge (N partite per livello e per giro, predefinito 3000)
+//      node tools/build-triad-cards.js --fresh --balance  rifà da zero tutti i lati (solo se cambiano le regole dei numeri)
 //      node tools/build-triad-cards.js --report        solo il rapporto (equilibrio, vantaggio del primo, salto tra livelli)
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -22,9 +23,10 @@ function hash(s){ let h = 2166136261; for(const c of s){ h ^= c.charCodeAt(0); h
 function rng(seed){ let a = seed >>> 0; return ()=>{ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
 // ---------------------------------------------------------------- regole dei numeri
-// dove il tetto del lato sale (livelli 2, 4, 6, 8, 9) la somma sale meno, dove resta uguale sale di più: così ogni livello vale circa lo stesso salto
-const SUM = {1: [12, 13], 2: [13, 15], 3: [16, 16], 4: [17, 18], 5: [19, 20], 6: [20, 21], 7: [22, 23], 8: [23, 24], 9: [25, 26], 10: [27, 28]};
-const MAXS = {1: 5, 2: 6, 3: 6, 4: 7, 5: 7, 6: 8, 7: 8, 8: 9, 9: 10, 10: 10};
+// Il lato più alto pesa più della somma: il tetto sale ogni due livelli (3, 5, 7, 9) e in quei livelli la somma sale di 1 invece di 2 (misurato: un punto di tetto vale circa un punto di somma).
+// Così ogni livello vale circa lo stesso salto (un mazzo di un livello sopra vince intorno al 70%).
+const SUM = {1: [12, 13], 2: [14, 15], 3: [15, 15], 4: [17, 18], 5: [18, 19], 6: [20, 21], 7: [21, 22], 8: [23, 24], 9: [24, 24], 10: [26, 27]};
+const MAXS = {1: 5, 2: 5, 3: 6, 4: 6, 5: 7, 6: 7, 7: 8, 8: 8, 9: 10, 10: 10};
 const MINS = {1: 1, 2: 1, 3: 1, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 2, 10: 2};
 const ACE = {9: .5, 10: 1};                                            // quota di carte con una A (10): metà al livello 9, tutte al 10
 const MIX = ['bil', 'bil', 'bil', 'bil', 'bil', 'ang', 'ang', 'ang', 'ang', 'ang', 'ang', 'ang', 'pic', 'pic', 'pic', 'pic', 'cro', 'cro', 'cro', 'cro'];   // 20 carte: 5 equilibrate, 7 d'angolo, 4 a punta, 4 a croce
@@ -70,6 +72,8 @@ function makeSides(id, L, want, dir, ace){
     const [p, d] = profile(v);
     if(p === want && (want === 'bil' || d === dir)) return v;
   }
+  // profilo impossibile con queste regole (es. «Punta» quando il tetto è basso): ripiego su un altro
+  const alt = ['ang', 'cro', 'bil'].find(x=> x !== want); if(alt && !makeSides.deep){ makeSides.deep = true; try{ return makeSides(id, L, alt, alt === 'cro' ? dir % 2 : dir, ace); }finally{ makeSides.deep = false; } }
   throw new Error('non riesco a fare i lati di ' + id);
 }
 
@@ -93,7 +97,7 @@ EXP.forEach(e=>{ for(let L = 1; L <= 10; L++) (e.cards[L] || []).forEach(([game,
 const ALL = base.concat(exp);
 
 // valori fissati + valori di partenza per le carte nuove (profili dosati per livello e per gruppo: base o espansione)
-let lock = {}; try{ lock = JSON.parse(fs.readFileSync(LOCK, 'utf8')).cards || {}; }catch(e){}
+let lock = {}; try{ if(!process.argv.includes('--fresh')) lock = JSON.parse(fs.readFileSync(LOCK, 'utf8')).cards || {}; }catch(e){}   // --fresh: rifà tutti i lati da zero
 const groups = {};
 ALL.forEach(c=>{ const g = (c.set || 'base') + ':' + c.L; (groups[g] = groups[g] || []).push(c); });
 Object.values(groups).forEach(list=>{
