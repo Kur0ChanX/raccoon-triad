@@ -36,7 +36,12 @@ Il metodo è quello dei giochi di carte collezionabili (bilancio di potenza per 
 - I valori finali si fissano in `tools/triad-balance.json`: rilanciare lo script non li cambia, quindi si possono correggere nomi, giochi e scene senza toccare i numeri.
 
 ## 4. Risultati attuali
-RISULTATI
+Simulazione finale (build t6): 3000 partite per livello per ogni giro di correzione, poi 4000 per la verifica.
+- **Dentro ogni livello** le carte vincono tra il 45% e il 58% (fascia 44-56%: solo Johnny Cage 58% e Fox McCloud 57%, entro l'errore della misura). Nessuna carta rotta, nessuna carta inutile.
+- **Salto di livello:** un mazzo di un livello sopra vince il 67-77% (2>1 77%, 3>2 73%, 4>3 70%, 5>4 71%, 6>5 75%, 7>6 75%, 8>7 67%, 9>8 74%, 10>9 77%). Salire di livello conta, ma un buon giocatore con un livello in meno può ancora vincere una partita su quattro.
+- **Chi inizia** vince il 33-50% delle partite decise (vantaggio di chi chiude, vedi sopra).
+- **Profili:** 43 Equilibrate, 80 d'Angolo, 36 a Punta, 41 a Croce. Forza per lato: alto 915, destra 1000, basso 990, sinistra 973 (il lato alto è un po' più debole: da correggere quando si aggiungono carte).
+- **Elementi:** 115 carte su 200.
 
 ## 5. Aggiungere carte (espansioni future)
 1. Aggiungi i personaggi in `tools/triad-exp-src.js` (o in `tools/triad-cards-src.js` per il set base) con il livello giusto: **personaggi riconoscibili anche da chi non è appassionato**; ai livelli bassi creature e nemici minori, ai livelli alti eroi e cattivi famosi.
