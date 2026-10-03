@@ -380,7 +380,7 @@
     const T = tload(), run = T.run, f = run.floor, o = towerOpp(f);
     TT.screen('Torre infinita', `<div class="tt2-tower-hd"><div class="mut">Piano</div><div class="fl">${f}</div><div class="mut">record ${T.best}${o.boss ? ' · ⚠️ GUARDIANO' : ''}</div></div>
       <div class="tt2-box"><b>${o.face} ${esc(o.name)}</b><div class="mut" style="margin:4px 0">IA ${AI_N[o.ai]} · carte di livello medio ${o.avg}</div><div class="tt2-row">${ruleChips(Object.assign({sudden: true}, o.rules), '')}</div></div>
-      <h3>La tua squadra ${run.first ? '<small>· 🥇 parti per primo!</small>' : ''}</h3><div class="tt2-grid s">${run.deck.map((_, i)=> towerMini(run, i)).join('')}</div>
+      <h3>La tua squadra ${run.first ? '<small>· 🥈 l\'ultima carta è tua!</small>' : ''}</h3><div class="tt2-grid s">${run.deck.map((_, i)=> towerMini(run, i)).join('')}</div>
       <button class="tt2-btn pri w" id="twFight" style="margin-top:14px">⚔️ Sfida il piano ${f}</button><div class="tt2-row c" style="margin-top:8px"><button class="tt2-btn sm red" id="twQuit">Concludi la scalata</button></div>`);
     $('#twFight').addEventListener('click', ()=> towerFight(o));
     $('#twQuit').addEventListener('click', async ()=>{ if(await TT.ask('Concludere la scalata? Riceverai le carte dei piani superati (' + (f - 1) + ').', 'Concludi', 'Continua')) towerEnd(T, f - 1, true); });
@@ -406,7 +406,7 @@
     for(let k = 0; k < 2; k++){ const i = idx(), sd = [0, 1, 2, 3].sort(()=> Math.random() - .5).slice(0, 2); opts.push({t: 'buff', i, sd, ic: '💪', ti: 'Rinforza', tx: `${nm(i)}: +1 ${SIDEN[sd[0]]} e +1 ${SIDEN[sd[1]]}`}); }
     { const i = run.deck.map((c, k)=> [TT.CARD[c].lv, k]).sort((a, b)=> a[0] - b[0])[0][1], lv = Math.min(10, TT.CARD[run.deck[i]].lv + 2), c = pickOf(TT.BASE.filter(x=> x.lv === lv && !run.deck.includes(x.id))); if(c) opts.push({t: 'swap', i, id: c.id, ic: '🔄', ti: 'Carta più forte', tx: `Al posto di ${nm(i)} entra ${esc(c.name)} (livello ${c.lv})`}); }
     { const i = idx(), e = pickOf(ELN); opts.push({t: 'elem', i, e, ic: TT.ELEM[e][1], ti: 'Elemento', tx: `${nm(i)} diventa ${TT.ELEM[e][0]}`}); }
-    opts.push({t: 'first', ic: '🥇', ti: 'Prima mossa', tx: 'Nel prossimo piano giochi per primo'});
+    opts.push({t: 'first', ic: '🥈', ti: 'Ultima parola', tx: 'Nel prossimo piano apre il rivale e l\'ultima carta la giochi tu (è un vantaggio: chi chiude vince più spesso)'});
     opts.push({t: 'all', ic: '⭐', ti: 'Benedizione', tx: 'Una carta a caso prende +1 a tutti i lati', i: idx()});
     return opts.sort(()=> Math.random() - .5).slice(0, 3);
   }
@@ -421,7 +421,7 @@
   }
   function towerFight(o){
     const T = tload(), run = T.run, rules = Core.normRules(Object.assign({sudden: true, trade: 'one'}, o.rules));
-    let st = Core.newGame({rules, seed: Math.floor(Math.random() * 4294967296), first: run.first ? 0 : (Math.random() < .5 ? 1 : 0), hands: [run.deck.map((_, i)=> tcard(run, i)), o.deck.map(TT.cobj)]});
+    let st = Core.newGame({rules, seed: Math.floor(Math.random() * 4294967296), first: run.first ? 1 : (Math.random() < .5 ? 1 : 0), hands: [run.deck.map((_, i)=> tcard(run, i)), o.deck.map(TT.cobj)]});
     run.first = false; tsave(T);
     const st0 = st; let board = null, over = false;
     board = TT.mountBoard({
