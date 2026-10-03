@@ -1,0 +1,22 @@
+# Passaggio di consegne — Raccoon Triad
+
+Aggiornato il 3/10/2026, build online **t6** (https://kur0chanx.github.io/raccoon-triad/).
+
+## Utente
+Mario, italiano, non programmatore. Vuole un gioco «live service» che duri anni: progressione lunga e gratificante, ogni giorno un motivo per giocare e vincere qualcosa, sfide tra amici. Le carte devono essere personaggi che riconosce anche chi non è appassionato (mai oggetti, mai giochi di nicchia o cult). Ha dato il permesso di modificare tutti i dati.
+
+## Fatto in questa sessione
+- **t5 · Immagini delle carte** (`triad-photo.js`, nuovo): pulsante «Cambia immagine» nel dettaglio della carta. Cerca su Google (personaggio, copertina, sfondo), legge gli appunti al ritorno, ritaglia in 5:7 puntando su volti e dettagli, permette zoom e spostamento. Le immagini (750×1050) stanno in IndexedDB `raccoon_triad/photos`. Nelle Impostazioni: modalità in serie, Esporta/Importa (JSON). Foil con rilievo: maschere ricavate dall'immagine (`.ttc-rl`). In gioco il blu/rosso è solo sulla cornice; cornice metallica nuova (fondo di `triad.css`).
+- **t6 · Set base rifatto e bilanciato:** 200 personaggi in `tools/triad-cards-src.js`; numeri da `tools/build-triad-cards.js` (regole per livello, profili, simulazione IA contro IA), fissati in `tools/triad-balance.json`. Metodo e risultati in `tools/BILANCIAMENTO.md`. Collezioni vecchie migrate con `TRIAD_CARDS.legacy` (da `tools/triad-legacy.json`, applicato in `loadSave` di `triad.js`). Torre: «Prima mossa» → «Ultima parola» (chi chiude vince più spesso).
+
+## Prossimi passi (ordine concordato)
+1. **Espansioni da rifare** (`tools/triad-exp-src.js`, 120 carte): sono ancora a giochi, con molti titoli di nicchia (Tapper, Mappy, Night Trap, Splatterhouse, Lost Odyssey, l'intero set «Indie & Cult»…). Rifarle a personaggi riconoscibili, con temi nuovi, poi `node tools/build-triad-cards.js --balance 3000`. Attenzione ai doppioni con il set base (es. Luigi è nel base al livello 8 ed è anche in `luigi-s-mansion` dell'espansione horror).
+2. **Primo avversario troppo forte:** in `triad-play.js` la Sfida del giorno (`dailyNpc`) sta in cima alla lista dell'Allenamento, con carte dal livello 3 al 9 e regole extra. Va spostata in fondo e sbloccata dopo 3 avversari battuti. `npcDeck` deve costruirsi in base al mazzo del giocatore; ogni regola va introdotta con una lezione e ogni avversario va descritto con il suo carattere.
+3. **Campagna a regioni con stelle** (strada C concordata: campagna + modalità infinite). Ogni regione introduce una regola, ha un limite di livello del mazzo (`cap` esiste già nel motore) e una versione Eroica.
+4. **Server online:** mancano i segreti `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` nel repository (lo deve fare Mario). Poi: missioni giornaliere, scrigno con serie, leghe con limite di livello, pass stagionale, eventi.
+5. Principio fisso: le espansioni non aggiungono potenza (stesse regole dei numeri), solo varietà. Crescita senza fine via collezione, foil, padronanza delle carte, livello dell'account, formati a rotazione.
+
+## Note tecniche
+- Lato «alto» un po' più debole nel set (915 contro circa 1000 degli altri): da correggere alla prossima aggiunta di carte.
+- 59 carte senza immagine automatica (usano l'Emblema): Mario mette le immagini da solo con «Cambia immagine». Le sue immagini restano sul suo telefono; per pubblicarle le esporta e si mettono in `triad-img/`.
+- I file dati enormi (`triad-cards/exp/chars/imgs/art.js`) non si leggono con Read: usare script Node.
