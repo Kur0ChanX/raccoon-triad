@@ -284,7 +284,8 @@
     const S = TT.save(), b = beaten(S), open = b >= DAILY_NEED;
     const item = (n, i)=>{ const rec = S.npc[n.id] || {w: 0, l: 0}; return `<button class="tt2-item" data-n="${i}"><div class="av">${n.face}</div><div class="tx"><b>${esc(n.n)}</b><small>${esc(n.r)} · IA ${AI_N[n.ai]} · carte livello ${n.lv[0]}–${n.lv[1]}</small>${n.d ? `<small style="display:block;opacity:.85;font-style:italic">${esc(n.d)}</small>` : ''}<div style="margin-top:3px">${ruleChips(Object.assign({sudden: true}, n.rules), n.trade)}</div></div><div class="rt">${rec.w}V ${rec.l}S</div></button>`; };
     const dn = dailyNpc(), daily = open ? item(dn, -1) : `<div class="tt2-item" style="opacity:.55"><div class="av">🔒</div><div class="tx"><b>Sfida del giorno</b><small>Si sblocca battendo ${DAILY_NEED} avversari diversi (${b}/${DAILY_NEED})</small></div></div>`;
-    TT.screen('Allenamento', `<p class="mut" style="text-align:center">Sfida gli avversari con la tua collezione dell'album. Contro l'IA non perdi mai carte: se vinci, ne prendi una. Il loro mazzo si adatta al tuo.</p><div class="tt2-list">${NPC.map(item).join('')}${daily}</div>`);
+    TT.screen('Allenamento', `<p class="mut" style="text-align:center">Sfida gli avversari con la tua collezione dell'album. Contro l'IA non perdi mai carte: se vinci, ne prendi una. Il loro mazzo si adatta al tuo.</p><button class="tt2-btn w" id="tutGo" style="margin-bottom:8px">🎓 Partita guidata: impara a giocare in 2 minuti</button><div class="tt2-list">${NPC.map(item).join('')}${daily}</div>`);
+    $('#tutGo').addEventListener('click', ()=>{ TT.snd('click'); TT.go(TT.tutorial); });
     $$('[data-n]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); TT.go(npcSetup, +b.dataset.n); }));
   };
   function localItems(){ const S = TT.save(); const items = []; Object.keys(S.owned).forEach(cid=>{ if(CARD()[cid]) for(let i = 0; i < S.owned[cid]; i++) items.push({key: cid + '#' + i, cid}); }); return items; }
@@ -297,6 +298,88 @@
     }});
     if(n.teach && LESSON[n.teach] && !S.lessons[n.teach]){ S.lessons[n.teach] = 1; TT.saveS(); showLesson(n.teach); }
   }
+  // PARTITA GUIDATA: le prime 5 mosse sono scritte (carta e casella lampeggiano, le altre mosse sono bloccate), poi si gioca liberamente contro l'IA più facile.
+  // Le carte si scelgono al momento dai numeri veri (anche modificati) così le prese funzionano sempre: A angolo, B (rivale) angolo opposto, C prende B, D (rivale) prende C, E riprende D.
+  function tutorialCards(){
+    const base = TT.LIST.filter(c=> c.set === 'base'), lv = (a, b)=> base.filter(c=> c.lv >= a && c.lv <= b), V = c=> c.v;
+    const used = new Set(), take = (list, ok)=>{ const c = list.filter(x=> !used.has(x.id) && ok(x)).sort((x, y)=> TT.hash(x.id) - TT.hash(y.id))[0]; if(c) used.add(c.id); return c; };
+    const B = take(lv(1, 1), x=> V(x)[3] <= 3);
+    const C = B && take(lv(2, 3), x=> V(x)[1] - V(B)[3] >= 3 && V(x)[2] <= 3);
+    const D = C && take(lv(1, 2), x=> V(x)[0] - V(C)[2] >= 2 && V(x)[3] <= 3);
+    const E = D && take(lv(2, 3), x=> V(x)[1] - V(D)[3] >= 2);
+    const A = take(lv(2, 3), x=> V(x)[1] + V(x)[2] >= 9);
+    if(!A || !B || !C || !D || !E) return null;
+    const p = [A, C, E, take(lv(2, 3), ()=> true), take(lv(2, 3), ()=> true)], o = [B, D, take(lv(1, 1), ()=> true), take(lv(1, 1), ()=> true), take(lv(1, 1), ()=> true)];
+    if(p.some(x=> !x) || o.some(x=> !x)) return null;
+    return {p: p.map(c=> c.id), o: o.map(c=> c.id), A, B, C, D, E};
+  }
+  TT.tutorial = function(){
+    const T = tutorialCards(); if(!T){ TT.toast('Partita guidata non disponibile'); return; }
+    const Vn = n=> n >= 10 ? 'A' : n, nm = c=> TT.chr(c.id);
+    const steps = [
+      {me: [0, 0], say: `👋 Ogni carta ha <b>4 numeri</b>: in alto, a destra, in basso, a sinistra.<br>Tocca la carta che <b>lampeggia</b>, poi l'<b>angolo in alto a sinistra</b>.`},
+      {ai: [0, 2]},
+      {me: [1, 1], say: `L'avversario ha messo <b>${esc(nm(T.B))}</b>. Il suo numero a sinistra è <b>${Vn(T.B.v[3])}</b>.<br>La tua carta <b>${esc(nm(T.C))}</b> ha <b>${Vn(T.C.v[1])}</b> a destra: è più alto! Mettila nella casella che lampeggia.`},
+      {ai: [1, 4], say: `🎉 <b>Presa!</b> ${Vn(T.C.v[1])} batte ${Vn(T.B.v[3])}: la carta è diventata <b>blu</b>, ora è tua.<br>Adesso tocca all'avversario…`},
+      {me: [2, 3], say: `😮 Il suo <b>${Vn(T.D.v[0])}</b> in alto ha battuto il tuo <b>${Vn(T.C.v[2])}</b>: ti ha preso una carta!<br>Riprendila: la tua carta ha <b>${Vn(T.E.v[1])}</b> a destra contro il suo <b>${Vn(T.D.v[3])}</b>.`},
+      {free: true, say: `💪 <b>Bravo, l'hai ripresa!</b> Ora gioca da solo.<br>A tavolo pieno vince chi ha più carte <b>blu</b>. Consiglio: i numeri alti verso l'avversario, i bassi verso il bordo.`}
+    ];
+    let k = 0, st = Core.newGame({rules: Core.normRules({}), seed: 7, first: 0, hands: [T.p.map(TT.cobj), T.o.map(TT.cobj)]}), board = null, over = false, hlIv = 0, box = null;
+    const keepConfirm = P.confirm; P.confirm = false;               // niente anteprima: un tocco sulla casella e la carta va giù
+    const cur = ()=> steps[Math.min(k, steps.length - 1)];
+    const say = h=>{ if(box) box.innerHTML = h; };
+    const hl = ()=>{
+      $$('.tut-hl').forEach(e=> e.classList.remove('tut-hl'));
+      const s = cur(); if(!s.me || st.turn !== 0 || over) return;
+      const a = $(`#hBot .sl[data-hi="${s.me[0]}"]`), b = $(`#g3 [data-cell="${s.me[1]}"]`); if(a) a.classList.add('tut-hl'); if(b) b.classList.add('tut-hl');
+    };
+    const end = ()=>{ clearInterval(hlIv); P.confirm = keepConfirm; if(box) box.remove(); };
+    const next = async ()=>{
+      await sleep(60); let n = 0; while(board.busy && n++ < 200) await sleep(60);
+      if(st.over) return finish();
+      const s = cur();
+      if(s.say) say(s.say);
+      if(s.ai){
+        board.setThinking(true); await sleep(P.fast ? 400 : 1400); board.setThinking(false);
+        const r = Core.play(st, {hi: s.ai[0], cell: s.ai[1]}); if(!r.ok) return; st = r.state; await board.apply(st, r.events); k++;
+        const s2 = cur(); if(s2.say) say(s2.say); hl();
+        return next();
+      }
+      if(s.free && st.turn === 1){
+        board.setThinking(true); await sleep(P.fast ? 200 : 800); board.setThinking(false);
+        const r = Core.play(st, Core.ai(st, 1)); if(!r.ok) return; st = r.state; await board.apply(st, r.events);
+        return next();
+      }
+      hl();
+    };
+    async function finish(){
+      if(over) return; over = true; end(); await sleep(P.fast ? 200 : 700);
+      const sc = st.result.score, won = st.result.winner === 0, S = TT.save();
+      let gift = null;
+      if(!P.tutDone){ const l = TT.LIST.filter(c=> c.set === 'base' && c.lv === 3); gift = l[Math.floor(Math.random() * l.length)].id; S.owned[gift] = (S.owned[gift] || 0) + 1; TT.saveS(); P.tutDone = 1; TT.saveP(); }
+      board.showEnd({kind: won ? 'win' : 'draw', title: won ? 'HAI VINTO!' : 'BEN FATTO!', sub: `${sc[0]} a ${sc[1]}<br>Hai imparato le basi. ${gift ? 'Ecco un regalo per il tuo album:' : ''}`, cards: gift ? [{cid: gift, label: '🎁 Regalo'}] : [],
+        buttons: [{label: 'Riprova', fn: ()=>{ board.destroy(); TT.replaceTop(TT.tutorial); }}, {label: 'Sfida il primo avversario', cls: 'pri', fn: ()=>{ board.destroy(); TT.replaceTop(TT.npcList); }}]});
+    }
+    board = TT.mountBoard({
+      state: st, me: 0, title: '🎓 Partita guidata',
+      names: [{nick: 'Tu', av: '🦝', sub: 'Blu', cs: P.cosm}, {nick: 'Frugu', av: '🦝', sub: 'Il tuo maestro'}],
+      hidden: ()=> false,
+      canPlay: (seat, s)=> !s.over && seat === 0 && !over,
+      onPlay: async (hi, cell)=>{
+        const s = cur();
+        if(s.me && (hi !== s.me[0] || cell !== s.me[1])){ TT.vib(40); TT.toast(hi !== s.me[0] ? 'Usa la carta che lampeggia ✨' : 'Mettila nella casella che lampeggia ✨'); return null; }
+        const r = Core.play(st, {hi, cell}); if(!r.ok) throw new Error(r.error);
+        st = r.state; if(s.me) k++; $$('.tut-hl').forEach(e=> e.classList.remove('tut-hl'));
+        setTimeout(next, 0); return r;
+      },
+      quit: async ()=>{ if(over || await TT.ask('Vuoi uscire dalla partita guidata?', 'Esci', 'Continua')){ end(); board.destroy(); TT.back(); } },
+      turnMsg: ()=> cur().free ? 'Tocca una tua carta, poi una casella' : 'Segui le carte che lampeggiano ✨'
+    });
+    st = board.state || st;
+    box = document.createElement('div'); box.className = 'tut-box'; TT.root().appendChild(box);
+    say(steps[0].say); hlIv = setInterval(hl, 400); hl();
+  };
+
   TT.hotseat = function(){
     const S = TT.save(), R = {elemental: true, same: true, plus: false, sameWall: false, combo: true, sudden: true};
     const draw = ()=>{

@@ -255,6 +255,14 @@
   function home(){
     loadSave(); refill(); TT.applyBack(P.cosm);
     const st = S.stats, uniq = ownedIds().length;
+    if(!P.tutDone && st.w + st.l === 0 && TT.tutorial){             // prima volta: propongo la partita guidata (se la sala si ridisegna, la domanda ricompare)
+      clearTimeout(home.tutT);
+      home.tutT = setTimeout(async ()=>{
+        if($('.tt2-modal', root) || ($('.tt2-top b', root) || {}).textContent !== 'Triple Triad') return;
+        if(await ask('👋 Prima volta? Ti insegno a giocare con una partita guidata di 2 minuti (e c\'è un regalo alla fine).', 'Sì, insegnami', 'So già giocare')) go(TT.tutorial); else { P.tutDone = 1; saveP(); }
+      }, 700);
+    }
+    if(!home.nag && st.w + st.l >= 10 && Date.now() - (P.lastBackup || 0) > 14 * 864e5){ home.nag = 1; setTimeout(()=> tToast('💾 Ricordati di salvare i progressi: Tavolo e suoni → Salva i progressi', 4500), 1200); }
     screen('Triple Triad', `
       <div class="tt2-hero"><div class="tt2-title">TRIPLE TRIAD</div><div class="mut">di Frugu · 200 carte di giochi famosi</div>${fanHtml()}</div>
       <div class="tt2-stats"><div><b>${ownedCount()}</b>carte</div><div><b>${uniq}/200</b>diverse</div><div><b>${st.w}</b>vittorie</div><div><b>${st.best || 0}</b>serie record</div></div>
@@ -270,7 +278,7 @@
         <button class="tt2-tile" data-go="cosm"><span class="ic">🎭</span><b>Cosmetici</b><small>Dorsi, cornici e titoli</small></button>
         <button class="tt2-tile" data-go="replay"><span class="ic">🎞️</span><b>Replay</b><small>Rivedi le ultime partite</small></button>
         <button class="tt2-tile" data-go="rules"><span class="ic">📖</span><b>Regole</b><small>Same, Plus, Combo, Elementi…</small></button>
-        <button class="tt2-tile" data-go="settings"><span class="ic">⚙️</span><b>Tavolo e suoni</b><small>Temi, volume, animazioni</small></button>
+        <button class="tt2-tile" data-go="settings"><span class="ic">⚙️</span><b>Tavolo e suoni</b><small>Temi, volume, salvataggio</small></button>
       </div>`, {back: false});
     $$('[data-go]', root).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const k = b.dataset.go; if(k === 'online') openOnline(); else if(k === 'npc') go(TT.npcList); else if(k === 'tower') go(TT.tower); else if(k === 'arena') go(TT.arena); else if(k === 'hot') go(TT.hotseat); else if(k === 'album') go(albumLocal); else if(k === 'gfx') go(gfxPage); else if(k === 'rules') go(rulesPage); else if(k === 'settings') go(settingsPage); else openExtra(k); }));
     try{ if(LS.get('jrpg_triad_acct', null)){ if(window.TT_ONLINE_BADGE) window.TT_ONLINE_BADGE(); else loadJS('triad-online.js').then(()=> window.TT_ONLINE_BADGE && window.TT_ONLINE_BADGE()).catch(()=>{}); } }catch(e){}
@@ -439,6 +447,38 @@
   }
 
   // ---------------------------------------------------------------- impostazioni
+  // salvataggio completo dei progressi in un file: tutte le chiavi jrpg_triad* (tranne il token dell'account online, che è segreto) più le immagini delle carte
+  const BK_SKIP = ['jrpg_triad_acct'];
+  async function backupSave(){
+    const ls = {};
+    for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if(/^jrpg_triad/.test(k) && !BK_SKIP.includes(k)) ls[k] = localStorage.getItem(k); }
+    let photos = {}; try{ if(TT.photo && TT.photo.dataAll) photos = await TT.photo.dataAll(); }catch(e){}
+    const d = new Date(), out = {app: 'raccoon-triad', kind: 'backup', v: 1, build: build(), date: d.toISOString(), ls, photos};
+    try{
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(out)], {type: 'application/json'}));
+      a.download = 'raccoon-triad-progressi-' + d.toISOString().slice(0, 10) + '.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 3000);
+      P.lastBackup = Date.now(); saveP(); TT.snd('coin'); tToast('Progressi salvati nel file (cartella Download)', 3500);
+    }catch(e){ tToast('Non riesco a salvare il file'); }
+  }
+  function backupLoad(){
+    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'application/json,.json';
+    inp.onchange = async ()=>{
+      const f = inp.files && inp.files[0]; if(!f) return;
+      let j = null; try{ j = JSON.parse(await f.text()); }catch(e){}
+      if(!j || j.kind !== 'backup' || !j.ls){ tToast('Questo non è un file di progressi del Raccoon Triad'); return; }
+      const keys = Object.keys(j.ls).filter(k=> /^jrpg_triad/.test(k) && !BK_SKIP.includes(k));
+      if(!await ask(`Carico i progressi del ${new Date(j.date).toLocaleDateString('it-IT')}? Quelli di adesso verranno sostituiti.`, 'Carica', 'Annulla')) return;
+      tToast('Carico i progressi…', 6000);
+      try{ if(TT.photo && TT.photo.putAll && j.photos) await TT.photo.putAll(j.photos); }catch(e){}
+      try{
+        for(let i = localStorage.length - 1; i >= 0; i--){ const k = localStorage.key(i); if(/^jrpg_triad/.test(k) && !BK_SKIP.includes(k) && !(k in j.ls)) localStorage.removeItem(k); }
+        keys.forEach(k=> localStorage.setItem(k, j.ls[k]));
+      }catch(e){ tToast('Spazio pieno: non riesco a caricare tutto'); return; }
+      location.reload();                                            // riparto da zero con i dati caricati (così niente in memoria li sovrascrive)
+    };
+    inp.click();
+  }
+  Object.assign(TT, {backupSave, backupLoad});
   function settingsPage(){
     screen('Tavolo e suoni', `
       <label class="chk"><input type="checkbox" id="sSnd" ${P.sound ? 'checked' : ''}> Suoni</label>
@@ -450,6 +490,8 @@
       ${TT.photo ? `<h3>Immagini delle carte <small>(tue: ${TT.photo.count()})</small></h3><p class="mut">Una carta dopo l'altra: cerco io l'immagine nel browser, tu la copi e torni qui, io la incollo e la ritaglio. Le carte senza illustrazione vengono prima.</p>
       <div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn pri sm" id="sPhN">🖼️ Carte senza illustrazione</button><button class="tt2-btn sm" id="sPhA">Tutte le carte</button><button class="tt2-btn sm" id="sPhE">📤 Esporta</button><button class="tt2-btn sm" id="sPhI">📥 Importa</button></div>` : ''}
       <h3>Carte</h3><div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn sm" id="sBal">📊 Bilanciamento e carte modificate</button><button class="tt2-btn sm" id="sBk">🂠 Retro delle carte</button></div>
+      <h3>Salvataggio</h3><p class="mut">Tutti i progressi (collezione, record, mazzi, carte modificate, immagini) stanno solo in questo browser. Salvali in un file ogni tanto: se cambi telefono o si cancellano i dati, li ricarichi da lì.${P.lastBackup ? ` Ultimo salvataggio: ${new Date(P.lastBackup).toLocaleDateString('it-IT')}.` : ' Non hai ancora mai salvato.'}</p>
+      <div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn pri sm" id="sBkS">💾 Salva i progressi</button><button class="tt2-btn sm" id="sBkL">📂 Carica i progressi</button></div>
       <h3>Dati</h3><div class="tt2-row"><button class="tt2-btn sm" id="sRes">Azzera la collezione dell'allenamento</button></div><p class="mut">L'account online e le sue carte stanno sul server e non si toccano da qui.</p>`);
     const bind = (id, k, num)=> $('#' + id, root).addEventListener('input', e=>{ P[k] = num ? +e.target.value : e.target.checked; saveP(); if(k === 'sound' && P.sound) TT.snd('click'); });
     bind('sSnd', 'sound'); bind('sVol', 'vol', true); bind('sFast', 'fast'); bind('sConf', 'confirm'); bind('sHide', 'hide');
@@ -457,6 +499,8 @@
     if(TT.photo){ $('#sPhN', root).addEventListener('click', ()=> TT.photo.series('none')); $('#sPhA', root).addEventListener('click', ()=> TT.photo.series('all')); $('#sPhE', root).addEventListener('click', ()=> TT.photo.exportAll()); $('#sPhI', root).addEventListener('click', ()=> TT.photo.importAll()); }
     $('#sBal', root).addEventListener('click', ()=> openEdit(ed=> go(ed.balance)));
     $('#sBk', root).addEventListener('click', ()=> openEdit(ed=> ed.back()));
+    $('#sBkS', root).addEventListener('click', ()=> backupSave().then(()=> replaceTop(settingsPage)));
+    $('#sBkL', root).addEventListener('click', ()=> backupLoad());
     $('#sRes', root).addEventListener('click', async ()=>{ if(await ask('Azzero la collezione e i record dell\'allenamento? Ricominci con 5 carte.', 'Azzera', 'Annulla')){ LS.set(SK, null); S = null; loadSave(); TT.toast('Collezione azzerata'); back(); } });
   }
 

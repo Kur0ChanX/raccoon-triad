@@ -273,10 +273,20 @@
     next();
   }
   // esporta / importa (per passare le immagini a un altro telefono o pubblicarle nel gioco)
-  async function exportAll(){
-    const out = {v: 1, app: 'raccoon-triad', photos: {}};
+  // tutte le immagini come {cid: dataURL} (anche per il salvataggio completo dei progressi)
+  async function dataAll(){
+    const out = {};
     const all = await new Promise((res, rej)=> db().then(d=>{ const o2 = {}, c = d.transaction('photos').objectStore('photos').openCursor(); c.onsuccess = ()=>{ const k = c.result; if(!k) return res(o2); o2[k.key] = k.value; k.continue(); }; c.onerror = ()=> rej(c.error); }, rej));
-    for(const cid in all) out.photos[cid] = await new Promise(r=>{ const fr = new FileReader(); fr.onload = ()=> r(fr.result); fr.readAsDataURL(all[cid].img); });
+    for(const cid in all) out[cid] = await new Promise(r=>{ const fr = new FileReader(); fr.onload = ()=> r(fr.result); fr.readAsDataURL(all[cid].img); });
+    return out;
+  }
+  async function putAll(photos){
+    let n = 0;
+    for(const cid in (photos || {})){ if(!TT.CARD[cid]) continue; try{ const im = await imgOf(photos[cid]); await save(cid, canvasOf(im, 'fill')); TT.P.art[cid] = 'f'; n++; }catch(e){} }
+    TT.saveP(); return n;
+  }
+  async function exportAll(){
+    const out = {v: 1, app: 'raccoon-triad', photos: await dataAll()};
     const n = Object.keys(out.photos).length; if(!n) return TT.toast('Non hai ancora immagini tue');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(out)], {type: 'application/json'})); a.download = 'raccoon-triad-immagini.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
     TT.toast(n + ' immagini esportate');
@@ -286,13 +296,12 @@
     inp.onchange = async ()=>{
       const f = inp.files && inp.files[0]; if(!f) return;
       try{
-        const j = JSON.parse(await f.text()); let n = 0;
-        for(const cid in (j.photos || {})){ if(!TT.CARD[cid]) continue; const im = await imgOf(j.photos[cid]); await save(cid, canvasOf(im, 'fill')); TT.P.art[cid] = 'f'; n++; }
-        TT.saveP(); TT.toast(n + ' immagini importate');
+        const j = JSON.parse(await f.text()), n = await putAll(j.photos);
+        TT.toast(n + ' immagini importate');
       }catch(e){ TT.toast('File non valido'); }
     };
     inp.click();
   }
 
-  TT.photo = {load, urls, edit, series, exportAll, importAll, remove, count: ()=> Object.keys(PH).length, relOn, relFor, relHtml};
+  TT.photo = {load, urls, edit, series, exportAll, importAll, dataAll, putAll, remove, count: ()=> Object.keys(PH).length, relOn, relFor, relHtml};
 })();
