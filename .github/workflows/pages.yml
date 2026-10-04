@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir _site
           cp index.html shell.js sw.js manifest.webmanifest qrcode.min.js _site/
-          cp triad.js triad.css triad-core.js triad-cards.js triad-exp.js triad-chars.js triad-imgs.js triad-art.js triad-play.js triad-online.js triad-cosm.js triad-extra.js triad-photo.js triad-config.js _site/
+          cp triad.js triad.css triad-core.js triad-cards.js triad-exp.js triad-chars.js triad-imgs.js triad-art.js triad-play.js triad-online.js triad-cosm.js triad-extra.js triad-photo.js triad-edit.js triad-config.js _site/
           cp -r icons _site/icons
           cp -r triad-img _site/triad-img
       - uses: actions/configure-pages@v5

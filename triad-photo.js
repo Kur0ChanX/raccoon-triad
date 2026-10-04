@@ -178,11 +178,11 @@
 
   // o: {done(saved), queue: {i, n, next, skip}}
   function edit(cid, o){
-    o = o || {}; const c = TT.CARD[cid]; if(!c) return;
-    const qs = queries(cid), sq = o.queue;
+    o = o || {}; const c = TT.CARD[cid] || o.card; if(!c) return;           // o.card/o.title/o.queries/o.saveTo: stesso editor per immagini che non sono carte (dorso)
+    const qs = o.queries || queries(cid), sq = o.queue;
     const m = TT.modal(`
-      <h3 style="margin-top:0">Immagine di ${esc(TT.chr(cid))}${sq ? ` <small class="mut">${sq.i + 1} di ${sq.n}</small>` : ''}</h3>
-      <p class="mut" style="margin:0 0 8px">${esc(c.name)} · ${esc(c.year)} · ${esc(c.plat)}</p>
+      <h3 style="margin-top:0">${esc(o.title || 'Immagine di ' + TT.chr(cid))}${sq ? ` <small class="mut">${sq.i + 1} di ${sq.n}</small>` : ''}</h3>
+      ${o.card ? '' : `<p class="mut" style="margin:0 0 8px">${esc(c.name)} · ${esc(c.year)} · ${esc(c.plat)}</p>`}
       <div class="ph-steps"><b>1</b> Cerca &nbsp; <b>2</b> Tieni premuto sull'immagine → <i>Copia</i> &nbsp; <b>3</b> Torna qui: la metto io</div>
       <div class="tt2-row c" style="flex-wrap:wrap;gap:6px">${qs.map((x, i)=> `<button class="tt2-btn sm" data-q="${i}">${x[0]}</button>`).join('')}</div>
       <div class="tt2-row c" style="margin-top:6px;gap:6px"><button class="tt2-btn pri" data-paste>📋 Incolla</button><button class="tt2-btn sm" data-file>📁 Dal telefono</button><button class="tt2-btn sm" data-url>🔗 Indirizzo</button></div>
@@ -248,7 +248,7 @@
 
     $('[data-save]', m).addEventListener('click', async ()=>{
       if(!im) return; const b = $('[data-save]', m); b.disabled = true; msg('Salvo…');
-      try{ await save(cid, cv); TT.P.art[cid] = 'f'; TT.saveP(); TT.snd && TT.snd('coin'); TT.toast('Immagine messa sulla carta'); refresh(cid); finish(true); }
+      try{ if(o.saveTo){ await o.saveTo(cv); finish(true); return; } await save(cid, cv); TT.P.art[cid] = 'f'; TT.saveP(); TT.snd && TT.snd('coin'); TT.toast('Immagine messa sulla carta'); refresh(cid); finish(true); }
       catch(e){ b.disabled = false; msg('Non riesco a salvare (spazio pieno?)'); }
     });
     const dl = $('[data-del]', m); if(dl) dl.addEventListener('click', async ()=>{ await remove(cid); if(TT.P.art[cid] === 'f') delete TT.P.art[cid]; TT.saveP(); refresh(cid); finish(false); });

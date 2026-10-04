@@ -76,8 +76,12 @@
     (window.TRIAD_CARDS || []).forEach(a=> push(a, 'base'));
     const EX = window.TRIAD_EXP || {sets: [], cards: []}; EX.cards.forEach(a=> push(a, a[8]));
     TT.CARD = CARD; TT.LIST = LIST; TT.BASE = LIST.filter(c=> c.set === 'base'); TT.SETS = EX.sets;
+    const ORIG = TT.ORIG = {}; LIST.forEach(c=> ORIG[c.id] = {v: c.v.slice(), e: c.e, gm: c.name});
+    const ED = LS.get('jrpg_triad_edit', {}) || {};               // modifiche fatte nell'app (triad-edit.js): numeri, elemento, nome
+    for(const k in ED){ const c = CARD[k], d = ED[k]; if(!c || !d) continue; if(Array.isArray(d.v) && d.v.length === 4) c.v = d.v.slice(); if('e' in d) c.e = d.e || null; if(d.gm) c.name = d.gm; }
+    TT.EDN = {}; for(const k in ED) if(CARD[k] && ED[k] && ED[k].n) TT.EDN[k] = ED[k].n;
   }
-  const chr = cid=> { const e = (window.TRIAD_CHARS || {})[cid]; return e ? e[0] : (CARD[cid] ? CARD[cid].name : ''); }, scene = cid=> { const e = (window.TRIAD_CHARS || {})[cid]; return e ? e[1] : ''; };
+  const chr = cid=> { if(TT.EDN && TT.EDN[cid]) return TT.EDN[cid]; const e = (window.TRIAD_CHARS || {})[cid]; return e ? e[0] : (CARD[cid] ? CARD[cid].name : ''); }, scene = cid=> { const e = (window.TRIAD_CHARS || {})[cid]; return e ? e[1] : ''; };
   Object.assign(TT, {chr, scene});
   const sum = c=> c.v[0] + c.v[1] + c.v[2] + c.v[3];
   const V = n=> n >= 10 ? 'A' : String(n);
@@ -205,7 +209,12 @@
   // cosmetici (catalogo in triad-cosm.js): classe della cornice, titolo e dorso delle carte. cs = {b, f, t} (id oppure null)
   TT.csFrame = cs=> (cs && cs.f && cs.f !== 'f_base') ? ' fr-' + cs.f : '';
   TT.csTitle = cs=>{ const it = cs && cs.t && window.TRIAD_COSM ? window.TRIAD_COSM.get(cs.t) : null; return it ? it.name : ''; };
-  TT.applyBack = cs=>{ if(root){ if(cs && cs.b) root.dataset.bk = cs.b; else delete root.dataset.bk; } };
+  TT.applyBack = cs=>{
+    if(!root) return; const b = cs && cs.b;
+    if(b) root.dataset.bk = b; else delete root.dataset.bk;
+    const img = b === 'custom' ? LS.get('jrpg_triad_back', null) : null;              // dorso con un'immagine scelta dal giocatore (solo sul telefono)
+    if(img){ root.style.setProperty('--bk', `center/cover no-repeat url('${img}')`); root.style.setProperty('--bki', "''"); } else { root.style.removeProperty('--bk'); root.style.removeProperty('--bki'); }
+  };
   function screen(title, body, o){
     o = o || {};
     root.innerHTML = `<div class="tt2-top">${o.back === false ? '<span class="tt2-ib" style="visibility:hidden"></span>' : '<button class="tt2-ib" data-back aria-label="Indietro">‹</button>'}<b>${title}</b>${o.right || '<button class="tt2-ib" data-x aria-label="Chiudi">✕</button>'}</div><div class="tt2-scr" id="ttScr">${body}</div>`;
@@ -332,7 +341,7 @@
         <h3>Immagine <small>(scegli quella che preferisci)</small></h3>
         <div class="tt2-arts">${list.map((u, i)=> `<button data-a="${i}" class="${ch.kind === 'img' && ch.i === i ? 'on' : ''}" style="background-image:url('${esc(thumb(u, 200))}')"></button>`).join('')}<button data-a="e" class="${ch.kind === 'em' ? 'on' : ''}" style="background-image:${emblem(cid)}">Emblema</button>${ph ? `<button data-a="f" class="${ch.kind === 'photo' ? 'on' : ''}" style="background-image:url('${ph}')"></button>` : ''}<button data-photo>🖼️<br>Cambia immagine</button></div>
         ${list.length ? '' : '<p class="mut">Per questa carta non c\'è ancora un\'immagine ufficiale: uso l\'Emblema disegnato. Puoi metterci una tua foto.</p>'}
-        <div class="tt2-row c" style="margin-top:10px">${P.st[cid] || P.art[cid] != null ? '<button class="tt2-btn sm" data-reset>Ripristina automatico</button>' : ''}${g && window.openModal ? '<button class="tt2-btn sm" data-open>Apri nella Tier List</button>' : ''}<button class="tt2-btn" data-insp>🔍 Ingrandisci</button><button class="tt2-btn pri" data-mclose>Fatto</button></div>
+        <div class="tt2-row c" style="margin-top:10px">${P.st[cid] || P.art[cid] != null ? '<button class="tt2-btn sm" data-reset>Ripristina automatico</button>' : ''}${g && window.openModal ? '<button class="tt2-btn sm" data-open>Apri nella Tier List</button>' : ''}<button class="tt2-btn" data-insp>🔍 Ingrandisci</button><button class="tt2-btn" data-edit>✏️ Modifica carta</button><button class="tt2-btn" data-back>🂠 Retro</button><button class="tt2-btn pri" data-mclose>Fatto</button></div>
         <input type="file" accept="image/*" id="ttPh" style="display:none">`, {onClose: ()=>{}});
       const big = $('#ttBig .ttc', m);
       if(big){
@@ -342,6 +351,8 @@
       $$('[data-s]', m).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); if($('#ttAll', m).checked){ P.style = b.dataset.s; P.st = {}; } else P.st[cid] = b.dataset.s; saveP(); m.remove(); draw(); }));
       $$('[data-a]', m).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const a = b.dataset.a; P.art[cid] = a === 'e' || a === 'f' ? a : +a; saveP(); m.remove(); draw(); }));
       $('[data-insp]', m).addEventListener('click', ()=> inspect(cid, {src, foil: src && src.foils ? src.foils[cid] : 0}));
+      $('[data-edit]', m).addEventListener('click', ()=> openEdit(ed=>{ m.remove(); ed.card(cid, ()=> draw()); }));
+      $('[data-back]', m).addEventListener('click', ()=> openEdit(ed=> ed.back()));
       const rs = $('[data-reset]', m); if(rs) rs.addEventListener('click', ()=>{ delete P.st[cid]; delete P.art[cid]; saveP(); m.remove(); draw(); });
       const op = $('[data-open]', m); if(op) op.addEventListener('click', ()=>{ try{ close(); window.openModal(g); }catch(e){} });
       $('[data-photo]', m).addEventListener('click', ()=>{ if(TT.photo) TT.photo.edit(cid, {done: saved=>{ if(saved != null){ m.remove(); draw(); } }}); else $('#ttPh', m).click(); });
@@ -350,6 +361,9 @@
     draw();
   }
   Object.assign(TT, {cardDetail});
+  // editor delle carte, bilanciamento e dorsi (triad-edit.js, caricato solo quando serve)
+  function openEdit(fn){ loadJS('triad-edit.js').then(()=> fn(TT.edit)).catch(()=> TT.toast('Non riesco ad aprire l\'editor')); }
+  TT.openEdit = openEdit;
   function photoPick(cid, f, done){
     if(!f) return;
     if(TT.photo) return TT.photo.edit(cid, {file: f, done: saved=>{ if(saved && done) done(); }});
@@ -435,11 +449,14 @@
       <h3>Tavolo</h3><div class="tt2-strip">${BOARDS.map(b=> `<button class="tt2-chip${P.board === b[0] ? ' on' : ''}" data-b="${b[0]}">${b[1]}</button>`).join('')}</div>
       ${TT.photo ? `<h3>Immagini delle carte <small>(tue: ${TT.photo.count()})</small></h3><p class="mut">Una carta dopo l'altra: cerco io l'immagine nel browser, tu la copi e torni qui, io la incollo e la ritaglio. Le carte senza illustrazione vengono prima.</p>
       <div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn pri sm" id="sPhN">🖼️ Carte senza illustrazione</button><button class="tt2-btn sm" id="sPhA">Tutte le carte</button><button class="tt2-btn sm" id="sPhE">📤 Esporta</button><button class="tt2-btn sm" id="sPhI">📥 Importa</button></div>` : ''}
+      <h3>Carte</h3><div class="tt2-row" style="flex-wrap:wrap;gap:6px"><button class="tt2-btn sm" id="sBal">📊 Bilanciamento e carte modificate</button><button class="tt2-btn sm" id="sBk">🂠 Retro delle carte</button></div>
       <h3>Dati</h3><div class="tt2-row"><button class="tt2-btn sm" id="sRes">Azzera la collezione dell'allenamento</button></div><p class="mut">L'account online e le sue carte stanno sul server e non si toccano da qui.</p>`);
     const bind = (id, k, num)=> $('#' + id, root).addEventListener('input', e=>{ P[k] = num ? +e.target.value : e.target.checked; saveP(); if(k === 'sound' && P.sound) TT.snd('click'); });
     bind('sSnd', 'sound'); bind('sVol', 'vol', true); bind('sFast', 'fast'); bind('sConf', 'confirm'); bind('sHide', 'hide');
     $$('[data-b]', root).forEach(b=> b.addEventListener('click', ()=>{ P.board = b.dataset.b; saveP(); settingsPage(); }));
     if(TT.photo){ $('#sPhN', root).addEventListener('click', ()=> TT.photo.series('none')); $('#sPhA', root).addEventListener('click', ()=> TT.photo.series('all')); $('#sPhE', root).addEventListener('click', ()=> TT.photo.exportAll()); $('#sPhI', root).addEventListener('click', ()=> TT.photo.importAll()); }
+    $('#sBal', root).addEventListener('click', ()=> openEdit(ed=> go(ed.balance)));
+    $('#sBk', root).addEventListener('click', ()=> openEdit(ed=> ed.back()));
     $('#sRes', root).addEventListener('click', async ()=>{ if(await ask('Azzero la collezione e i record dell\'allenamento? Ricominci con 5 carte.', 'Azzera', 'Annulla')){ LS.set(SK, null); S = null; loadSave(); TT.toast('Collezione azzerata'); back(); } });
   }
 
