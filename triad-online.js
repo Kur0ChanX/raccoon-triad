@@ -54,11 +54,12 @@
     if(m.t === 'move'){ if(cur && cur.id === m.id) handleView(m.match, m.events); return; }
     if(m.t === 'emote'){ if(board && cur && cur.id === m.match) board.emote(m.from, m.e); return; }
     if(m.t === 'presence'){ if(m.online) TT.toast(esc(m.nick) + ' è online', 1800); return; }
+    if(m.t === 'tourn'){ const t = m.tourn; if(tournOpen === t.id && !board) tournView(t.id, t); else if(t.next && !board && t.status === 'run') TT.toast('🏆 ' + t.name + ': tocca a te giocare!', 3500); return; }
     if(m.t === 'kick'){ if(m.reason === 'other_device') authLost(); return; }
   }
   function newsToast(it){
     const c = it.data && it.data.cid && TT.CARD[it.data.cid] ? TT.CARD[it.data.cid].name : '';
-    const map = {friend_req: `👋 ${it.data.nick} ti ha chiesto l'amicizia`, friend_ok: `🤝 ${it.data.nick} è ora tuo amico`, challenge: `🎴 ${it.data.from} ti sfida!`, stolen: `⚠️ ${it.data.by} ti ha rubato ${c}!`, won: `🏆 Hai preso ${c} a ${it.data.from}`, boss: `👑 Ricompensa del Custode: ${c}`, refill: '🎁 Ti ho dato carte comuni per poter giocare', season: `🏆 Stagione ${it.data.season}: sei ${it.data.pos}º! +${it.data.coins} 🪙`, level: `⭐ Livello ${it.data.lvl}! +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`, ach: `🏅 Traguardo: ${it.data.name} (+${it.data.coins} 🪙)`, set: `🗂️ Collezione completata: ${it.data.name}`, cosm: `🎭 Nuovo cosmetico: ${it.data.name}`};
+    const map = {friend_req: `👋 ${it.data.nick} ti ha chiesto l'amicizia`, friend_ok: `🤝 ${it.data.nick} è ora tuo amico`, challenge: `🎴 ${it.data.from} ti sfida!`, stolen: `⚠️ ${it.data.by} ti ha rubato ${c}!`, won: `🏆 Hai preso ${c} a ${it.data.from}`, boss: `👑 Ricompensa del Custode: ${c}`, refill: '🎁 Ti ho dato carte comuni per poter giocare', season: `🏆 Stagione ${it.data.season}: sei ${it.data.pos}º! +${it.data.coins} 🪙`, level: `⭐ Livello ${it.data.lvl}! +${it.data.coins} 🪙${it.data.ticket ? ' e una busta in regalo' : ''}`, ach: `🏅 Traguardo: ${it.data.name} (+${it.data.coins} 🪙)`, set: `🗂️ Collezione completata: ${it.data.name}`, cosm: `🎭 Nuovo cosmetico: ${it.data.name}`, tourn_join: `🏆 ${it.data.nick} è entrato nel torneo ${it.data.name}`, tourn_cancel: `🏆 Il torneo ${it.data.name} è stato annullato`, tourn_end: it.data && it.data.me ? `🏆 Hai vinto il torneo ${it.data.name}! +${it.data.coins} 🪙` : `🏆 ${it.data && it.data.champion} ha vinto il torneo ${it.data && it.data.name}`};
     if(map[it.kind]){ TT.toast(map[it.kind], 3500); if(it.kind === 'stolen'){ TT.snd('steal'); TT.vib([80, 60, 80]); } else if(it.kind === 'won' || it.kind === 'boss') TT.snd('coin'); }
   }
   function badges(){ const b = $('#ttOnBd'); if(b && me){ const n = (me.news || 0) + (me.requests || 0); b.style.display = n ? '' : 'none'; b.textContent = n; } const l = $('#lbNews'); if(l && me){ l.style.display = me.news ? '' : 'none'; l.textContent = me.news; } const f = $('#lbFr'); if(f && me){ f.style.display = me.requests ? '' : 'none'; f.textContent = me.requests; } }
@@ -152,6 +153,7 @@
         <button class="tt2-tile big" data-a="friends"><span class="ic">👥</span><b>Sfida un amico</b><small>Amici, richieste e stanze con codice o QR</small><span class="bd" id="lbFr" style="display:${me.requests ? '' : 'none'}">${me.requests || 0}</span></button>
         <button class="tt2-tile" data-a="shop"><span class="ic">🛍️</span><b>Negozio buste</b><small>Apri le buste: carte rare e foil!</small></button>
         <button class="tt2-tile" data-a="mis"><span class="ic">🎯</span><b>Missioni</b><small>Ogni giorno nuovi premi</small><span class="bd" style="display:${me.missions ? '' : 'none'}">${me.missions || 0}</span></button>
+        <button class="tt2-tile" data-a="tourn"><span class="ic">🏆</span><b>Tornei tra amici</b><small>Da 3 a 8 giocatori, con codice</small></button>
         <button class="tt2-tile" data-a="room"><span class="ic">🚪</span><b>Crea stanza</b><small>Codice e QR da far leggere</small></button>
         <button class="tt2-tile" data-a="join"><span class="ic">🔑</span><b>Entra con codice</b><small>Hai un codice stanza?</small></button>
         <button class="tt2-tile" data-a="boss"><span class="ic">👑</span><b>Custodi</b><small>10 sfide per carte forti</small></button>
@@ -165,7 +167,7 @@
         <button class="tt2-tile" data-a="news"><span class="ic">📰</span><b>Novità</b><small>Furti, vittorie, sfide</small><span class="bd" id="lbNews" style="display:${me.news ? '' : 'none'}">${me.news || 0}</span></button>
         <button class="tt2-tile" data-a="acct"><span class="ic">⚙️</span><b>Account</b><small>Codice amico e recupero</small></button>
       </div>`);
-    const GO = {friends: friendsPage, shop: shopPage, mis: missionsPage, join: joinPage, boss: bossPage, cards: cardsPage, sets: setsPage, work: workshopPage, ach: achPage, top: topPage, news: newsPage, acct: acctPage};
+    const GO = {tourn: tournPage, friends: friendsPage, shop: shopPage, mis: missionsPage, join: joinPage, boss: bossPage, cards: cardsPage, sets: setsPage, work: workshopPage, ach: achPage, top: topPage, news: newsPage, acct: acctPage};
     $$('[data-a]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const a = b.dataset.a; if(a === 'room') TT.go(()=> challengeSetup({})); else if(a === 'cosm' || a === 'replay') TT.openExtra(a); else TT.go(GO[a]); }));
     const lv = $('#lbLv'); if(lv) lv.addEventListener('click', levelModal);
     const d = $('#lbDaily'); if(d) d.addEventListener('click', async ()=>{ d.disabled = true; try{ const r = await api('POST', '/api/daily'); TT.snd('coin'); me.daily = {ready: false, nextAt: Date.now() + 20 * 3600000, n: r.streak}; me = await api('GET', '/api/me'); lobby(); showNewCard(r.card, 'Ricompensa di oggi', 'Serie: ' + r.streak + (r.streak % 7 === 0 ? ' 🔥 giorno 7: busta in regalo!' : '') + (r.gain ? ' · +' + r.gain.coins + ' 🪙' : '')); }catch(e){ errToast(e); d.disabled = false; } });
@@ -398,9 +400,81 @@
   async function handleInvite(inv){
     const [what, rest] = String(inv).split(';s=')[0].split(':'), code = (rest || '').toUpperCase();
     if(what === 'room' && code){ TT.go(()=> joinPage(code)); }
+    else if(what === 'tourn' && code){ TT.go(()=> tournJoinPage(code)); }
     else if(what === 'friend' && code){
       if(await TT.ask('Vuoi aggiungere agli amici il giocatore con codice <b>' + esc(code) + '</b>?', 'Aggiungi', 'No')){ try{ const r = await api('POST', '/api/friends/request', {to: code}); TT.toast(r.state === 'friend' ? '🤝 Ora siete amici!' : '✅ Richiesta inviata a ' + r.friend.nick); }catch(e){ errToast(e); } }
     }
+  }
+
+  // ---------------------------------------------------------------- tornei tra amici (server: tools/triad-server/tourn.js)
+  let tournOpen = null;
+  const T_ST = {open: '🟢 Iscrizioni aperte', run: '⚔️ In corso', done: '🏁 Finito', cancel: 'Annullato'};
+  async function tournPage(){
+    tournOpen = null; TT.loading('Carico i tornei…');
+    let l; try{ l = (await api('GET', '/api/tourns')).tourns; }catch(e){ errToast(e); return TT.back(); }
+    TT.screen('Tornei tra amici', `<p class="mut" style="text-align:center">Crea un torneo, manda il codice agli amici (da 3 a 8 giocatori) e sfidatevi a eliminazione diretta. Nessuna carta in palio: si gioca per il trofeo e le monete.</p>
+      <div class="tt2-row c" style="gap:8px;margin-bottom:10px"><button class="tt2-btn pri" id="tnNew">➕ Crea torneo</button><button class="tt2-btn" id="tnJoin">🔑 Entra con codice</button></div>
+      ${l.length ? `<div class="tt2-list">${l.map(t=> `<button class="tt2-item" data-t="${t.id}"><div class="av">🏆</div><div class="tx"><b>${esc(t.name)}</b><small>${T_ST[t.status] || ''} · ${t.players.length}/${t.size} giocatori${t.next ? ' · <b style="color:#ffe27a">tocca a te!</b>' : ''}${t.status === 'done' ? ' · vince ' + esc(t.championNick || '?') : ''}</small></div></button>`).join('')}</div>` : '<p class="mut" style="text-align:center">Non sei ancora in nessun torneo.</p>'}`);
+    $('#tnNew').addEventListener('click', ()=>{ TT.snd('click'); TT.go(tournCreatePage); });
+    $('#tnJoin').addEventListener('click', ()=>{ TT.snd('click'); TT.go(tournJoinPage); });
+    $$('[data-t]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); TT.go(tournView, b.dataset.t); }));
+  }
+  function tournCreatePage(){
+    const R = {elemental: true, same: true, plus: false, sameWall: false, combo: true, special: false, sudden: true, cap: 0}, st = {size: 8, name: ''};
+    const draw = ()=>{
+      TT.screen('Crea torneo', `<div class="tt2-box"><b>Nome</b><input type="text" id="tnNm" maxlength="30" placeholder="Torneo di ${esc(me ? me.nick : '')}" value="${esc(st.name)}" style="width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.3);color:inherit;font:inherit"></div>
+        <div class="tt2-box"><b>Giocatori al massimo</b><div class="tt2-strip" style="margin-top:6px">${[4, 8].map(n=> `<button class="tt2-chip${st.size === n ? ' on' : ''}" data-sz="${n}">${n}</button>`).join('')}</div><p class="mut">Si può iniziare anche prima, con almeno 3 giocatori: chi resta senza avversario passa direttamente al turno dopo.</p></div>
+        <div class="tt2-box"><b>Regole</b>${['elemental', 'same', 'sameWall', 'plus', 'combo', 'special', 'sudden'].map(k=> `<label class="chk"><input type="checkbox" data-r="${k}" ${R[k] ? 'checked' : ''} ${k === 'sameWall' && !R.same ? 'disabled' : ''}> ${TT.RULE_N[k]}</label>`).join('')}</div>
+        <div class="tt2-box"><b>Limite punti mazzo</b><div class="tt2-strip" style="margin-top:6px">${[[0, 'Nessuno'], [20, '20'], [25, '25'], [30, '30'], [35, '35']].map(x=> `<button class="tt2-chip${(R.cap | 0) === x[0] ? ' on' : ''}" data-cap="${x[0]}">${x[1]}</button>`).join('')}</div><p class="mut">Somma dei livelli delle 5 carte: con un limite basso conta l'abilità più della collezione.</p></div>
+        <button class="tt2-btn pri w" id="tnGo">Scegli le tue 5 carte</button>`);
+      $('#tnNm').addEventListener('input', e=>{ st.name = e.target.value; });
+      $$('[data-sz]').forEach(b=> b.addEventListener('click', ()=>{ st.size = +b.dataset.sz; draw(); }));
+      $$('[data-r]').forEach(b=> b.addEventListener('change', ()=>{ R[b.dataset.r] = b.checked; if(!R.same) R.sameWall = false; draw(); }));
+      $$('[data-cap]').forEach(b=> b.addEventListener('click', ()=>{ R.cap = +b.dataset.cap; draw(); }));
+      $('#tnGo').addEventListener('click', async ()=>{
+        let items; try{ items = await myItems(); }catch(e){ return errToast(e); }
+        TT.pickDeck({title: 'Il tuo mazzo del torneo', sub: 'Lo userai per tutto il torneo. Nessuna carta in palio.', items, ok: 'Crea il torneo', cap: R.cap | 0, back: draw, onDone: async uids=>{
+          TT.loading('Creo il torneo…');
+          try{ const r = await api('POST', '/api/tourn/create', {name: st.name, size: st.size, rules: R, cards: uids}); TT.replaceTop(tournView, r.tourn.id, r.tourn); }
+          catch(e){ errToast(e); TT.back(); }
+        }});
+      });
+    };
+    draw();
+  }
+  function tournJoinPage(prefill){
+    TT.screen('Entra in un torneo', `<p class="mut" style="text-align:center">Scrivi il codice del torneo che ti ha mandato il tuo amico.</p><div class="tt2-box"><input type="text" id="tjIn" maxlength="8" placeholder="CODICE" value="${esc(typeof prefill === 'string' ? prefill : '')}" style="text-transform:uppercase;text-align:center;font-size:1.4rem;letter-spacing:4px;width:100%;box-sizing:border-box;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.3);color:inherit"></div><button class="tt2-btn pri w" id="tjGo">Scegli le tue 5 carte</button>`);
+    $('#tjGo').addEventListener('click', async ()=>{
+      const code = $('#tjIn').value.trim().toUpperCase(); if(code.length < 4) return TT.toast('Il codice ha 5 lettere');
+      let items; try{ items = await myItems(); }catch(e){ return errToast(e); }
+      TT.pickDeck({title: 'Il tuo mazzo del torneo', sub: 'Lo userai per tutto il torneo. Nessuna carta in palio.', items, ok: 'Entra', back: ()=> tournJoinPage(code), onDone: async uids=>{
+        TT.loading('Entro nel torneo…');
+        try{ const r = await api('POST', '/api/tourn/join', {code, cards: uids}); TT.replaceTop(tournView, r.tourn.id, r.tourn); }
+        catch(e){ errToast(e); TT.back(); }
+      }});
+    });
+  }
+  async function tournView(id, pre){
+    tournOpen = id;
+    let t = pre; if(!t){ TT.loading('Carico il torneo…'); try{ t = (await api('GET', '/api/tourn/' + id)).tourn; }catch(e){ errToast(e); return TT.back(); } }
+    if(tournOpen !== id) return;
+    const RN = n=> ['Finale', 'Semifinale', 'Quarti di finale'][t.rounds.length - 1 - n] || 'Turno ' + (n + 1), mine = acct.id, isHost = t.host === mine;
+    const link = t.code ? SITE + '#tt=tourn:' + t.code + (server() ? ';s=' + encodeURIComponent(server()) : '') : '';
+    const pl = n=> n ? esc(n) : '<i class="mut">—</i>';
+    TT.screen('🏆 ' + t.name, `
+      <div class="tt2-row c" style="margin-bottom:6px">${TT.ruleChips(Object.assign({}, t.rules), '')}${t.rules.cap ? `<span class="tt2-chip t">Limite ${t.rules.cap} punti</span>` : ''}</div>
+      ${t.status === 'open' ? `<p style="text-align:center">Codice del torneo:</p><div class="tt2-code">${esc(t.code)}</div><div class="tt2-row c"><button class="tt2-btn" id="tvQr">Mostra il QR</button><button class="tt2-btn" id="tvSh">Invia il link</button></div>` : ''}
+      ${t.status === 'done' ? `<div class="tt2-tower-hd"><div style="font-size:2.6rem">🏆</div><div class="fl">${esc(t.championNick || '?')}</div><div class="mut">${t.champion === mine ? 'Sei il campione!' : 'è il campione del torneo'}</div></div>` : ''}
+      ${t.next ? `<button class="tt2-btn gold w" id="tvPlay" style="margin:8px 0">🎮 Gioca la tua partita</button>` : ''}
+      <h3>Giocatori (${t.players.length}/${t.size})</h3><div class="tt2-row" style="gap:6px">${t.players.map(p=> `<span class="tt2-chip${p.me ? ' on' : ''}">${p.id === t.host ? '👑 ' : ''}${esc(p.nick)}</span>`).join('')}</div>
+      ${t.rounds.length ? t.rounds.map((r, i)=> `<h3>${RN(i)}${t.status === 'run' && i === t.round ? ' <small class="mut">(in corso)</small>' : ''}</h3><div class="tt2-list">${r.map(m=> `<div class="tt2-item tn-m"><div class="tx"><span class="${m.w && m.w === m.a ? 'tn-w' : ''}">${pl(m.an)}</span> <span class="mut">contro</span> <span class="${m.w && m.w === m.b ? 'tn-w' : ''}">${pl(m.bn)}</span>${m.a && m.b ? '' : (m.a || m.b) && m.w ? ' <small class="mut">(passa il turno)</small>' : ''}</div><div class="rt">${m.sc ? esc(m.sc) : m.m && !m.w ? '⏳' : ''}</div></div>`).join('')}</div>`).join('') : '<p class="mut">Il tabellone si crea quando chi ha organizzato fa iniziare il torneo.</p>'}
+      <div class="tt2-row c" style="margin-top:12px;gap:8px">${t.status === 'open' && isHost ? `<button class="tt2-btn pri" id="tvGo" ${t.players.length < 3 ? 'disabled' : ''}>▶️ Inizia il torneo</button>` : ''}${t.status === 'open' ? `<button class="tt2-btn red" id="tvLv">${isHost ? 'Annulla il torneo' : 'Esci dal torneo'}</button>` : ''}<button class="tt2-btn" id="tvRf">🔄 Aggiorna</button></div>
+      ${t.status === 'open' && isHost && t.players.length < 3 ? '<p class="mut" style="text-align:center">Servono almeno 3 giocatori per iniziare.</p>' : ''}`);
+    if(link){ $('#tvQr').addEventListener('click', ()=> showQr('Torneo ' + t.code, link, t.code)); $('#tvSh').addEventListener('click', ()=> share('Entra nel mio torneo di Triple Triad «' + t.name + '»! Codice: ' + t.code, link)); }
+    const pb = $('#tvPlay'); if(pb) pb.addEventListener('click', ()=>{ TT.snd('click'); tournOpen = null; resumeMatch(t.next); });
+    const gb = $('#tvGo'); if(gb) gb.addEventListener('click', async ()=>{ if(!await TT.ask('Inizio il torneo con ' + t.players.length + ' giocatori? Dopo non può entrare più nessuno.', 'Inizia', 'Aspetta')) return; try{ const r = await api('POST', '/api/tourn/' + t.id + '/start'); TT.snd('combo'); tournView(t.id, r.tourn); }catch(e){ errToast(e); } });
+    const lb = $('#tvLv'); if(lb) lb.addEventListener('click', async ()=>{ if(!await TT.ask(isHost ? 'Annullo il torneo per tutti?' : 'Esci dal torneo?', 'Sì', 'No')) return; try{ await api('POST', '/api/tourn/' + t.id + '/leave'); tournOpen = null; TT.back(); }catch(e){ errToast(e); } });
+    $('#tvRf').addEventListener('click', ()=>{ TT.snd('click'); tournView(t.id); });
   }
 
   // ---------------------------------------------------------------- Custodi, carte, classifica, novità, account
@@ -468,7 +542,7 @@
     waiting = null; endShown = ''; cur = view; resetHist(); TT.ensureRoot(); if(me) TT.applyBack(me.cs);
     const you = view.you;
     board = TT.mountBoard({
-      state: view.state, me: you, names: namesOf(view), title: view.boss ? 'Custode: ' + view.players[1].nick : (view.mode === 'ranked' ? 'Sfida vera' : 'Amichevole'),
+      state: view.state, me: you, names: namesOf(view), title: view.boss ? 'Custode: ' + view.players[1].nick : (view.mode === 'ranked' ? 'Sfida vera' : view.mode === 'tourn' ? '🏆 Torneo' : 'Amichevole'),
       hidden: ()=> false, emotes: !view.boss, foil: u=> ((view.foil && view.foil[Math.floor(u / 5)] && view.foil[Math.floor(u / 5)][u % 5]) | 0),
       canPlay: (seat, st)=> !st.over && seat === you && cur && cur.status === 'active',
       onPlay: async (hi, cell)=>{ const r = await api('POST', '/api/match/' + cur.id + '/move', {hi, cell}); cur = r.match; settle(r.match); return {state: r.match.state, events: r.events}; },
@@ -527,7 +601,8 @@
     const gn = res.gain && res.gain[you], gnT = gn ? `<br><b style="color:#ffe27a">${gainText(gn)}</b>` : '';
     const sub = `${res.score[you]} a ${res.score[1 - you]}${gnT}${res.forfeit ? (won ? ' · avversario ritirato' : ' · abbandono o tempo scaduto') : ''}${res.round > 1 ? ' · dopo la morte improvvisa' : ''}${elo != null ? `<br>ELO ${elo >= 0 ? '+' : ''}${elo}` : ''}${v.boss && won && !res.reward ? '<br><small>Il premio di oggi l\'hai già ritirato: torna domani!</small>' : ''}${v.boss && !won && !draw ? '<br><small>Contro il Custode non perdi carte. Riprova!</small>' : ''}`;
     if(lost) { TT.snd('steal'); }
-    btns.push({label: '🎞️ Replay', fn: ()=> watchReplay(v)}, {label: v.boss ? 'Sfida ancora' : 'Rivincita', cls: 'pri', fn: ()=> rematch(v)}, {label: 'Esci', fn: ()=> leave()});
+    if(v.mode === 'tourn') btns.push({label: '🎞️ Replay', fn: ()=> watchReplay(v)}, {label: '🏆 Torna al torneo', cls: 'pri', fn: ()=>{ if(board){ board.destroy(); board = null; } cur = null; TT.onLeave = null; lobbyAt = 0; TT.go(tournPage); }});
+    else btns.push({label: '🎞️ Replay', fn: ()=> watchReplay(v)}, {label: v.boss ? 'Sfida ancora' : 'Rivincita', cls: 'pri', fn: ()=> rematch(v)}, {label: 'Esci', fn: ()=> leave()});
     board.showEnd({kind: draw ? 'draw' : won ? 'win' : 'lose', title: draw ? 'PAREGGIO' : won ? 'HAI VINTO!' : 'HAI PERSO', sub, cards, buttons: btns});
     TT.onlineBadge();
   }

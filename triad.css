@@ -344,3 +344,6 @@ html.tt2-open,html.tt2-open body{overflow:hidden !important}
 .sh-face{transform:rotateY(180deg)} .sh-face .ttc{width:100%} .sh-face small{display:block; margin-top:4px; font-size:.7rem} .sh-new{color:#7dffa3; font-weight:800}
 .sh-c.on .sh-back{transform:rotateY(-180deg)} .sh-c.on .sh-face{transform:rotateY(0)}
 @keyframes shW{0%,100%{transform:rotate(-1.5deg)} 50%{transform:rotate(1.5deg)}}
+
+/* tornei tra amici online (triad-online.js) */
+.tn-m .tx{font-size:.88rem} .tn-w{font-weight:900; color:#ffe27a}

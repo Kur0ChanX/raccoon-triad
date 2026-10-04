@@ -1,53 +1,62 @@
 // Espansioni (DLC) del Triple Triad: ogni espansione ha 30 carte (3 per livello) e si sblocca a un livello del giocatore.
-// Per aggiungerne una nuova: aggiungi qui un blocco, lancia `node tools/build-triad-cards.js` e poi `node tools/build-triad-art.js`; server e app la trovano da soli.
-// Formato carta: [nome, anno, piattaforma, genere]. NON cambiare i nomi dopo la pubblicazione (l'id deriva dal nome).
+// Come il set base: un PERSONAGGIO famoso per carta, riconoscibile anche da chi non è appassionato, mai doppioni con le 200 carte base.
+// Formato carta (uguale a tools/triad-cards-src.js): [personaggio, gioco, anno, piattaforma, genere, elemento o null, scena, id facoltativo].
+// L'id è lo slug del personaggio: NON cambiarlo dopo la pubblicazione. I lati li decide tools/build-triad-cards.js (--balance) e restano in triad-balance.json.
+// Le espansioni non aggiungono potenza: stessi livelli e stesse regole dei numeri del set base, solo personaggi nuovi.
+// Per aggiungerne una: un blocco qui, poi `node tools/build-triad-cards.js --balance 3000` e `node tools/build-triad-assets.js`.
+const RB = ['Pokémon Rosso e Blu', 1996, 'Game Boy', 'rpg'], OA = ['Pokémon Oro e Argento', 1999, 'Game Boy Color', 'rpg'];
+const MC = ['Minecraft', 2011, 'PC', 'sandbox'], BS = ['Brawl Stars', 2018, 'Mobile', 'mobile'], CR = ['Clash Royale', 2016, 'Mobile', 'mobile'], CC = ['Clash of Clans', 2012, 'Mobile', 'mobile'];
+const AB = ['Angry Birds', 2009, 'Mobile', 'mobile'], FN = ['Fortnite', 2017, 'PC', 'online'], PVZ = ['Plants vs. Zombies', 2009, 'PC', 'strat'];
+const SF = ['Street Fighter II', 1991, 'Arcade', 'fight'], MK = ['Mortal Kombat', 1992, 'Arcade', 'fight'], MK2 = ['Mortal Kombat II', 1993, 'Arcade', 'fight'], TK = ['Tekken 3', 1997, 'PS1', 'fight'];
+const FF7 = ['Final Fantasy VII', 1997, 'PS1', 'rpg'], FF9 = ['Final Fantasy IX', 2000, 'PS1', 'rpg'], FFX = ['Final Fantasy X', 2001, 'PS2', 'rpg'], KH = ['Kingdom Hearts', 2002, 'PS2', 'rpg'];
+const c = (chr, g, el, scene, id)=> [chr, g[0], g[1], g[2], g[3], el, scene].concat(id ? [id] : []);
 module.exports = [
-  {id: 'jrpg', name: 'Sogni JRPG', emoji: '🗡️', desc: 'I grandi classici dei giochi di ruolo giapponesi.', level: 1, cards: {
-    10: [['Final Fantasy IV', 1991, 'SNES', 'rpg'], ['Dragon Quest III', 1988, 'NES', 'rpg'], ['Chrono Cross', 1999, 'PS1', 'rpg']],
-    9: [['Final Fantasy V', 1992, 'SNES', 'rpg'], ['Dragon Quest IV', 1990, 'NES', 'rpg'], ['Suikoden II', 1998, 'PS1', 'rpg']],
-    8: [['EarthBound', 1994, 'SNES', 'rpg'], ['Xenogears', 1998, 'PS1', 'rpg'], ['Tales of Symphonia', 2003, 'GameCube', 'rpg']],
-    7: [['Final Fantasy XII', 2006, 'PS2', 'rpg'], ['Secret of Mana', 1993, 'SNES', 'rpg'], ['Valkyrie Profile', 1999, 'PS1', 'rpg']],
-    6: [['Ni no Kuni', 2011, 'PS3', 'rpg'], ['Octopath Traveler', 2018, 'Switch', 'rpg'], ['Tales of Vesperia', 2008, 'Xbox 360', 'rpg']],
-    5: [['Final Fantasy XV', 2016, 'PS4', 'rpg'], ['Bravely Default', 2012, '3DS', 'rpg'], ['Dragon Quest Builders 2', 2018, 'Switch', 'sandbox']],
-    4: [['Lost Odyssey', 2007, 'Xbox 360', 'rpg'], ['Star Ocean: The Second Story', 1998, 'PS1', 'rpg'], ['Grandia', 1997, 'Saturn', 'rpg']],
-    3: [['Legend of Dragoon', 1999, 'PS1', 'rpg'], ['Breath of Fire III', 1997, 'PS1', 'rpg'], ['Vagrant Story', 2000, 'PS1', 'rpg']],
-    2: [['Final Fantasy Mystic Quest', 1992, 'SNES', 'rpg'], ['Pokémon Mystery Dungeon', 2005, 'DS', 'rpg'], ['Digimon World', 1999, 'PS1', 'rpg']],
-    1: [['Final Fantasy Crystal Chronicles', 2003, 'GameCube', 'rpg'], ['Pokémon Pinball', 1999, 'Game Boy Color', 'arcade'], ['Final Fantasy Adventure', 1991, 'Game Boy', 'rpg']]
+  {id: 'pokemon', name: 'Mondo Pokémon', emoji: '⚡', desc: 'I Pokémon più amati di sempre.', level: 1, cards: {
+    1: [c('Weedle', RB, 'veleno', 'un piccolo bruco giallo con il pungiglione sulla testa, tra le foglie'), c('Metapod', RB, null, 'un bozzolo verde immobile appeso a un ramo'), c('Oddish', RB, 'veleno', 'un bulbo blu con le foglie in testa che cammina di notte')],
+    2: [c('Poliwag', RB, 'acqua', 'un girino blu con la spirale sulla pancia in uno stagno'), c('Abra', RB, 'sacro', 'un Pokémon giallo che dorme seduto, pronto a teletrasportarsi'), c('Clefairy', RB, 'sacro', 'un Pokémon rosa che balla sotto la luna piena')],
+    3: [c('Vulpix', RB, 'fuoco', 'una volpe rossa con sei code arricciate'), c('Growlithe', RB, 'fuoco', 'un cucciolo arancione a strisce nere che abbaia fiero'), c('Cubone', RB, 'terra', 'un piccolo Pokémon con un teschio come casco e un osso in mano')],
+    4: [c('Machop', RB, 'terra', 'un piccolo lottatore grigio che mostra i muscoli'), c('Slowpoke', RB, 'acqua', 'un Pokémon rosa che pesca con la coda, distratto'), c('Togepi', OA, 'sacro', 'un pulcino che spunta da un guscio d\'uovo a triangoli colorati')],
+    5: [c('Onix', RB, 'terra', 'un enorme serpente di rocce che esce dal terreno di una caverna'), c('Lapras', RB, 'ghiaccio', 'un Pokémon blu con il guscio che nuota tra le onde'), c('Hitmonlee', RB, null, 'un lottatore marrone che sferra un calcio lunghissimo')],
+    6: [c('Arcanine', RB, 'fuoco', 'un grande cane leggendario arancione che corre tra le fiamme'), c('Alakazam', RB, 'sacro', 'un Pokémon con due cucchiai in mano e i baffi lunghi'), c('Machamp', RB, 'terra', 'un lottatore con quattro braccia in posa da combattimento')],
+    7: [c('Gyarados', RB, 'acqua', 'un drago marino blu furioso che si alza dalle onde'), c('Blastoise', RB, 'acqua', 'una tartaruga con due cannoni d\'acqua sul guscio'), c('Venusaur', RB, 'veleno', 'un grande Pokémon con un fiore enorme sulla schiena')],
+    8: [c('Dragonite', RB, 'vento', 'un drago arancione e gentile che vola sopra il mare'), c('Articuno', RB, 'ghiaccio', 'un uccello leggendario di ghiaccio con la coda lunghissima'), c('Zapdos', RB, 'tuono', 'un uccello leggendario giallo avvolto dai fulmini')],
+    9: [c('Moltres', RB, 'fuoco', 'un uccello leggendario di fuoco con le ali in fiamme'), c('Lugia', OA, 'vento', 'un grande Pokémon bianco e argento che vola sulla tempesta in mare'), c('Ho-Oh', OA, 'fuoco', 'una fenice dai colori dell\'arcobaleno che vola davanti alla torre')],
+    10: [c('Mew', RB, 'sacro', 'un piccolo Pokémon rosa che fluttua in una bolla, misterioso'), c('Rayquaza', ['Pokémon Smeraldo', 2004, 'Game Boy Advance', 'rpg'], 'vento', 'un drago verde lunghissimo che vola sopra le nuvole'), c('Greninja', ['Pokémon X e Y', 2013, '3DS', 'rpg'], 'acqua', 'una rana ninja blu con una sciarpa che è la sua lingua, con stelle d\'acqua')]
   }},
-  {id: 'retro', name: 'Arcade & Retro', emoji: '🕹️', desc: 'Gettoni, sale giochi e console di una volta.', level: 5, cards: {
-    10: [['Sonic the Hedgehog 2', 1992, 'Mega Drive', 'plat'], ['Super Mario Kart', 1992, 'SNES', 'race'], ['Mega Man X', 1993, 'SNES', 'plat']],
-    9: [['GoldenEye 007', 1997, 'N64', 'fps'], ['Earthworm Jim', 1994, 'Mega Drive', 'plat'], ['Gradius', 1985, 'Arcade', 'arcade']],
-    8: [['Daytona USA', 1994, 'Arcade', 'race'], ['Virtua Fighter 2', 1994, 'Arcade', 'fight'], ['Ridge Racer', 1993, 'PS1', 'race']],
-    7: [['Sonic Mania', 2017, 'PC', 'plat'], ['Strider', 1989, 'Arcade', 'act'], ['Pilotwings 64', 1996, 'N64', 'sport']],
-    6: [['Rampage', 1986, 'Arcade', 'arcade'], ['NBA Jam', 1993, 'Arcade', 'sport'], ['Tony Hawk\'s Pro Skater 2', 2000, 'PS1', 'sport']],
-    5: [['Pro Evolution Soccer 6', 2006, 'PS2', 'sport'], ['Time Pilot', 1982, 'Arcade', 'arcade'], ['Gauntlet', 1985, 'Arcade', 'arcade']],
-    4: [['Track & Field', 1983, 'Arcade', 'sport'], ['Sonic Adventure 2', 2001, 'Dreamcast', 'plat'], ['Marble Madness', 1984, 'Arcade', 'arcade']],
-    3: [['Space Harrier', 1985, 'Arcade', 'arcade'], ['Elevator Action', 1983, 'Arcade', 'arcade'], ['Pengo', 1982, 'Arcade', 'arcade']],
-    2: [['Zaxxon', 1982, 'Arcade', 'arcade'], ['Tempest', 1981, 'Arcade', 'arcade'], ['Robotron 2084', 1982, 'Arcade', 'arcade']],
-    1: [['Tapper', 1983, 'Arcade', 'arcade'], ['Popeye', 1982, 'Arcade', 'arcade'], ['Mappy', 1983, 'Arcade', 'arcade']]
+  {id: 'ragazzi', name: 'Mondi dei Ragazzi', emoji: '🧱', desc: 'Minecraft, Brawl Stars, Clash, Angry Birds e Fortnite.', level: 5, cards: {
+    1: [c('Il Maiale di Minecraft', MC, null, 'un maialino rosa a cubetti in un prato di Minecraft'), c('L\'Axolotl', MC, 'acqua', 'un axolotl rosa che nuota in una grotta lussureggiante di Minecraft'), c('Il Goblin', CR, 'veleno', 'un goblin verde che corre con un pugnale nell\'arena di Clash Royale')],
+    2: [c('Il Ragno di Minecraft', MC, 'veleno', 'un ragno nero a cubetti con gli occhi rossi che si arrampica su un muro'), c('Bomb', AB, 'fuoco', 'l\'uccello nero degli Angry Birds con la miccia accesa sulla testa'), c('La Noce', PVZ, 'terra', 'una noce con gli occhi preoccupati che fa da muro contro gli zombie')],
+    3: [c('Shelly', BS, null, 'una ragazza con il fucile e il cappello viola in un\'arena di Brawl Stars'), c('Colt', BS, null, 'un pistolero con il ciuffo e due pistole in Brawl Stars'), c('Matilda', AB, 'sacro', 'l\'uccello bianco degli Angry Birds che lascia cadere un uovo')],
+    4: [c('Il Gigante', CR, 'terra', 'un gigante biondo enorme che avanza con i pugni stretti verso una torre'), c('El Primo', BS, 'fuoco', 'un lottatore di lucha libre con la maschera che salta col pugno in fiamme'), c('Il Ghast', MC, 'fuoco', 'un grande fantasma bianco che piange e spara palle di fuoco nel Nether')],
+    5: [c('Il Golem di Ferro', MC, 'terra', 'un golem di ferro con i fiori addosso che protegge un villaggio'), c('Il Domatore di Cinghiali', CR, 'terra', 'un guerriero a torso nudo che corre in groppa a un cinghiale col martello'), c('Spike', BS, 'veleno', 'un piccolo cactus sorridente che lancia granate di spine')],
+    6: [c('Il Re Maiale', AB, null, 'il grasso re dei maiali verdi con la corona, sul suo castello di legno'), c('Il P.E.K.K.A.', CR, 'tuono', 'un cavaliere in armatura viola con la spada e gli occhi luminosi'), c('Il Piglin', MC, 'fuoco', 'un piglin con la spada d\'oro nel Nether pieno di lava')],
+    7: [c('L\'Impostore', ['Among Us', 2018, 'Mobile', 'online'], 'veleno', 'un personaggio rosso di Among Us con il coltello dietro la schiena in un corridoio buio'), c('Il Blaze', MC, 'fuoco', 'un blaze giallo con le aste che girano, in una fortezza del Nether'), c('Leon', BS, 'vento', 'un ragazzino con il cappuccio da camaleonte che diventa invisibile')],
+    8: [c('Il Wither', MC, 'veleno', 'un mostro nero a tre teste che vola sputando teschi'), c('Il Re dei Barbari', CC, 'fuoco', 'un barbaro con la corona e la spada che guida l\'attacco al villaggio'), c('Fishstick', FN, 'acqua', 'un bastoncino di pesce arancione con i dentoni che balla in Fortnite')],
+    9: [c('Il Warden', MC, 'terra', 'una creatura cieca enorme che si risveglia nel buio profondo'), c('La Regina degli Arcieri', CC, 'vento', 'una regina con la maschera e la balestra viola'), c('Raven', FN, 'veleno', 'un guerriero nero con la testa di corvo e gli occhi viola in Fortnite')],
+    10: [c('L\'Ender Drago', MC, 'vento', 'un enorme drago nero con gli occhi viola che vola nell\'End'), c('Midas', FN, 'sacro', 'un agente elegante che trasforma in oro tutto quello che tocca'), c('Il Dottor Zomboss', PVZ, 'veleno', 'lo scienziato zombie che pilota un robot gigante')]
   }},
-  {id: 'horror', name: 'Notte Horror', emoji: '👻', desc: 'Per chi gioca con la luce spenta.', level: 10, cards: {
-    10: [['Resident Evil', 1996, 'PS1', 'horror'], ['Silent Hill', 1999, 'PS1', 'horror'], ['Alien: Isolation', 2014, 'PC', 'horror']],
-    9: [['Amnesia: The Dark Descent', 2010, 'PC', 'horror'], ['Resident Evil 7', 2017, 'PC', 'horror'], ['Dead Space 2', 2011, 'PC', 'horror']],
-    8: [['Alan Wake', 2010, 'Xbox 360', 'horror'], ['Outlast', 2013, 'PC', 'horror'], ['Silent Hill 3', 2003, 'PS2', 'horror']],
-    7: [['Fatal Frame', 2001, 'PS2', 'horror'], ['Layers of Fear', 2016, 'PC', 'horror'], ['Until Dawn', 2015, 'PS4', 'horror']],
-    6: [['Clock Tower', 1995, 'SNES', 'horror'], ['The Evil Within', 2014, 'PC', 'horror'], ['Little Nightmares', 2017, 'PC', 'horror']],
-    5: [['Alone in the Dark', 1992, 'PC', 'horror'], ['Dino Crisis', 1999, 'PS1', 'horror'], ['Condemned: Criminal Origins', 2005, 'Xbox 360', 'horror']],
-    4: [['Resident Evil Village', 2021, 'PC', 'horror'], ['Phasmophobia', 2020, 'PC', 'horror'], ['Dead by Daylight', 2016, 'PC', 'horror']],
-    3: [['Poppy Playtime', 2021, 'PC', 'horror'], ['Bendy and the Ink Machine', 2017, 'PC', 'horror'], ['Slender: The Eight Pages', 2012, 'PC', 'horror']],
-    2: [['Haunting Ground', 2005, 'PS2', 'horror'], ['Sweet Home', 1989, 'NES', 'horror'], ['Luigi\'s Mansion', 2001, 'GameCube', 'horror']],
-    1: [['Ghostbusters', 1984, 'PC', 'arcade'], ['Splatterhouse', 1988, 'Arcade', 'act'], ['Night Trap', 1992, 'PC', 'horror']]
+  {id: 'ring', name: 'Re del Ring', emoji: '🥊', desc: 'I lottatori di Street Fighter, Mortal Kombat e Tekken.', level: 10, cards: {
+    1: [c('Dan Hibiki', ['Street Fighter Alpha', 1995, 'Arcade', 'fight'], null, 'un lottatore in tuta rosa che fa la posa di vittoria a sproposito'), c('Roger Jr.', TK, null, 'un canguro con i guantoni da boxe sul ring'), c('Kuma', TK, 'terra', 'un grosso orso bruno che combatte in piedi')],
+    2: [c('E. Honda', SF, 'acqua', 'un lottatore di sumo che sferra cento schiaffi davanti al bagno giapponese'), c('Balrog', SF, null, 'un pugile con i guantoni blu a Las Vegas'), c('Paul Phoenix', TK, 'fuoco', 'un lottatore con i capelli altissimi biondi che tira un pugno')],
+    3: [c('Sonya Blade', MK, null, 'una soldatessa bionda con la fascia in testa, pronta a combattere'), c('Jax', MK2, 'terra', 'un soldato con le braccia di metallo che colpisce il terreno'), c('Lei Wulong', TK, null, 'un poliziotto di Hong Kong in posa da kung fu')],
+    4: [c('Vega', SF, null, 'un lottatore mascherato con l\'artiglio che salta dalla gabbia'), c('Kung Lao', MK2, 'vento', 'un monaco che lancia il suo cappello affilato come un disco'), c('King', TK, null, 'un lottatore con la maschera da giaguaro sul ring di wrestling')],
+    5: [c('Sakura', ['Street Fighter Alpha 2', 1996, 'Arcade', 'fight'], 'fuoco', 'una studentessa con la fascia bianca che lancia una piccola onda di energia'), c('Kitana', MK2, 'vento', 'una principessa mascherata in blu con due ventagli d\'acciaio'), c('Eddy Gordo', TK, null, 'un lottatore di capoeira che gira sulle mani')],
+    6: [c('Liu Kang', MK, 'fuoco', 'un monaco Shaolin che tira un calcio volante infuocato'), c('Nina Williams', TK, null, 'un\'assassina bionda in tuta viola che blocca il braccio'), c('Yoshimitsu', TK, 'vento', 'un samurai con la maschera e la spada che gira come un\'elica')],
+    7: [c('Sagat', SF, 'fuoco', 'un gigante della thai boxe con la benda sull\'occhio che lancia un Tiger Shot'), c('Mileena', MK2, 'veleno', 'una guerriera in viola con la maschera e i pugnali sai'), c('Hwoarang', TK, null, 'un ragazzo coi capelli rossi che sferra un calcio altissimo')],
+    8: [c('Goro', MK, 'terra', 'un guerriero gigante con quattro braccia che ruggisce'), c('Shang Tsung', MK, 'veleno', 'uno stregone che ruba le anime e cambia forma'), c('Kano', MK, 'fuoco', 'un mercenario con l\'occhio laser rosso e il coltello')],
+    9: [c('M. Bison', SF, 'veleno', 'il dittatore col cappello rosso e il mantello avvolto dal Psycho Power'), c('Kazuya Mishima', ['Tekken', 1994, 'Arcade', 'fight'], 'tuono', 'un lottatore con la cicatrice sul petto avvolto da fulmini viola'), c('Terry Bogard', ['Fatal Fury', 1991, 'Arcade', 'fight'], 'terra', 'un lottatore col cappellino e la giacca rossa che colpisce il terreno')],
+    10: [c('Akuma', ['Super Street Fighter II Turbo', 1994, 'Arcade', 'fight'], 'fuoco', 'un demone del karate con i capelli rossi e la scritta sulla schiena'), c('Shao Kahn', MK2, 'terra', 'l\'imperatore con il teschio come elmo e il martello da guerra'), c('Heihachi Mishima', TK, 'tuono', 'un vecchio lottatore coi capelli a punte grigie che scatena i fulmini')]
   }},
-  {id: 'indie', name: 'Indie & Cult', emoji: '🌱', desc: 'Piccoli studi, grandi idee.', level: 15, cards: {
-    10: [['Super Meat Boy', 2010, 'PC', 'indie'], ['Braid', 2008, 'PC', 'indie'], ['The Binding of Isaac', 2011, 'PC', 'indie']],
-    9: [['Disco Elysium', 2019, 'PC', 'rpg'], ['Outer Wilds', 2019, 'PC', 'indie'], ['Slay the Spire', 2019, 'PC', 'indie']],
-    8: [['Return of the Obra Dinn', 2018, 'PC', 'indie'], ['Baba Is You', 2019, 'PC', 'puzzle'], ['Dead Cells', 2018, 'PC', 'indie']],
-    7: [['Katana ZERO', 2019, 'PC', 'indie'], ['Hotline Miami', 2012, 'PC', 'indie'], ['Untitled Goose Game', 2019, 'PC', 'indie']],
-    6: [['RimWorld', 2018, 'PC', 'strat'], ['Factorio', 2016, 'PC', 'strat'], ['Don\'t Starve', 2013, 'PC', 'indie']],
-    5: [['Firewatch', 2016, 'PC', 'indie'], ['Gris', 2018, 'PC', 'indie'], ['A Short Hike', 2019, 'PC', 'indie']],
-    4: [['Spelunky', 2012, 'PC', 'indie'], ['FTL: Faster Than Light', 2012, 'PC', 'strat'], ['Darkest Dungeon', 2016, 'PC', 'rpg']],
-    3: [['Vampire Survivors', 2022, 'PC', 'indie'], ['Getting Over It', 2017, 'PC', 'indie'], ['Cult of the Lamb', 2022, 'PC', 'indie']],
-    2: [['Kerbal Space Program', 2015, 'PC', 'sandbox'], ['Superhot', 2016, 'PC', 'fps'], ['Human: Fall Flat', 2016, 'PC', 'puzzle']],
-    1: [['Cookie Clicker', 2013, 'PC', 'indie'], ['Minit', 2018, 'PC', 'indie'], ['Thomas Was Alone', 2012, 'PC', 'puzzle']]
+  {id: 'fantasy', name: 'Leggende Fantasy', emoji: '🗡️', desc: 'Final Fantasy, Zelda, Kingdom Hearts e i grandi mondi fantasy.', level: 15, cards: {
+    1: [c('Lo Slime di Dragon Quest', ['Dragon Quest', 1986, 'NES', 'rpg'], 'acqua', 'una goccia blu sorridente che saltella nell\'erba', 'slime-dragon-quest'), c('Il Cactuar', FF7, 'terra', 'un cactus verde che corre nel deserto con le braccia alzate'), c('La Bomba', FF7, 'fuoco', 'una palla di fuoco con la faccia arrabbiata che si gonfia')],
+    2: [c('Il Tonberry', FF7, 'acqua', 'una lucertolina verde con la lanterna e un coltellino che avanza lentamente'), c('Lo Heartless Ombra', KH, 'veleno', 'un piccolo mostro nero con gli occhi gialli che esce dal pavimento'), c('Il Moblin', ['The Legend of Zelda: Breath of the Wild', 2017, 'Switch', 'act'], 'terra', 'un grosso mostro dal muso di cinghiale con la lancia')],
+    3: [c('Vivi', FF9, 'fuoco', 'un piccolo mago col cappello a punta e gli occhi gialli che lancia una fiammata'), c('Red XIII', FF7, 'fuoco', 'un leone rosso con la coda di fuoco e il numero XIII tatuato'), c('Epona', ['The Legend of Zelda: Ocarina of Time', 1998, 'N64', 'act'], 'vento', 'una cavalla marrone con la criniera bianca che galoppa nella prateria')],
+    4: [c('Barret', FF7, 'terra', 'un uomo grande con il braccio-mitragliatrice tra le rotaie'), c('Paperino', KH, 'sacro', 'Paperino da mago con il bastone che lancia un incantesimo'), c('Pippo', KH, 'terra', 'Pippo da cavaliere con il grande scudo rotondo')],
+    5: [c('Aerith', FF7, 'sacro', 'una ragazza con il fiocco rosa che prega tra i fiori in una chiesa'), c('Yuna', FFX, 'sacro', 'un\'invocatrice con il bastone che danza sull\'acqua'), c('Zidane', FF9, 'vento', 'un ladro biondo con la coda che salta con due pugnali')],
+    6: [c('Midna', ['The Legend of Zelda: Twilight Princess', 2006, 'Wii', 'act'], 'veleno', 'una piccola creatura del crepuscolo con l\'elmo, sorridente e furba'), c('Re Topolino', KH, 'sacro', 'Topolino re con il mantello e il Keyblade dorato'), c('Il Lynel', ['The Legend of Zelda: Breath of the Wild', 2017, 'Switch', 'act'], 'fuoco', 'un centauro leone con la criniera rossa e la spada')],
+    7: [c('Lightning', ['Final Fantasy XIII', 2009, 'PS3', 'rpg'], 'tuono', 'una soldatessa con i capelli rosa e la spada-pistola tra i fulmini'), c('Noctis', ['Final Fantasy XV', 2016, 'PS4', 'rpg'], 'sacro', 'un principe vestito di nero circondato da spade di luce'), c('Auron', FFX, 'fuoco', 'un guerriero col cappotto rosso e la grande spada sulla spalla')],
+    8: [c('Zack Fair', ['Crisis Core: Final Fantasy VII', 2007, 'PSP', 'rpg'], 'tuono', 'un soldato coi capelli neri a punte e la grande spada'), c('Riku', KH, 'veleno', 'un ragazzo coi capelli argento e il Keyblade a forma d\'ala'), c('Vincent Valentine', FF7, 'fuoco', 'un uomo dal mantello rosso con la pistola e l\'artiglio d\'oro')],
+    9: [c('Shiva', FF7, 'ghiaccio', 'la regina dei ghiacci che fa nascere un diamante di ghiaccio'), c('Ifrit', FF7, 'fuoco', 'un demone con le corna avvolto dalle fiamme che lancia una meteora di fuoco'), c('Skull Kid', ['The Legend of Zelda: Majora\'s Mask', 2000, 'N64', 'act'], 'veleno', 'un folletto che indossa una maschera a forma di cuore con gli occhi gialli')],
+    10: [c('Bahamut', FF7, 'fuoco', 'il re dei draghi che spara un raggio di energia dall\'alto del cielo'), c('Ganon Calamità', ['The Legend of Zelda: Breath of the Wild', 2017, 'Switch', 'act'], 'veleno', 'un mostro di malvagità rossa e nera attorcigliato attorno al castello di Hyrule'), c('Malenia', ['Elden Ring', 2022, 'PC', 'act'], 'veleno', 'una guerriera con l\'elmo alato e la protesi di spada che fiorisce di rosso')]
   }}
 ];

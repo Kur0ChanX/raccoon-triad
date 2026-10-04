@@ -6,6 +6,7 @@ import Core from '../../triad-core.js';
 import CARDS from '../../triad-cards.js';
 import EXPD from '../../triad-exp.js';
 import { makeEconomy, lvOf } from './economy.js';
+import { makeTourn } from './tourn.js';
 
 const CARD = {}, BY_LV = {}, BY_SET = {}, BASE = [], ALLC = [], EXPSETS = EXPD.sets;   // BY_LV = carte base per livello; BY_SET[espansione][livello]
 CARDS.concat(EXPD.cards).forEach(c=>{
@@ -87,6 +88,7 @@ export class Hub extends DurableObject {
     q(`CREATE TABLE IF NOT EXISTS season_top(season TEXT, pos INTEGER, acc TEXT, nick TEXT, elo INTEGER, PRIMARY KEY(season, pos))`);
     q(`CREATE TABLE IF NOT EXISTS claims(acc TEXT, key TEXT, at INTEGER, PRIMARY KEY(acc, key))`);
     q(`CREATE TABLE IF NOT EXISTS cosm(acc TEXT, id TEXT, at INTEGER, how TEXT, PRIMARY KEY(acc, id))`);
+    this.tournMigrate();
     const addCol = (t, c, def)=>{ if(!this.rows('PRAGMA table_info(' + t + ')').some(r=> r.name === c)) this.run('ALTER TABLE ' + t + ' ADD COLUMN ' + c + ' ' + def); };
     addCol('accounts', 'coins', 'INTEGER DEFAULT 150'); addCol('accounts', 'dust', 'INTEGER DEFAULT 0'); addCol('accounts', 'xp', 'INTEGER DEFAULT 0'); addCol('accounts', 'inv', "TEXT DEFAULT '{}'");
     addCol('accounts', 'pity', "TEXT DEFAULT '{}'"); addCol('accounts', 'steals', 'INTEGER DEFAULT 0'); addCol('accounts', 'packs_n', 'INTEGER DEFAULT 0'); addCol('cards', 'foil', 'INTEGER DEFAULT 0');
@@ -169,6 +171,12 @@ export class Hub extends DurableObject {
     if(m === 'POST' && id(/^\/api\/challenge\/([a-z0-9]+)\/(?:decline|cancel)$/)) return this.challengeEnd(a, id(/^\/api\/challenge\/([a-z0-9]+)\/(?:decline|cancel)$/));
     if(m === 'POST' && p === '/api/room/join') return this.roomJoin(a, body);
     if(m === 'POST' && p === '/api/boss/start') return this.bossStart(a, body);
+    if(m === 'GET' && p === '/api/tourns') return this.tournList(a);
+    if(m === 'POST' && p === '/api/tourn/create') return this.tournCreate(a, body);
+    if(m === 'POST' && p === '/api/tourn/join') return this.tournJoin(a, body);
+    if(m === 'GET' && id(/^\/api\/tourn\/([a-z0-9]+)$/)) return this.tournOne(a, id(/^\/api\/tourn\/([a-z0-9]+)$/));
+    if(m === 'POST' && id(/^\/api\/tourn\/([a-z0-9]+)\/start$/)) return this.tournStart(a, id(/^\/api\/tourn\/([a-z0-9]+)\/start$/));
+    if(m === 'POST' && id(/^\/api\/tourn\/([a-z0-9]+)\/leave$/)) return this.tournLeave(a, id(/^\/api\/tourn\/([a-z0-9]+)\/leave$/));
     if(m === 'GET' && p === '/api/matches') return this.myMatches(a);
     if(m === 'GET' && id(/^\/api\/match\/([a-z0-9]+)$/)) return this.matchGet(a, id(/^\/api\/match\/([a-z0-9]+)$/), url.searchParams.get('ver'));
     if(m === 'POST' && id(/^\/api\/match\/([a-z0-9]+)\/move$/)) return this.matchMove(a, id(/^\/api\/match\/([a-z0-9]+)\/move$/), body);
@@ -627,6 +635,7 @@ export class Hub extends DurableObject {
     this.unlock(tag);
     const mm = this.saveMatch(m, st, {status: 'done', result: JSON.stringify(out)});
     players.forEach(p=> this.checkAch(p));
+    if(mode === 'tourn') this.tournOnMatch(mm, st);                 // torneo tra amici: avanza il tabellone (tourn.js)
     return mm;
   }
   // applica gli scambi: `tr` = [{u, id, from, to}] (u = indice carta nella partita 0-9)
@@ -694,3 +703,4 @@ export class Hub extends DurableObject {
   }
 }
 Object.assign(Hub.prototype, makeEconomy({CARD, BASE, EXPSETS, ALLC, fail, rint}));
+Object.assign(Hub.prototype, makeTourn({CARD, Core, fail, hex, rcode, rint}));

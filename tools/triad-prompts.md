@@ -1009,602 +1009,602 @@ Facoltativo: `triad-img/<id>-full.webp` = illustrazione alternativa "a tutta car
 - Personaggio: **Diablo** · Scena: il Signore del Terrore tra le fiamme dell'inferno
 - Prompt: `Diablo from the video game "Diablo II" (2000), il Signore del Terrore tra le fiamme dell'inferno. Palette: warm reds and oranges. Collectible card key art, poster style.`
 
-### Final Fantasy Crystal Chronicles — livello 1
-- id: `final-fantasy-crystal-chronicles`
-- Personaggio: **Il Clavat e il cristallo** · Scena: i piccoli eroi con la caravan e il cristallo
-- Prompt: `Il Clavat e il cristallo from the video game "Final Fantasy Crystal Chronicles" (2003), i piccoli eroi con la caravan e il cristallo. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Pokémon Pinball — livello 1
-- id: `pokemon-pinball`
-- Personaggio: **Pikachu nel flipper** · Scena: Pikachu e una Poké Ball sul tavolo da flipper
-- Prompt: `Pikachu nel flipper from the video game "Pokémon Pinball" (1999), Pikachu e una Poké Ball sul tavolo da flipper. Palette: neon on black. Collectible card key art, poster style.`
-
-### Final Fantasy Adventure — livello 1
-- id: `final-fantasy-adventure`
-- Personaggio: **L'Eroe e Sumo** · Scena: un giovane guerriero con la spada e la ragazza
-- Prompt: `L'Eroe e Sumo from the video game "Final Fantasy Adventure" (1991), un giovane guerriero con la spada e la ragazza. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Final Fantasy Mystic Quest — livello 2
-- id: `final-fantasy-mystic-quest`
-- Personaggio: **Benjamin** · Scena: il giovane eroe con la spada davanti alla montagna del cristallo
-- Prompt: `Benjamin from the video game "Final Fantasy Mystic Quest" (1992), il giovane eroe con la spada davanti alla montagna del cristallo. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Pokémon Mystery Dungeon — livello 2
-- id: `pokemon-mystery-dungeon`
-- Personaggio: **Pikachu esploratore** · Scena: un Pokémon e il compagno in un dungeon misterioso
-- Prompt: `Pikachu esploratore from the video game "Pokémon Mystery Dungeon" (2005), un Pokémon e il compagno in un dungeon misterioso. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Digimon World — livello 2
-- id: `digimon-world`
-- Personaggio: **Agumon** · Scena: il piccolo drago arancione in una città di mostri digitali
-- Prompt: `Agumon from the video game "Digimon World" (1999), il piccolo drago arancione in una città di mostri digitali. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Legend of Dragoon — livello 3
-- id: `legend-of-dragoon`
-- Personaggio: **Dart** · Scena: Dart con la spada in armatura da dragoon
-- Prompt: `Dart from the video game "Legend of Dragoon" (1999), Dart con la spada in armatura da dragoon. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Breath of Fire III — livello 3
-- id: `breath-of-fire-iii`
-- Personaggio: **Ryu** · Scena: il ragazzo drago che si trasforma davanti a un villaggio
-- Prompt: `Ryu from the video game "Breath of Fire III" (1997), il ragazzo drago che si trasforma davanti a un villaggio. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Vagrant Story — livello 3
-- id: `vagrant-story`
-- Personaggio: **Ashley Riot** · Scena: il cavaliere con l'armatura nera in una città in rovina
-- Prompt: `Ashley Riot from the video game "Vagrant Story" (2000), il cavaliere con l'armatura nera in una città in rovina. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Lost Odyssey — livello 4
-- id: `lost-odyssey`
-- Personaggio: **Kaim Argonar** · Scena: l'immortale con la spada in un campo di battaglia
-- Prompt: `Kaim Argonar from the video game "Lost Odyssey" (2007), l'immortale con la spada in un campo di battaglia. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Star Ocean: The Second Story — livello 4
-- id: `star-ocean-the-second-story`
-- Personaggio: **Claude e Rena** · Scena: i due protagonisti davanti a un mondo alieno
-- Prompt: `Claude e Rena from the video game "Star Ocean: The Second Story" (1998), i due protagonisti davanti a un mondo alieno. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Grandia — livello 4
-- id: `grandia`
-- Personaggio: **Justin** · Scena: il giovane avventuriero con occhiali sopra un dirigibile
-- Prompt: `Justin from the video game "Grandia" (1997), il giovane avventuriero con occhiali sopra un dirigibile. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Final Fantasy XV — livello 5
-- id: `final-fantasy-xv`
-- Personaggio: **Noctis e gli amici** · Scena: il principe e i tre amici in auto sul viale
-- Prompt: `Noctis e gli amici from the video game "Final Fantasy XV" (2016), il principe e i tre amici in auto sul viale. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Bravely Default — livello 5
-- id: `bravely-default`
-- Personaggio: **Tiz e Agnès** · Scena: l'eroe e la vestale davanti al cristallo
-- Prompt: `Tiz e Agnès from the video game "Bravely Default" (2012), l'eroe e la vestale davanti al cristallo. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Dragon Quest Builders 2 — livello 5
-- id: `dragon-quest-builders-2`
-- Personaggio: **Il Costruttore** · Scena: il costruttore col martello e uno slime accanto ai cubi
-- Prompt: `Il Costruttore from the video game "Dragon Quest Builders 2" (2018), il costruttore col martello e uno slime accanto ai cubi. Palette: blocky bright biomes. Collectible card key art, poster style.`
-
-### Ni no Kuni — livello 6
-- id: `ni-no-kuni`
-- Personaggio: **Oliver e Drippy** · Scena: il ragazzo con il mago e il folletto in un mondo fiabesco
-- Prompt: `Oliver e Drippy from the video game "Ni no Kuni" (2011), il ragazzo con il mago e il folletto in un mondo fiabesco. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Octopath Traveler — livello 6
-- id: `octopath-traveler`
-- Personaggio: **I otto viaggiatori** · Scena: gli otto protagonisti in stile HD-2D
-- Prompt: `I otto viaggiatori from the video game "Octopath Traveler" (2018), gli otto protagonisti in stile HD-2D. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Tales of Vesperia — livello 6
-- id: `tales-of-vesperia`
-- Personaggio: **Yuri Lowell** · Scena: l'eroe col cane Repede in un campo di battaglia
-- Prompt: `Yuri Lowell from the video game "Tales of Vesperia" (2008), l'eroe col cane Repede in un campo di battaglia. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Final Fantasy XII — livello 7
-- id: `final-fantasy-xii`
-- Personaggio: **Vaan e Ashe** · Scena: il ragazzo e la principessa con un dirigibile
-- Prompt: `Vaan e Ashe from the video game "Final Fantasy XII" (2006), il ragazzo e la principessa con un dirigibile. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Secret of Mana — livello 7
-- id: `secret-of-mana`
-- Personaggio: **Randi, Purim e Popoi** · Scena: il trio con la spada di mana
-- Prompt: `Randi, Purim e Popoi from the video game "Secret of Mana" (1993), il trio con la spada di mana. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Valkyrie Profile — livello 7
-- id: `valkyrie-profile`
-- Personaggio: **Lenneth** · Scena: la valchiria con l'armatura d'argento tra le nuvole
-- Prompt: `Lenneth from the video game "Valkyrie Profile" (1999), la valchiria con l'armatura d'argento tra le nuvole. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### EarthBound — livello 8
-- id: `earthbound`
-- Personaggio: **Ness** · Scena: Ness col cappellino e la mazza da baseball con i suoi amici
-- Prompt: `Ness from the video game "EarthBound" (1994), Ness col cappellino e la mazza da baseball con i suoi amici. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Xenogears — livello 8
-- id: `xenogears`
-- Personaggio: **Fei e Elly** · Scena: Fei con il Gear gigante in un paesaggio ambientato
-- Prompt: `Fei e Elly from the video game "Xenogears" (1998), Fei con il Gear gigante in un paesaggio ambientato. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Tales of Symphonia — livello 8
-- id: `tales-of-symphonia`
-- Personaggio: **Lloyd Irving** · Scena: il ragazzo con le due spade in un paesaggio con il Grande Albero
-- Prompt: `Lloyd Irving from the video game "Tales of Symphonia" (2003), il ragazzo con le due spade in un paesaggio con il Grande Albero. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Final Fantasy V — livello 9
-- id: `final-fantasy-v`
-- Personaggio: **Bartz e Krile** · Scena: i quattro guerrieri della luce davanti ai cristalli
-- Prompt: `Bartz e Krile from the video game "Final Fantasy V" (1992), i quattro guerrieri della luce davanti ai cristalli. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Dragon Quest IV — livello 9
-- id: `dragon-quest-iv`
-- Personaggio: **Il gruppo dell'eroe** · Scena: l'eroe con i compagni davanti a un castello
-- Prompt: `Il gruppo dell'eroe from the video game "Dragon Quest IV" (1990), l'eroe con i compagni davanti a un castello. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Suikoden II — livello 9
-- id: `suikoden-ii`
-- Personaggio: **Riou e Jowy** · Scena: i due amici divisi dalla guerra
-- Prompt: `Riou e Jowy from the video game "Suikoden II" (1998), i due amici divisi dalla guerra. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Final Fantasy IV — livello 10
-- id: `final-fantasy-iv`
-- Personaggio: **Cecil** · Scena: il cavaliere oscuro che diventa paladino davanti alla luna
-- Prompt: `Cecil from the video game "Final Fantasy IV" (1991), il cavaliere oscuro che diventa paladino davanti alla luna. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Dragon Quest III — livello 10
-- id: `dragon-quest-iii`
-- Personaggio: **L'eroe di Erdrick** · Scena: l'eroe con l'elmo alato davanti a Zoma
-- Prompt: `L'eroe di Erdrick from the video game "Dragon Quest III" (1988), l'eroe con l'elmo alato davanti a Zoma. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Chrono Cross — livello 10
-- id: `chrono-cross`
-- Personaggio: **Serge e Kid** · Scena: i due protagonisti su una spiaggia tropicale
-- Prompt: `Serge e Kid from the video game "Chrono Cross" (1999), i due protagonisti su una spiaggia tropicale. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Tapper — livello 1
-- id: `tapper`
-- Personaggio: **Il barista** · Scena: il barista che fa scivolare boccali di birra
-- Prompt: `Il barista from the video game "Tapper" (1983), il barista che fa scivolare boccali di birra. Palette: neon on black. Collectible card key art, poster style.`
-
-### Popeye — livello 1
-- id: `popeye`
-- Personaggio: **Popeye** · Scena: il marinaio con gli spinaci e la pipa
-- Prompt: `Popeye from the video game "Popeye" (1982), il marinaio con gli spinaci e la pipa. Palette: neon on black. Collectible card key art, poster style.`
-
-### Mappy — livello 1
-- id: `mappy`
-- Personaggio: **Mappy il poliziotto topo** · Scena: il topo poliziotto che salta sui trampolini
-- Prompt: `Mappy il poliziotto topo from the video game "Mappy" (1983), il topo poliziotto che salta sui trampolini. Palette: neon on black. Collectible card key art, poster style.`
-
-### Zaxxon — livello 2
-- id: `zaxxon`
-- Personaggio: **L'astronave Zaxxon** · Scena: una nave in prospettiva isometrica tra muri e cannoni
-- Prompt: `L'astronave Zaxxon from the video game "Zaxxon" (1982), una nave in prospettiva isometrica tra muri e cannoni. Palette: neon on black. Collectible card key art, poster style.`
-
-### Tempest — livello 2
-- id: `tempest`
-- Personaggio: **Il Blaster** · Scena: un artiglio giallo che spara in un tunnel geometrico
-- Prompt: `Il Blaster from the video game "Tempest" (1981), un artiglio giallo che spara in un tunnel geometrico. Palette: neon on black. Collectible card key art, poster style.`
-
-### Robotron 2084 — livello 2
-- id: `robotron-2084`
-- Personaggio: **L'ultimo eroe** · Scena: l'omino che affronta un'orda di robot
-- Prompt: `L'ultimo eroe from the video game "Robotron 2084" (1982), l'omino che affronta un'orda di robot. Palette: neon on black. Collectible card key art, poster style.`
-
-### Space Harrier — livello 3
-- id: `space-harrier`
-- Personaggio: **Harrier** · Scena: il ragazzo che vola con il cannone sopra una pianura scacchiera
-- Prompt: `Harrier from the video game "Space Harrier" (1985), il ragazzo che vola con il cannone sopra una pianura scacchiera. Palette: neon on black. Collectible card key art, poster style.`
-
-### Elevator Action — livello 3
-- id: `elevator-action`
-- Personaggio: **L'agente segreto** · Scena: l'agente che spara sugli ascensori di un grattacielo
-- Prompt: `L'agente segreto from the video game "Elevator Action" (1983), l'agente che spara sugli ascensori di un grattacielo. Palette: neon on black. Collectible card key art, poster style.`
-
-### Pengo — livello 3
-- id: `pengo`
-- Personaggio: **Pengo** · Scena: il pinguino che spinge blocchi di ghiaccio
-- Prompt: `Pengo from the video game "Pengo" (1982), il pinguino che spinge blocchi di ghiaccio. Palette: neon on black. Collectible card key art, poster style.`
-
-### Track & Field — livello 4
-- id: `track-and-field`
-- Personaggio: **Gli atleti** · Scena: un velocista in pista con la fiaccola sullo sfondo
-- Prompt: `Gli atleti from the video game "Track & Field" (1983), un velocista in pista con la fiaccola sullo sfondo. Palette: stadium lights. Collectible card key art, poster style.`
-
-### Sonic Adventure 2 — livello 4
-- id: `sonic-adventure-2`
-- Personaggio: **Sonic e Shadow** · Scena: i due ricci rivali con Sonic in blu e Shadow in nero
-- Prompt: `Sonic e Shadow from the video game "Sonic Adventure 2" (2001), i due ricci rivali con Sonic in blu e Shadow in nero. Palette: bright saturated primary colors. Collectible card key art, poster style.`
-
-### Marble Madness — livello 4
-- id: `marble-madness`
-- Personaggio: **La biglia** · Scena: una biglia in un percorso isometrico a scacchi
-- Prompt: `La biglia from the video game "Marble Madness" (1984), una biglia in un percorso isometrico a scacchi. Palette: neon on black. Collectible card key art, poster style.`
-
-### Pro Evolution Soccer 6 — livello 5
-- id: `pro-evolution-soccer-6`
-- Personaggio: **Il calciatore** · Scena: un attaccante in rovesciata davanti alla curva
-- Prompt: `Il calciatore from the video game "Pro Evolution Soccer 6" (2006), un attaccante in rovesciata davanti alla curva. Palette: stadium lights. Collectible card key art, poster style.`
-
-### Time Pilot — livello 5
-- id: `time-pilot`
-- Personaggio: **Il pilota** · Scena: un caccia che attraversa epoche diverse
-- Prompt: `Il pilota from the video game "Time Pilot" (1982), un caccia che attraversa epoche diverse. Palette: neon on black. Collectible card key art, poster style.`
-
-### Gauntlet — livello 5
-- id: `gauntlet`
-- Personaggio: **Il Guerriero e la Valchiria** · Scena: quattro eroi in un dungeon con mostri
-- Prompt: `Il Guerriero e la Valchiria from the video game "Gauntlet" (1985), quattro eroi in un dungeon con mostri. Palette: neon on black. Collectible card key art, poster style.`
-
-### Rampage — livello 6
-- id: `rampage`
-- Personaggio: **George, Lizzie e Ralph** · Scena: i tre mostri giganti che demoliscono una città
-- Prompt: `George, Lizzie e Ralph from the video game "Rampage" (1986), i tre mostri giganti che demoliscono una città. Palette: neon on black. Collectible card key art, poster style.`
-
-### NBA Jam — livello 6
-- id: `nba-jam`
-- Personaggio: **Il schiacciatore** · Scena: un cestista in schiacciata con il canestro in fiamme
-- Prompt: `Il schiacciatore from the video game "NBA Jam" (1993), un cestista in schiacciata con il canestro in fiamme. Palette: stadium lights. Collectible card key art, poster style.`
-
-### Tony Hawk's Pro Skater 2 — livello 6
-- id: `tony-hawk-s-pro-skater-2`
-- Personaggio: **Tony Hawk** · Scena: lo skater in un trick sopra una rampa
-- Prompt: `Tony Hawk from the video game "Tony Hawk's Pro Skater 2" (2000), lo skater in un trick sopra una rampa. Palette: stadium lights. Collectible card key art, poster style.`
-
-### Sonic Mania — livello 7
-- id: `sonic-mania`
-- Personaggio: **Sonic, Tails e Knuckles** · Scena: i tre amici in pixel art anni '90
-- Prompt: `Sonic, Tails e Knuckles from the video game "Sonic Mania" (2017), i tre amici in pixel art anni '90. Palette: bright saturated primary colors. Collectible card key art, poster style.`
-
-### Strider — livello 7
-- id: `strider`
-- Personaggio: **Strider Hiryu** · Scena: il ninja futuristico con la sciarpa rossa
-- Prompt: `Strider Hiryu from the video game "Strider" (1989), il ninja futuristico con la sciarpa rossa. Palette: high-contrast action palette. Collectible card key art, poster style.`
-
-### Pilotwings 64 — livello 7
-- id: `pilotwings-64`
-- Personaggio: **Il deltaplano** · Scena: un deltaplano sopra isole colorate
-- Prompt: `Il deltaplano from the video game "Pilotwings 64" (1996), un deltaplano sopra isole colorate. Palette: stadium lights. Collectible card key art, poster style.`
-
-### Daytona USA — livello 8
-- id: `daytona-usa`
-- Personaggio: **La stock car** · Scena: un'auto rossa con il numero 41 in curva
-- Prompt: `La stock car from the video game "Daytona USA" (1994), un'auto rossa con il numero 41 in curva. Palette: speed blur, sunset colors. Collectible card key art, poster style.`
-
-### Virtua Fighter 2 — livello 8
-- id: `virtua-fighter-2`
-- Personaggio: **Akira e Pai** · Scena: i due lottatori in un'arena poligonale
-- Prompt: `Akira e Pai from the video game "Virtua Fighter 2" (1994), i due lottatori in un'arena poligonale. Palette: warm reds and oranges. Collectible card key art, poster style.`
-
-### Ridge Racer — livello 8
-- id: `ridge-racer`
-- Personaggio: **L'auto in derapata** · Scena: una sportiva in derapata su una strada costiera
-- Prompt: `L'auto in derapata from the video game "Ridge Racer" (1993), una sportiva in derapata su una strada costiera. Palette: speed blur, sunset colors. Collectible card key art, poster style.`
-
-### GoldenEye 007 — livello 9
-- id: `goldeneye-007`
-- Personaggio: **James Bond** · Scena: l'agente segreto in smoking con la pistola in una base sovietica
-- Prompt: `James Bond from the video game "GoldenEye 007" (1997), l'agente segreto in smoking con la pistola in una base sovietica. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
-
-### Earthworm Jim — livello 9
-- id: `earthworm-jim`
-- Personaggio: **Earthworm Jim** · Scena: il verme in tuta spaziale che fa girare la testa
-- Prompt: `Earthworm Jim from the video game "Earthworm Jim" (1994), il verme in tuta spaziale che fa girare la testa. Palette: teal and pale sky. Collectible card key art, poster style.`
-
-### Gradius — livello 9
-- id: `gradius`
-- Personaggio: **Vic Viper** · Scena: la navetta con le opzioni luminose contro un nucleo
-- Prompt: `Vic Viper from the video game "Gradius" (1985), la navetta con le opzioni luminose contro un nucleo. Palette: neon on black. Collectible card key art, poster style.`
-
-### Sonic the Hedgehog 2 — livello 10
-- id: `sonic-the-hedgehog-2`
-- Personaggio: **Sonic e Tails** · Scena: Sonic con la volpe a due code nella Emerald Hill
-- Prompt: `Sonic e Tails from the video game "Sonic the Hedgehog 2" (1992), Sonic con la volpe a due code nella Emerald Hill. Palette: teal and pale sky. Collectible card key art, poster style.`
-
-### Super Mario Kart — livello 10
-- id: `super-mario-kart`
-- Personaggio: **Mario e Luigi in kart** · Scena: il duello in kart su un circuito bucolico
-- Prompt: `Mario e Luigi in kart from the video game "Super Mario Kart" (1992), il duello in kart su un circuito bucolico. Palette: teal and pale sky. Collectible card key art, poster style.`
-
-### Mega Man X — livello 10
-- id: `mega-man-x`
-- Personaggio: **X e Zero** · Scena: i due eroi con l'armatura blu e rossa in autostrada
-- Prompt: `X e Zero from the video game "Mega Man X" (1993), i due eroi con l'armatura blu e rossa in autostrada. Palette: teal and pale sky. Collectible card key art, poster style.`
-
-### Ghostbusters — livello 1
-- id: `ghostbusters`
-- Personaggio: **I Ghostbusters** · Scena: i quattro cacciatori con gli zaini protonici
-- Prompt: `I Ghostbusters from the video game "Ghostbusters" (1984), i quattro cacciatori con gli zaini protonici. Palette: neon on black. Collectible card key art, poster style.`
-
-### Splatterhouse — livello 1
-- id: `splatterhouse`
-- Personaggio: **Rick con la maschera** · Scena: il ragazzo con la maschera da hockey in una casa infestata
-- Prompt: `Rick con la maschera from the video game "Splatterhouse" (1988), il ragazzo con la maschera da hockey in una casa infestata. Palette: warm reds and oranges. Collectible card key art, poster style.`
-
-### Night Trap — livello 1
-- id: `night-trap`
-- Personaggio: **La casa delle trappole** · Scena: una casa con ragazze e trappole pericolose
-- Prompt: `La casa delle trappole from the video game "Night Trap" (1992), una casa con ragazze e trappole pericolose. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Haunting Ground — livello 2
-- id: `haunting-ground`
-- Personaggio: **Fiona e Hewie** · Scena: la ragazza e il cane bianco in un castello gotico
-- Prompt: `Fiona e Hewie from the video game "Haunting Ground" (2005), la ragazza e il cane bianco in un castello gotico. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Sweet Home — livello 2
-- id: `sweet-home`
-- Personaggio: **La squadra della villa** · Scena: i cinque sopravvissuti in una villa infestata
-- Prompt: `La squadra della villa from the video game "Sweet Home" (1989), i cinque sopravvissuti in una villa infestata. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Luigi's Mansion — livello 2
-- id: `luigi-s-mansion`
-- Personaggio: **Luigi** · Scena: Luigi con l'aspirapolvere in una villa di fantasmi
-- Prompt: `Luigi from the video game "Luigi's Mansion" (2001), Luigi con l'aspirapolvere in una villa di fantasmi. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Poppy Playtime — livello 3
-- id: `poppy-playtime`
-- Personaggio: **Huggy Wuggy** · Scena: il mostro peluche blu con sorriso enorme in una fabbrica di giocattoli
-- Prompt: `Huggy Wuggy from the video game "Poppy Playtime" (2021), il mostro peluche blu con sorriso enorme in una fabbrica di giocattoli. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Bendy and the Ink Machine — livello 3
-- id: `bendy-and-the-ink-machine`
-- Personaggio: **Bendy** · Scena: il demone d'inchiostro in stile cartone antico
-- Prompt: `Bendy from the video game "Bendy and the Ink Machine" (2017), il demone d'inchiostro in stile cartone antico. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Slender: The Eight Pages — livello 3
-- id: `slender-the-eight-pages`
-- Personaggio: **Slender Man** · Scena: la figura alta senza volto tra gli alberi di notte
-- Prompt: `Slender Man from the video game "Slender: The Eight Pages" (2012), la figura alta senza volto tra gli alberi di notte. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Resident Evil Village — livello 4
-- id: `resident-evil-village`
-- Personaggio: **Lady Dimitrescu** · Scena: la nobile altissima con il cappello nel castello
-- Prompt: `Lady Dimitrescu from the video game "Resident Evil Village" (2021), la nobile altissima con il cappello nel castello. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Phasmophobia — livello 4
-- id: `phasmophobia`
-- Personaggio: **I cacciatori di fantasmi** · Scena: un investigatore con torcia in una casa infestata
-- Prompt: `I cacciatori di fantasmi from the video game "Phasmophobia" (2020), un investigatore con torcia in una casa infestata. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Dead by Daylight — livello 4
-- id: `dead-by-daylight`
-- Personaggio: **Il Killer e i Sopravvissuti** · Scena: l'assassino mascherato che insegue un sopravvissuto
-- Prompt: `Il Killer e i Sopravvissuti from the video game "Dead by Daylight" (2016), l'assassino mascherato che insegue un sopravvissuto. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Alone in the Dark — livello 5
-- id: `alone-in-the-dark`
-- Personaggio: **Edward Carnby** · Scena: l'investigatore in una villa con un mostro alle spalle
-- Prompt: `Edward Carnby from the video game "Alone in the Dark" (1992), l'investigatore in una villa con un mostro alle spalle. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Dino Crisis — livello 5
-- id: `dino-crisis`
-- Personaggio: **Regina** · Scena: l'agente con il fucile e un T-Rex dietro di lei
-- Prompt: `Regina from the video game "Dino Crisis" (1999), l'agente con il fucile e un T-Rex dietro di lei. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Condemned: Criminal Origins — livello 5
-- id: `condemned-criminal-origins`
-- Personaggio: **Ethan Thomas** · Scena: l'agente con una spranga in un corridoio buio
-- Prompt: `Ethan Thomas from the video game "Condemned: Criminal Origins" (2005), l'agente con una spranga in un corridoio buio. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Clock Tower — livello 6
-- id: `clock-tower`
-- Personaggio: **Jennifer e Scissorman** · Scena: la ragazza e l'uomo con le forbici enormi
-- Prompt: `Jennifer e Scissorman from the video game "Clock Tower" (1995), la ragazza e l'uomo con le forbici enormi. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### The Evil Within — livello 6
-- id: `the-evil-within`
-- Personaggio: **Sebastian Castellanos** · Scena: il detective e il mostro con la cassa di ferro
-- Prompt: `Sebastian Castellanos from the video game "The Evil Within" (2014), il detective e il mostro con la cassa di ferro. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Little Nightmares — livello 6
-- id: `little-nightmares`
-- Personaggio: **Six** · Scena: la bambina con l'impermeabile giallo in un luogo inquietante
-- Prompt: `Six from the video game "Little Nightmares" (2017), la bambina con l'impermeabile giallo in un luogo inquietante. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Fatal Frame — livello 7
-- id: `fatal-frame`
-- Personaggio: **Miku Hinasaki** · Scena: la ragazza con la macchina fotografica e un fantasma
-- Prompt: `Miku Hinasaki from the video game "Fatal Frame" (2001), la ragazza con la macchina fotografica e un fantasma. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Layers of Fear — livello 7
-- id: `layers-of-fear`
-- Personaggio: **Il pittore** · Scena: un corridoio con quadri che si trasformano
-- Prompt: `Il pittore from the video game "Layers of Fear" (2016), un corridoio con quadri che si trasformano. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Until Dawn — livello 7
-- id: `until-dawn`
-- Personaggio: **Sam e i ragazzi della montagna** · Scena: gruppo di adolescenti nella baita nella neve
-- Prompt: `Sam e i ragazzi della montagna from the video game "Until Dawn" (2015), gruppo di adolescenti nella baita nella neve. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Alan Wake — livello 8
-- id: `alan-wake`
-- Personaggio: **Alan Wake** · Scena: lo scrittore con la torcia nella foresta oscura
-- Prompt: `Alan Wake from the video game "Alan Wake" (2010), lo scrittore con la torcia nella foresta oscura. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Outlast — livello 8
-- id: `outlast`
-- Personaggio: **Miles Upshur** · Scena: il giornalista con la videocamera in un manicomio
-- Prompt: `Miles Upshur from the video game "Outlast" (2013), il giornalista con la videocamera in un manicomio. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Silent Hill 3 — livello 8
-- id: `silent-hill-3`
-- Personaggio: **Heather Mason** · Scena: la ragazza in una città tra nebbia e mostri
-- Prompt: `Heather Mason from the video game "Silent Hill 3" (2003), la ragazza in una città tra nebbia e mostri. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Amnesia: The Dark Descent — livello 9
-- id: `amnesia-the-dark-descent`
-- Personaggio: **Daniel** · Scena: l'uomo con la lanterna nei sotterranei del castello
-- Prompt: `Daniel from the video game "Amnesia: The Dark Descent" (2010), l'uomo con la lanterna nei sotterranei del castello. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Resident Evil 7 — livello 9
-- id: `resident-evil-7`
-- Personaggio: **Ethan Winters e la famiglia Baker** · Scena: Ethan nella casa con Jack Baker alle spalle
-- Prompt: `Ethan Winters e la famiglia Baker from the video game "Resident Evil 7" (2017), Ethan nella casa con Jack Baker alle spalle. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Dead Space 2 — livello 9
-- id: `dead-space-2`
-- Personaggio: **Isaac Clarke** · Scena: Isaac con la tuta e il cannone al plasma su una stazione
-- Prompt: `Isaac Clarke from the video game "Dead Space 2" (2011), Isaac con la tuta e il cannone al plasma su una stazione. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Resident Evil — livello 10
-- id: `resident-evil`
-- Personaggio: **Jill Valentine e Chris Redfield** · Scena: i due agenti STARS nel salone della villa
-- Prompt: `Jill Valentine e Chris Redfield from the video game "Resident Evil" (1996), i due agenti STARS nel salone della villa. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Silent Hill — livello 10
-- id: `silent-hill`
-- Personaggio: **Harry Mason** · Scena: l'uomo con la torcia nella nebbia con una bambina
-- Prompt: `Harry Mason from the video game "Silent Hill" (1999), l'uomo con la torcia nella nebbia con una bambina. Palette: dark desaturated with one sickly accent. Collectible card key art, poster style.`
-
-### Alien: Isolation — livello 10
-- id: `alien-isolation`
-- Personaggio: **Amanda Ripley e lo Xenomorfo** · Scena: la ragazza col rilevatore e l'alieno nel corridoio
-- Prompt: `Amanda Ripley e lo Xenomorfo from the video game "Alien: Isolation" (2014), la ragazza col rilevatore e l'alieno nel corridoio. Palette: toxic green and purple. Collectible card key art, poster style.`
-
-### Cookie Clicker — livello 1
-- id: `cookie-clicker`
-- Personaggio: **Il grande biscotto** · Scena: un biscotto gigante con gocce di cioccolato e nonnine
-- Prompt: `Il grande biscotto from the video game "Cookie Clicker" (2013), un biscotto gigante con gocce di cioccolato e nonnine. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Minit — livello 1
-- id: `minit`
-- Personaggio: **L'eroe da 60 secondi** · Scena: un piccolo personaggio in bianco e nero con un'ambientazione minima
-- Prompt: `L'eroe da 60 secondi from the video game "Minit" (2018), un piccolo personaggio in bianco e nero con un'ambientazione minima. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Thomas Was Alone — livello 1
-- id: `thomas-was-alone`
-- Personaggio: **Thomas** · Scena: il rettangolo rosso che salta con un narratore
-- Prompt: `Thomas from the video game "Thomas Was Alone" (2012), il rettangolo rosso che salta con un narratore. Palette: deep ocean blues. Collectible card key art, poster style.`
-
-### Kerbal Space Program — livello 2
-- id: `kerbal-space-program`
-- Personaggio: **Jebediah Kerman** · Scena: un piccolo kerbal verde in una capsula spaziale
-- Prompt: `Jebediah Kerman from the video game "Kerbal Space Program" (2015), un piccolo kerbal verde in una capsula spaziale. Palette: blocky bright biomes. Collectible card key art, poster style.`
-
-### Superhot — livello 2
-- id: `superhot`
-- Personaggio: **Il Cristallo rosso** · Scena: un'ombra rossa che ferma il tempo davanti a proiettili
-- Prompt: `Il Cristallo rosso from the video game "Superhot" (2016), un'ombra rossa che ferma il tempo davanti a proiettili. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
-
-### Human: Fall Flat — livello 2
-- id: `human-fall-flat`
-- Personaggio: **Bob** · Scena: un omino bianco molle che scala ostacoli assurdi
-- Prompt: `Bob from the video game "Human: Fall Flat" (2016), un omino bianco molle che scala ostacoli assurdi. Palette: deep ocean blues. Collectible card key art, poster style.`
-
-### Vampire Survivors — livello 3
-- id: `vampire-survivors`
-- Personaggio: **Antonio** · Scena: l'eroe con la frusta circondato da mille mostri
-- Prompt: `Antonio from the video game "Vampire Survivors" (2022), l'eroe con la frusta circondato da mille mostri. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Getting Over It — livello 3
-- id: `getting-over-it`
-- Personaggio: **L'uomo nel calderone** · Scena: l'uomo nel calderone col martello su una montagna di rifiuti
-- Prompt: `L'uomo nel calderone from the video game "Getting Over It" (2017), l'uomo nel calderone col martello su una montagna di rifiuti. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Cult of the Lamb — livello 3
-- id: `cult-of-the-lamb`
-- Personaggio: **L'Agnello** · Scena: l'agnellino con la corona rossa che guida un culto
-- Prompt: `L'Agnello from the video game "Cult of the Lamb" (2022), l'agnellino con la corona rossa che guida un culto. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Spelunky — livello 4
-- id: `spelunky`
-- Personaggio: **L'esploratore** · Scena: un esploratore con la frusta in una caverna piena di trappole
-- Prompt: `L'esploratore from the video game "Spelunky" (2012), un esploratore con la frusta in una caverna piena di trappole. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### FTL: Faster Than Light — livello 4
-- id: `ftl-faster-than-light`
-- Personaggio: **La navetta ribelle** · Scena: una nave spaziale in fuga dall'esercito
-- Prompt: `La navetta ribelle from the video game "FTL: Faster Than Light" (2012), una nave spaziale in fuga dall'esercito. Palette: earthy strategic map tones. Collectible card key art, poster style.`
-
-### Darkest Dungeon — livello 4
-- id: `darkest-dungeon`
-- Personaggio: **Il gruppo di eroi** · Scena: quattro eroi con la torcia davanti a un mostro
-- Prompt: `Il gruppo di eroi from the video game "Darkest Dungeon" (2016), quattro eroi con la torcia davanti a un mostro. Palette: epic fantasy palette. Collectible card key art, poster style.`
-
-### Firewatch — livello 5
-- id: `firewatch`
-- Personaggio: **Henry** · Scena: l'uomo su una torre di guardia con vista su una valle rossa
-- Prompt: `Henry from the video game "Firewatch" (2016), l'uomo su una torre di guardia con vista su una valle rossa. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Gris — livello 5
-- id: `gris`
-- Personaggio: **Gris** · Scena: la ragazza in azzurro che porta un pezzo di colore nel mondo grigio
-- Prompt: `Gris from the video game "Gris" (2018), la ragazza in azzurro che porta un pezzo di colore nel mondo grigio. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### A Short Hike — livello 5
-- id: `a-short-hike`
-- Personaggio: **Claire** · Scena: l'uccellino con la maglia che sale sulla montagna
-- Prompt: `Claire from the video game "A Short Hike" (2019), l'uccellino con la maglia che sale sulla montagna. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### RimWorld — livello 6
-- id: `rimworld`
-- Personaggio: **I coloni** · Scena: un gruppo di coloni su un pianeta lontano
-- Prompt: `I coloni from the video game "RimWorld" (2018), un gruppo di coloni su un pianeta lontano. Palette: earthy browns and ochre. Collectible card key art, poster style.`
-
-### Factorio — livello 6
-- id: `factorio`
-- Personaggio: **L'ingegnere** · Scena: un ingegnere tra nastri e ingranaggi di una fabbrica
-- Prompt: `L'ingegnere from the video game "Factorio" (2016), un ingegnere tra nastri e ingranaggi di una fabbrica. Palette: earthy browns and ochre. Collectible card key art, poster style.`
-
-### Don't Starve — livello 6
-- id: `don-t-starve`
-- Personaggio: **Wilson** · Scena: lo scienziato con il ciuffo in una foresta lugubre
-- Prompt: `Wilson from the video game "Don't Starve" (2013), lo scienziato con il ciuffo in una foresta lugubre. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Katana ZERO — livello 7
-- id: `katana-zero`
-- Personaggio: **Zero** · Scena: il samurai con la spada al neon in un corridoio
-- Prompt: `Zero from the video game "Katana ZERO" (2019), il samurai con la spada al neon in un corridoio. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### Hotline Miami — livello 7
-- id: `hotline-miami`
-- Personaggio: **Jacket** · Scena: l'uomo con la maschera da gallo e la giacca
-- Prompt: `Jacket from the video game "Hotline Miami" (2012), l'uomo con la maschera da gallo e la giacca. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Untitled Goose Game — livello 7
-- id: `untitled-goose-game`
-- Personaggio: **L'oca** · Scena: un'oca bianca in un villaggio inglese
-- Prompt: `L'oca from the video game "Untitled Goose Game" (2019), un'oca bianca in un villaggio inglese. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### Return of the Obra Dinn — livello 8
-- id: `return-of-the-obra-dinn`
-- Personaggio: **L'ispettore** · Scena: un'ispettore con un orologio sopra una nave silenziosa
-- Prompt: `L'ispettore from the video game "Return of the Obra Dinn" (2018), un'ispettore con un orologio sopra una nave silenziosa. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### Baba Is You — livello 8
-- id: `baba-is-you`
-- Personaggio: **Baba** · Scena: la creaturina bianca con le regole scritte a blocchi
-- Prompt: `Baba from the video game "Baba Is You" (2019), la creaturina bianca con le regole scritte a blocchi. Palette: deep ocean blues. Collectible card key art, poster style.`
-
-### Dead Cells — livello 8
-- id: `dead-cells`
-- Personaggio: **Il Prigioniero** · Scena: il prigioniero con la testa di fiamma in un castello
-- Prompt: `Il Prigioniero from the video game "Dead Cells" (2018), il prigioniero con la testa di fiamma in un castello. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Disco Elysium — livello 9
-- id: `disco-elysium`
-- Personaggio: **Il detective** · Scena: l'ispettore sgualcito con giacca e strane voci
-- Prompt: `Il detective from the video game "Disco Elysium" (2019), l'ispettore sgualcito con giacca e strane voci. Palette: gold and soft white. Collectible card key art, poster style.`
-
-### Outer Wilds — livello 9
-- id: `outer-wilds`
-- Personaggio: **L'astronauta di Hearthian** · Scena: un piccolo astronauta su un pianeta minuscolo
-- Prompt: `L'astronauta di Hearthian from the video game "Outer Wilds" (2019), un piccolo astronauta su un pianeta minuscolo. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Slay the Spire — livello 9
-- id: `slay-the-spire`
-- Personaggio: **Il Silenzioso** · Scena: un eroe in un'arena di carte
-- Prompt: `Il Silenzioso from the video game "Slay the Spire" (2019), un eroe in un'arena di carte. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Super Meat Boy — livello 10
-- id: `super-meat-boy`
-- Personaggio: **Meat Boy e Bandage Girl** · Scena: il cubetto di carne e la ragazza fasciata tra seghe circolari
-- Prompt: `Meat Boy e Bandage Girl from the video game "Super Meat Boy" (2010), il cubetto di carne e la ragazza fasciata tra seghe circolari. Palette: stylised limited palette. Collectible card key art, poster style.`
-
-### Braid — livello 10
-- id: `braid`
-- Personaggio: **Tim** · Scena: l'uomo in giacca e cravatta con il tempo riavvolto
-- Prompt: `Tim from the video game "Braid" (2008), l'uomo in giacca e cravatta con il tempo riavvolto. Palette: icy blues and white. Collectible card key art, poster style.`
-
-### The Binding of Isaac — livello 10
-- id: `the-binding-of-isaac`
-- Personaggio: **Isaac** · Scena: il bambino piangente in un sotterraneo pieno di mostri
-- Prompt: `Isaac from the video game "The Binding of Isaac" (2011), il bambino piangente in un sotterraneo pieno di mostri. Palette: icy blues and white. Collectible card key art, poster style.`
+### Pokémon Rosso e Blu — livello 1
+- id: `weedle`
+- Personaggio: **Weedle** · Scena: un piccolo bruco giallo con il pungiglione sulla testa, tra le foglie
+- Prompt: `Weedle from the video game "Pokémon Rosso e Blu" (1996), un piccolo bruco giallo con il pungiglione sulla testa, tra le foglie. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 1
+- id: `metapod`
+- Personaggio: **Metapod** · Scena: un bozzolo verde immobile appeso a un ramo
+- Prompt: `Metapod from the video game "Pokémon Rosso e Blu" (1996), un bozzolo verde immobile appeso a un ramo. Palette: epic fantasy palette. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 1
+- id: `oddish`
+- Personaggio: **Oddish** · Scena: un bulbo blu con le foglie in testa che cammina di notte
+- Prompt: `Oddish from the video game "Pokémon Rosso e Blu" (1996), un bulbo blu con le foglie in testa che cammina di notte. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 2
+- id: `poliwag`
+- Personaggio: **Poliwag** · Scena: un girino blu con la spirale sulla pancia in uno stagno
+- Prompt: `Poliwag from the video game "Pokémon Rosso e Blu" (1996), un girino blu con la spirale sulla pancia in uno stagno. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 2
+- id: `abra`
+- Personaggio: **Abra** · Scena: un Pokémon giallo che dorme seduto, pronto a teletrasportarsi
+- Prompt: `Abra from the video game "Pokémon Rosso e Blu" (1996), un Pokémon giallo che dorme seduto, pronto a teletrasportarsi. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 2
+- id: `clefairy`
+- Personaggio: **Clefairy** · Scena: un Pokémon rosa che balla sotto la luna piena
+- Prompt: `Clefairy from the video game "Pokémon Rosso e Blu" (1996), un Pokémon rosa che balla sotto la luna piena. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 3
+- id: `vulpix`
+- Personaggio: **Vulpix** · Scena: una volpe rossa con sei code arricciate
+- Prompt: `Vulpix from the video game "Pokémon Rosso e Blu" (1996), una volpe rossa con sei code arricciate. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 3
+- id: `growlithe`
+- Personaggio: **Growlithe** · Scena: un cucciolo arancione a strisce nere che abbaia fiero
+- Prompt: `Growlithe from the video game "Pokémon Rosso e Blu" (1996), un cucciolo arancione a strisce nere che abbaia fiero. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 3
+- id: `cubone`
+- Personaggio: **Cubone** · Scena: un piccolo Pokémon con un teschio come casco e un osso in mano
+- Prompt: `Cubone from the video game "Pokémon Rosso e Blu" (1996), un piccolo Pokémon con un teschio come casco e un osso in mano. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 4
+- id: `machop`
+- Personaggio: **Machop** · Scena: un piccolo lottatore grigio che mostra i muscoli
+- Prompt: `Machop from the video game "Pokémon Rosso e Blu" (1996), un piccolo lottatore grigio che mostra i muscoli. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 4
+- id: `slowpoke`
+- Personaggio: **Slowpoke** · Scena: un Pokémon rosa che pesca con la coda, distratto
+- Prompt: `Slowpoke from the video game "Pokémon Rosso e Blu" (1996), un Pokémon rosa che pesca con la coda, distratto. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Pokémon Oro e Argento — livello 4
+- id: `togepi`
+- Personaggio: **Togepi** · Scena: un pulcino che spunta da un guscio d'uovo a triangoli colorati
+- Prompt: `Togepi from the video game "Pokémon Oro e Argento" (1999), un pulcino che spunta da un guscio d'uovo a triangoli colorati. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 5
+- id: `onix`
+- Personaggio: **Onix** · Scena: un enorme serpente di rocce che esce dal terreno di una caverna
+- Prompt: `Onix from the video game "Pokémon Rosso e Blu" (1996), un enorme serpente di rocce che esce dal terreno di una caverna. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 5
+- id: `lapras`
+- Personaggio: **Lapras** · Scena: un Pokémon blu con il guscio che nuota tra le onde
+- Prompt: `Lapras from the video game "Pokémon Rosso e Blu" (1996), un Pokémon blu con il guscio che nuota tra le onde. Palette: icy blues and white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 5
+- id: `hitmonlee`
+- Personaggio: **Hitmonlee** · Scena: un lottatore marrone che sferra un calcio lunghissimo
+- Prompt: `Hitmonlee from the video game "Pokémon Rosso e Blu" (1996), un lottatore marrone che sferra un calcio lunghissimo. Palette: epic fantasy palette. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 6
+- id: `arcanine`
+- Personaggio: **Arcanine** · Scena: un grande cane leggendario arancione che corre tra le fiamme
+- Prompt: `Arcanine from the video game "Pokémon Rosso e Blu" (1996), un grande cane leggendario arancione che corre tra le fiamme. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 6
+- id: `alakazam`
+- Personaggio: **Alakazam** · Scena: un Pokémon con due cucchiai in mano e i baffi lunghi
+- Prompt: `Alakazam from the video game "Pokémon Rosso e Blu" (1996), un Pokémon con due cucchiai in mano e i baffi lunghi. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 6
+- id: `machamp`
+- Personaggio: **Machamp** · Scena: un lottatore con quattro braccia in posa da combattimento
+- Prompt: `Machamp from the video game "Pokémon Rosso e Blu" (1996), un lottatore con quattro braccia in posa da combattimento. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 7
+- id: `gyarados`
+- Personaggio: **Gyarados** · Scena: un drago marino blu furioso che si alza dalle onde
+- Prompt: `Gyarados from the video game "Pokémon Rosso e Blu" (1996), un drago marino blu furioso che si alza dalle onde. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 7
+- id: `blastoise`
+- Personaggio: **Blastoise** · Scena: una tartaruga con due cannoni d'acqua sul guscio
+- Prompt: `Blastoise from the video game "Pokémon Rosso e Blu" (1996), una tartaruga con due cannoni d'acqua sul guscio. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 7
+- id: `venusaur`
+- Personaggio: **Venusaur** · Scena: un grande Pokémon con un fiore enorme sulla schiena
+- Prompt: `Venusaur from the video game "Pokémon Rosso e Blu" (1996), un grande Pokémon con un fiore enorme sulla schiena. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 8
+- id: `dragonite`
+- Personaggio: **Dragonite** · Scena: un drago arancione e gentile che vola sopra il mare
+- Prompt: `Dragonite from the video game "Pokémon Rosso e Blu" (1996), un drago arancione e gentile che vola sopra il mare. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 8
+- id: `articuno`
+- Personaggio: **Articuno** · Scena: un uccello leggendario di ghiaccio con la coda lunghissima
+- Prompt: `Articuno from the video game "Pokémon Rosso e Blu" (1996), un uccello leggendario di ghiaccio con la coda lunghissima. Palette: icy blues and white. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 8
+- id: `zapdos`
+- Personaggio: **Zapdos** · Scena: un uccello leggendario giallo avvolto dai fulmini
+- Prompt: `Zapdos from the video game "Pokémon Rosso e Blu" (1996), un uccello leggendario giallo avvolto dai fulmini. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 9
+- id: `moltres`
+- Personaggio: **Moltres** · Scena: un uccello leggendario di fuoco con le ali in fiamme
+- Prompt: `Moltres from the video game "Pokémon Rosso e Blu" (1996), un uccello leggendario di fuoco con le ali in fiamme. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Pokémon Oro e Argento — livello 9
+- id: `lugia`
+- Personaggio: **Lugia** · Scena: un grande Pokémon bianco e argento che vola sulla tempesta in mare
+- Prompt: `Lugia from the video game "Pokémon Oro e Argento" (1999), un grande Pokémon bianco e argento che vola sulla tempesta in mare. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Pokémon Oro e Argento — livello 9
+- id: `ho-oh`
+- Personaggio: **Ho-Oh** · Scena: una fenice dai colori dell'arcobaleno che vola davanti alla torre
+- Prompt: `Ho-Oh from the video game "Pokémon Oro e Argento" (1999), una fenice dai colori dell'arcobaleno che vola davanti alla torre. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Pokémon Rosso e Blu — livello 10
+- id: `mew`
+- Personaggio: **Mew** · Scena: un piccolo Pokémon rosa che fluttua in una bolla, misterioso
+- Prompt: `Mew from the video game "Pokémon Rosso e Blu" (1996), un piccolo Pokémon rosa che fluttua in una bolla, misterioso. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Pokémon Smeraldo — livello 10
+- id: `rayquaza`
+- Personaggio: **Rayquaza** · Scena: un drago verde lunghissimo che vola sopra le nuvole
+- Prompt: `Rayquaza from the video game "Pokémon Smeraldo" (2004), un drago verde lunghissimo che vola sopra le nuvole. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Pokémon X e Y — livello 10
+- id: `greninja`
+- Personaggio: **Greninja** · Scena: una rana ninja blu con una sciarpa che è la sua lingua, con stelle d'acqua
+- Prompt: `Greninja from the video game "Pokémon X e Y" (2013), una rana ninja blu con una sciarpa che è la sua lingua, con stelle d'acqua. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Minecraft — livello 1
+- id: `il-maiale-di-minecraft`
+- Personaggio: **Il Maiale di Minecraft** · Scena: un maialino rosa a cubetti in un prato di Minecraft
+- Prompt: `Il Maiale di Minecraft from the video game "Minecraft" (2011), un maialino rosa a cubetti in un prato di Minecraft. Palette: blocky bright biomes. Collectible card key art, poster style.`
+
+### Minecraft — livello 1
+- id: `l-axolotl`
+- Personaggio: **L'Axolotl** · Scena: un axolotl rosa che nuota in una grotta lussureggiante di Minecraft
+- Prompt: `L'Axolotl from the video game "Minecraft" (2011), un axolotl rosa che nuota in una grotta lussureggiante di Minecraft. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Clash Royale — livello 1
+- id: `il-goblin`
+- Personaggio: **Il Goblin** · Scena: un goblin verde che corre con un pugnale nell'arena di Clash Royale
+- Prompt: `Il Goblin from the video game "Clash Royale" (2016), un goblin verde che corre con un pugnale nell'arena di Clash Royale. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Minecraft — livello 2
+- id: `il-ragno-di-minecraft`
+- Personaggio: **Il Ragno di Minecraft** · Scena: un ragno nero a cubetti con gli occhi rossi che si arrampica su un muro
+- Prompt: `Il Ragno di Minecraft from the video game "Minecraft" (2011), un ragno nero a cubetti con gli occhi rossi che si arrampica su un muro. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Angry Birds — livello 2
+- id: `bomb`
+- Personaggio: **Bomb** · Scena: l'uccello nero degli Angry Birds con la miccia accesa sulla testa
+- Prompt: `Bomb from the video game "Angry Birds" (2009), l'uccello nero degli Angry Birds con la miccia accesa sulla testa. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Plants vs. Zombies — livello 2
+- id: `la-noce`
+- Personaggio: **La Noce** · Scena: una noce con gli occhi preoccupati che fa da muro contro gli zombie
+- Prompt: `La Noce from the video game "Plants vs. Zombies" (2009), una noce con gli occhi preoccupati che fa da muro contro gli zombie. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Brawl Stars — livello 3
+- id: `shelly`
+- Personaggio: **Shelly** · Scena: una ragazza con il fucile e il cappello viola in un'arena di Brawl Stars
+- Prompt: `Shelly from the video game "Brawl Stars" (2018), una ragazza con il fucile e il cappello viola in un'arena di Brawl Stars. Palette: friendly bright colors. Collectible card key art, poster style.`
+
+### Brawl Stars — livello 3
+- id: `colt`
+- Personaggio: **Colt** · Scena: un pistolero con il ciuffo e due pistole in Brawl Stars
+- Prompt: `Colt from the video game "Brawl Stars" (2018), un pistolero con il ciuffo e due pistole in Brawl Stars. Palette: friendly bright colors. Collectible card key art, poster style.`
+
+### Angry Birds — livello 3
+- id: `matilda`
+- Personaggio: **Matilda** · Scena: l'uccello bianco degli Angry Birds che lascia cadere un uovo
+- Prompt: `Matilda from the video game "Angry Birds" (2009), l'uccello bianco degli Angry Birds che lascia cadere un uovo. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Clash Royale — livello 4
+- id: `il-gigante`
+- Personaggio: **Il Gigante** · Scena: un gigante biondo enorme che avanza con i pugni stretti verso una torre
+- Prompt: `Il Gigante from the video game "Clash Royale" (2016), un gigante biondo enorme che avanza con i pugni stretti verso una torre. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Brawl Stars — livello 4
+- id: `el-primo`
+- Personaggio: **El Primo** · Scena: un lottatore di lucha libre con la maschera che salta col pugno in fiamme
+- Prompt: `El Primo from the video game "Brawl Stars" (2018), un lottatore di lucha libre con la maschera che salta col pugno in fiamme. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Minecraft — livello 4
+- id: `il-ghast`
+- Personaggio: **Il Ghast** · Scena: un grande fantasma bianco che piange e spara palle di fuoco nel Nether
+- Prompt: `Il Ghast from the video game "Minecraft" (2011), un grande fantasma bianco che piange e spara palle di fuoco nel Nether. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Minecraft — livello 5
+- id: `il-golem-di-ferro`
+- Personaggio: **Il Golem di Ferro** · Scena: un golem di ferro con i fiori addosso che protegge un villaggio
+- Prompt: `Il Golem di Ferro from the video game "Minecraft" (2011), un golem di ferro con i fiori addosso che protegge un villaggio. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Clash Royale — livello 5
+- id: `il-domatore-di-cinghiali`
+- Personaggio: **Il Domatore di Cinghiali** · Scena: un guerriero a torso nudo che corre in groppa a un cinghiale col martello
+- Prompt: `Il Domatore di Cinghiali from the video game "Clash Royale" (2016), un guerriero a torso nudo che corre in groppa a un cinghiale col martello. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Brawl Stars — livello 5
+- id: `spike`
+- Personaggio: **Spike** · Scena: un piccolo cactus sorridente che lancia granate di spine
+- Prompt: `Spike from the video game "Brawl Stars" (2018), un piccolo cactus sorridente che lancia granate di spine. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Angry Birds — livello 6
+- id: `il-re-maiale`
+- Personaggio: **Il Re Maiale** · Scena: il grasso re dei maiali verdi con la corona, sul suo castello di legno
+- Prompt: `Il Re Maiale from the video game "Angry Birds" (2009), il grasso re dei maiali verdi con la corona, sul suo castello di legno. Palette: friendly bright colors. Collectible card key art, poster style.`
+
+### Clash Royale — livello 6
+- id: `il-p-e-k-k-a`
+- Personaggio: **Il P.E.K.K.A.** · Scena: un cavaliere in armatura viola con la spada e gli occhi luminosi
+- Prompt: `Il P.E.K.K.A. from the video game "Clash Royale" (2016), un cavaliere in armatura viola con la spada e gli occhi luminosi. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Minecraft — livello 6
+- id: `il-piglin`
+- Personaggio: **Il Piglin** · Scena: un piglin con la spada d'oro nel Nether pieno di lava
+- Prompt: `Il Piglin from the video game "Minecraft" (2011), un piglin con la spada d'oro nel Nether pieno di lava. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Among Us — livello 7
+- id: `l-impostore`
+- Personaggio: **L'Impostore** · Scena: un personaggio rosso di Among Us con il coltello dietro la schiena in un corridoio buio
+- Prompt: `L'Impostore from the video game "Among Us" (2018), un personaggio rosso di Among Us con il coltello dietro la schiena in un corridoio buio. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Minecraft — livello 7
+- id: `il-blaze`
+- Personaggio: **Il Blaze** · Scena: un blaze giallo con le aste che girano, in una fortezza del Nether
+- Prompt: `Il Blaze from the video game "Minecraft" (2011), un blaze giallo con le aste che girano, in una fortezza del Nether. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Brawl Stars — livello 7
+- id: `leon`
+- Personaggio: **Leon** · Scena: un ragazzino con il cappuccio da camaleonte che diventa invisibile
+- Prompt: `Leon from the video game "Brawl Stars" (2018), un ragazzino con il cappuccio da camaleonte che diventa invisibile. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Minecraft — livello 8
+- id: `il-wither`
+- Personaggio: **Il Wither** · Scena: un mostro nero a tre teste che vola sputando teschi
+- Prompt: `Il Wither from the video game "Minecraft" (2011), un mostro nero a tre teste che vola sputando teschi. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Clash of Clans — livello 8
+- id: `il-re-dei-barbari`
+- Personaggio: **Il Re dei Barbari** · Scena: un barbaro con la corona e la spada che guida l'attacco al villaggio
+- Prompt: `Il Re dei Barbari from the video game "Clash of Clans" (2012), un barbaro con la corona e la spada che guida l'attacco al villaggio. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Fortnite — livello 8
+- id: `fishstick`
+- Personaggio: **Fishstick** · Scena: un bastoncino di pesce arancione con i dentoni che balla in Fortnite
+- Prompt: `Fishstick from the video game "Fortnite" (2017), un bastoncino di pesce arancione con i dentoni che balla in Fortnite. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Minecraft — livello 9
+- id: `il-warden`
+- Personaggio: **Il Warden** · Scena: una creatura cieca enorme che si risveglia nel buio profondo
+- Prompt: `Il Warden from the video game "Minecraft" (2011), una creatura cieca enorme che si risveglia nel buio profondo. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Clash of Clans — livello 9
+- id: `la-regina-degli-arcieri`
+- Personaggio: **La Regina degli Arcieri** · Scena: una regina con la maschera e la balestra viola
+- Prompt: `La Regina degli Arcieri from the video game "Clash of Clans" (2012), una regina con la maschera e la balestra viola. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Fortnite — livello 9
+- id: `raven`
+- Personaggio: **Raven** · Scena: un guerriero nero con la testa di corvo e gli occhi viola in Fortnite
+- Prompt: `Raven from the video game "Fortnite" (2017), un guerriero nero con la testa di corvo e gli occhi viola in Fortnite. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Minecraft — livello 10
+- id: `l-ender-drago`
+- Personaggio: **L'Ender Drago** · Scena: un enorme drago nero con gli occhi viola che vola nell'End
+- Prompt: `L'Ender Drago from the video game "Minecraft" (2011), un enorme drago nero con gli occhi viola che vola nell'End. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Fortnite — livello 10
+- id: `midas`
+- Personaggio: **Midas** · Scena: un agente elegante che trasforma in oro tutto quello che tocca
+- Prompt: `Midas from the video game "Fortnite" (2017), un agente elegante che trasforma in oro tutto quello che tocca. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Plants vs. Zombies — livello 10
+- id: `il-dottor-zomboss`
+- Personaggio: **Il Dottor Zomboss** · Scena: lo scienziato zombie che pilota un robot gigante
+- Prompt: `Il Dottor Zomboss from the video game "Plants vs. Zombies" (2009), lo scienziato zombie che pilota un robot gigante. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Street Fighter Alpha — livello 1
+- id: `dan-hibiki`
+- Personaggio: **Dan Hibiki** · Scena: un lottatore in tuta rosa che fa la posa di vittoria a sproposito
+- Prompt: `Dan Hibiki from the video game "Street Fighter Alpha" (1995), un lottatore in tuta rosa che fa la posa di vittoria a sproposito. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 1
+- id: `roger-jr`
+- Personaggio: **Roger Jr.** · Scena: un canguro con i guantoni da boxe sul ring
+- Prompt: `Roger Jr. from the video game "Tekken 3" (1997), un canguro con i guantoni da boxe sul ring. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 1
+- id: `kuma`
+- Personaggio: **Kuma** · Scena: un grosso orso bruno che combatte in piedi
+- Prompt: `Kuma from the video game "Tekken 3" (1997), un grosso orso bruno che combatte in piedi. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Street Fighter II — livello 2
+- id: `e-honda`
+- Personaggio: **E. Honda** · Scena: un lottatore di sumo che sferra cento schiaffi davanti al bagno giapponese
+- Prompt: `E. Honda from the video game "Street Fighter II" (1991), un lottatore di sumo che sferra cento schiaffi davanti al bagno giapponese. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Street Fighter II — livello 2
+- id: `balrog`
+- Personaggio: **Balrog** · Scena: un pugile con i guantoni blu a Las Vegas
+- Prompt: `Balrog from the video game "Street Fighter II" (1991), un pugile con i guantoni blu a Las Vegas. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 2
+- id: `paul-phoenix`
+- Personaggio: **Paul Phoenix** · Scena: un lottatore con i capelli altissimi biondi che tira un pugno
+- Prompt: `Paul Phoenix from the video game "Tekken 3" (1997), un lottatore con i capelli altissimi biondi che tira un pugno. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Mortal Kombat — livello 3
+- id: `sonya-blade`
+- Personaggio: **Sonya Blade** · Scena: una soldatessa bionda con la fascia in testa, pronta a combattere
+- Prompt: `Sonya Blade from the video game "Mortal Kombat" (1992), una soldatessa bionda con la fascia in testa, pronta a combattere. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Mortal Kombat II — livello 3
+- id: `jax`
+- Personaggio: **Jax** · Scena: un soldato con le braccia di metallo che colpisce il terreno
+- Prompt: `Jax from the video game "Mortal Kombat II" (1993), un soldato con le braccia di metallo che colpisce il terreno. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 3
+- id: `lei-wulong`
+- Personaggio: **Lei Wulong** · Scena: un poliziotto di Hong Kong in posa da kung fu
+- Prompt: `Lei Wulong from the video game "Tekken 3" (1997), un poliziotto di Hong Kong in posa da kung fu. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Street Fighter II — livello 4
+- id: `vega`
+- Personaggio: **Vega** · Scena: un lottatore mascherato con l'artiglio che salta dalla gabbia
+- Prompt: `Vega from the video game "Street Fighter II" (1991), un lottatore mascherato con l'artiglio che salta dalla gabbia. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Mortal Kombat II — livello 4
+- id: `kung-lao`
+- Personaggio: **Kung Lao** · Scena: un monaco che lancia il suo cappello affilato come un disco
+- Prompt: `Kung Lao from the video game "Mortal Kombat II" (1993), un monaco che lancia il suo cappello affilato come un disco. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 4
+- id: `king`
+- Personaggio: **King** · Scena: un lottatore con la maschera da giaguaro sul ring di wrestling
+- Prompt: `King from the video game "Tekken 3" (1997), un lottatore con la maschera da giaguaro sul ring di wrestling. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Street Fighter Alpha 2 — livello 5
+- id: `sakura`
+- Personaggio: **Sakura** · Scena: una studentessa con la fascia bianca che lancia una piccola onda di energia
+- Prompt: `Sakura from the video game "Street Fighter Alpha 2" (1996), una studentessa con la fascia bianca che lancia una piccola onda di energia. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Mortal Kombat II — livello 5
+- id: `kitana`
+- Personaggio: **Kitana** · Scena: una principessa mascherata in blu con due ventagli d'acciaio
+- Prompt: `Kitana from the video game "Mortal Kombat II" (1993), una principessa mascherata in blu con due ventagli d'acciaio. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 5
+- id: `eddy-gordo`
+- Personaggio: **Eddy Gordo** · Scena: un lottatore di capoeira che gira sulle mani
+- Prompt: `Eddy Gordo from the video game "Tekken 3" (1997), un lottatore di capoeira che gira sulle mani. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Mortal Kombat — livello 6
+- id: `liu-kang`
+- Personaggio: **Liu Kang** · Scena: un monaco Shaolin che tira un calcio volante infuocato
+- Prompt: `Liu Kang from the video game "Mortal Kombat" (1992), un monaco Shaolin che tira un calcio volante infuocato. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 6
+- id: `nina-williams`
+- Personaggio: **Nina Williams** · Scena: un'assassina bionda in tuta viola che blocca il braccio
+- Prompt: `Nina Williams from the video game "Tekken 3" (1997), un'assassina bionda in tuta viola che blocca il braccio. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 6
+- id: `yoshimitsu`
+- Personaggio: **Yoshimitsu** · Scena: un samurai con la maschera e la spada che gira come un'elica
+- Prompt: `Yoshimitsu from the video game "Tekken 3" (1997), un samurai con la maschera e la spada che gira come un'elica. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Street Fighter II — livello 7
+- id: `sagat`
+- Personaggio: **Sagat** · Scena: un gigante della thai boxe con la benda sull'occhio che lancia un Tiger Shot
+- Prompt: `Sagat from the video game "Street Fighter II" (1991), un gigante della thai boxe con la benda sull'occhio che lancia un Tiger Shot. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Mortal Kombat II — livello 7
+- id: `mileena`
+- Personaggio: **Mileena** · Scena: una guerriera in viola con la maschera e i pugnali sai
+- Prompt: `Mileena from the video game "Mortal Kombat II" (1993), una guerriera in viola con la maschera e i pugnali sai. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 7
+- id: `hwoarang`
+- Personaggio: **Hwoarang** · Scena: un ragazzo coi capelli rossi che sferra un calcio altissimo
+- Prompt: `Hwoarang from the video game "Tekken 3" (1997), un ragazzo coi capelli rossi che sferra un calcio altissimo. Palette: bold red and blue arena lights. Collectible card key art, poster style.`
+
+### Mortal Kombat — livello 8
+- id: `goro`
+- Personaggio: **Goro** · Scena: un guerriero gigante con quattro braccia che ruggisce
+- Prompt: `Goro from the video game "Mortal Kombat" (1992), un guerriero gigante con quattro braccia che ruggisce. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Mortal Kombat — livello 8
+- id: `shang-tsung`
+- Personaggio: **Shang Tsung** · Scena: uno stregone che ruba le anime e cambia forma
+- Prompt: `Shang Tsung from the video game "Mortal Kombat" (1992), uno stregone che ruba le anime e cambia forma. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Mortal Kombat — livello 8
+- id: `kano`
+- Personaggio: **Kano** · Scena: un mercenario con l'occhio laser rosso e il coltello
+- Prompt: `Kano from the video game "Mortal Kombat" (1992), un mercenario con l'occhio laser rosso e il coltello. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Street Fighter II — livello 9
+- id: `m-bison`
+- Personaggio: **M. Bison** · Scena: il dittatore col cappello rosso e il mantello avvolto dal Psycho Power
+- Prompt: `M. Bison from the video game "Street Fighter II" (1991), il dittatore col cappello rosso e il mantello avvolto dal Psycho Power. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Tekken — livello 9
+- id: `kazuya-mishima`
+- Personaggio: **Kazuya Mishima** · Scena: un lottatore con la cicatrice sul petto avvolto da fulmini viola
+- Prompt: `Kazuya Mishima from the video game "Tekken" (1994), un lottatore con la cicatrice sul petto avvolto da fulmini viola. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Fatal Fury — livello 9
+- id: `terry-bogard`
+- Personaggio: **Terry Bogard** · Scena: un lottatore col cappellino e la giacca rossa che colpisce il terreno
+- Prompt: `Terry Bogard from the video game "Fatal Fury" (1991), un lottatore col cappellino e la giacca rossa che colpisce il terreno. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Super Street Fighter II Turbo — livello 10
+- id: `akuma`
+- Personaggio: **Akuma** · Scena: un demone del karate con i capelli rossi e la scritta sulla schiena
+- Prompt: `Akuma from the video game "Super Street Fighter II Turbo" (1994), un demone del karate con i capelli rossi e la scritta sulla schiena. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Mortal Kombat II — livello 10
+- id: `shao-kahn`
+- Personaggio: **Shao Kahn** · Scena: l'imperatore con il teschio come elmo e il martello da guerra
+- Prompt: `Shao Kahn from the video game "Mortal Kombat II" (1993), l'imperatore con il teschio come elmo e il martello da guerra. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Tekken 3 — livello 10
+- id: `heihachi-mishima`
+- Personaggio: **Heihachi Mishima** · Scena: un vecchio lottatore coi capelli a punte grigie che scatena i fulmini
+- Prompt: `Heihachi Mishima from the video game "Tekken 3" (1997), un vecchio lottatore coi capelli a punte grigie che scatena i fulmini. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Dragon Quest — livello 1
+- id: `slime-dragon-quest`
+- Personaggio: **Lo Slime di Dragon Quest** · Scena: una goccia blu sorridente che saltella nell'erba
+- Prompt: `Lo Slime di Dragon Quest from the video game "Dragon Quest" (1986), una goccia blu sorridente che saltella nell'erba. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 1
+- id: `il-cactuar`
+- Personaggio: **Il Cactuar** · Scena: un cactus verde che corre nel deserto con le braccia alzate
+- Prompt: `Il Cactuar from the video game "Final Fantasy VII" (1997), un cactus verde che corre nel deserto con le braccia alzate. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 1
+- id: `la-bomba`
+- Personaggio: **La Bomba** · Scena: una palla di fuoco con la faccia arrabbiata che si gonfia
+- Prompt: `La Bomba from the video game "Final Fantasy VII" (1997), una palla di fuoco con la faccia arrabbiata che si gonfia. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 2
+- id: `il-tonberry`
+- Personaggio: **Il Tonberry** · Scena: una lucertolina verde con la lanterna e un coltellino che avanza lentamente
+- Prompt: `Il Tonberry from the video game "Final Fantasy VII" (1997), una lucertolina verde con la lanterna e un coltellino che avanza lentamente. Palette: deep ocean blues. Collectible card key art, poster style.`
+
+### Kingdom Hearts — livello 2
+- id: `lo-heartless-ombra`
+- Personaggio: **Lo Heartless Ombra** · Scena: un piccolo mostro nero con gli occhi gialli che esce dal pavimento
+- Prompt: `Lo Heartless Ombra from the video game "Kingdom Hearts" (2002), un piccolo mostro nero con gli occhi gialli che esce dal pavimento. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Breath of the Wild — livello 2
+- id: `il-moblin`
+- Personaggio: **Il Moblin** · Scena: un grosso mostro dal muso di cinghiale con la lancia
+- Prompt: `Il Moblin from the video game "The Legend of Zelda: Breath of the Wild" (2017), un grosso mostro dal muso di cinghiale con la lancia. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Final Fantasy IX — livello 3
+- id: `vivi`
+- Personaggio: **Vivi** · Scena: un piccolo mago col cappello a punta e gli occhi gialli che lancia una fiammata
+- Prompt: `Vivi from the video game "Final Fantasy IX" (2000), un piccolo mago col cappello a punta e gli occhi gialli che lancia una fiammata. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 3
+- id: `red-xiii`
+- Personaggio: **Red XIII** · Scena: un leone rosso con la coda di fuoco e il numero XIII tatuato
+- Prompt: `Red XIII from the video game "Final Fantasy VII" (1997), un leone rosso con la coda di fuoco e il numero XIII tatuato. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Ocarina of Time — livello 3
+- id: `epona`
+- Personaggio: **Epona** · Scena: una cavalla marrone con la criniera bianca che galoppa nella prateria
+- Prompt: `Epona from the video game "The Legend of Zelda: Ocarina of Time" (1998), una cavalla marrone con la criniera bianca che galoppa nella prateria. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 4
+- id: `barret`
+- Personaggio: **Barret** · Scena: un uomo grande con il braccio-mitragliatrice tra le rotaie
+- Prompt: `Barret from the video game "Final Fantasy VII" (1997), un uomo grande con il braccio-mitragliatrice tra le rotaie. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Kingdom Hearts — livello 4
+- id: `paperino`
+- Personaggio: **Paperino** · Scena: Paperino da mago con il bastone che lancia un incantesimo
+- Prompt: `Paperino from the video game "Kingdom Hearts" (2002), Paperino da mago con il bastone che lancia un incantesimo. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Kingdom Hearts — livello 4
+- id: `pippo`
+- Personaggio: **Pippo** · Scena: Pippo da cavaliere con il grande scudo rotondo
+- Prompt: `Pippo from the video game "Kingdom Hearts" (2002), Pippo da cavaliere con il grande scudo rotondo. Palette: earthy browns and ochre. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 5
+- id: `aerith`
+- Personaggio: **Aerith** · Scena: una ragazza con il fiocco rosa che prega tra i fiori in una chiesa
+- Prompt: `Aerith from the video game "Final Fantasy VII" (1997), una ragazza con il fiocco rosa che prega tra i fiori in una chiesa. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Final Fantasy X — livello 5
+- id: `yuna`
+- Personaggio: **Yuna** · Scena: un'invocatrice con il bastone che danza sull'acqua
+- Prompt: `Yuna from the video game "Final Fantasy X" (2001), un'invocatrice con il bastone che danza sull'acqua. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Final Fantasy IX — livello 5
+- id: `zidane`
+- Personaggio: **Zidane** · Scena: un ladro biondo con la coda che salta con due pugnali
+- Prompt: `Zidane from the video game "Final Fantasy IX" (2000), un ladro biondo con la coda che salta con due pugnali. Palette: teal and pale sky. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Twilight Princess — livello 6
+- id: `midna`
+- Personaggio: **Midna** · Scena: una piccola creatura del crepuscolo con l'elmo, sorridente e furba
+- Prompt: `Midna from the video game "The Legend of Zelda: Twilight Princess" (2006), una piccola creatura del crepuscolo con l'elmo, sorridente e furba. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Kingdom Hearts — livello 6
+- id: `re-topolino`
+- Personaggio: **Re Topolino** · Scena: Topolino re con il mantello e il Keyblade dorato
+- Prompt: `Re Topolino from the video game "Kingdom Hearts" (2002), Topolino re con il mantello e il Keyblade dorato. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Breath of the Wild — livello 6
+- id: `il-lynel`
+- Personaggio: **Il Lynel** · Scena: un centauro leone con la criniera rossa e la spada
+- Prompt: `Il Lynel from the video game "The Legend of Zelda: Breath of the Wild" (2017), un centauro leone con la criniera rossa e la spada. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Final Fantasy XIII — livello 7
+- id: `lightning`
+- Personaggio: **Lightning** · Scena: una soldatessa con i capelli rosa e la spada-pistola tra i fulmini
+- Prompt: `Lightning from the video game "Final Fantasy XIII" (2009), una soldatessa con i capelli rosa e la spada-pistola tra i fulmini. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Final Fantasy XV — livello 7
+- id: `noctis`
+- Personaggio: **Noctis** · Scena: un principe vestito di nero circondato da spade di luce
+- Prompt: `Noctis from the video game "Final Fantasy XV" (2016), un principe vestito di nero circondato da spade di luce. Palette: gold and soft white. Collectible card key art, poster style.`
+
+### Final Fantasy X — livello 7
+- id: `auron`
+- Personaggio: **Auron** · Scena: un guerriero col cappotto rosso e la grande spada sulla spalla
+- Prompt: `Auron from the video game "Final Fantasy X" (2001), un guerriero col cappotto rosso e la grande spada sulla spalla. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Crisis Core: Final Fantasy VII — livello 8
+- id: `zack-fair`
+- Personaggio: **Zack Fair** · Scena: un soldato coi capelli neri a punte e la grande spada
+- Prompt: `Zack Fair from the video game "Crisis Core: Final Fantasy VII" (2007), un soldato coi capelli neri a punte e la grande spada. Palette: electric yellow and deep violet. Collectible card key art, poster style.`
+
+### Kingdom Hearts — livello 8
+- id: `riku`
+- Personaggio: **Riku** · Scena: un ragazzo coi capelli argento e il Keyblade a forma d'ala
+- Prompt: `Riku from the video game "Kingdom Hearts" (2002), un ragazzo coi capelli argento e il Keyblade a forma d'ala. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 8
+- id: `vincent-valentine`
+- Personaggio: **Vincent Valentine** · Scena: un uomo dal mantello rosso con la pistola e l'artiglio d'oro
+- Prompt: `Vincent Valentine from the video game "Final Fantasy VII" (1997), un uomo dal mantello rosso con la pistola e l'artiglio d'oro. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 9
+- id: `shiva`
+- Personaggio: **Shiva** · Scena: la regina dei ghiacci che fa nascere un diamante di ghiaccio
+- Prompt: `Shiva from the video game "Final Fantasy VII" (1997), la regina dei ghiacci che fa nascere un diamante di ghiaccio. Palette: icy blues and white. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 9
+- id: `ifrit`
+- Personaggio: **Ifrit** · Scena: un demone con le corna avvolto dalle fiamme che lancia una meteora di fuoco
+- Prompt: `Ifrit from the video game "Final Fantasy VII" (1997), un demone con le corna avvolto dalle fiamme che lancia una meteora di fuoco. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Majora's Mask — livello 9
+- id: `skull-kid`
+- Personaggio: **Skull Kid** · Scena: un folletto che indossa una maschera a forma di cuore con gli occhi gialli
+- Prompt: `Skull Kid from the video game "The Legend of Zelda: Majora's Mask" (2000), un folletto che indossa una maschera a forma di cuore con gli occhi gialli. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Final Fantasy VII — livello 10
+- id: `bahamut`
+- Personaggio: **Bahamut** · Scena: il re dei draghi che spara un raggio di energia dall'alto del cielo
+- Prompt: `Bahamut from the video game "Final Fantasy VII" (1997), il re dei draghi che spara un raggio di energia dall'alto del cielo. Palette: warm reds and oranges. Collectible card key art, poster style.`
+
+### The Legend of Zelda: Breath of the Wild — livello 10
+- id: `ganon-calamita`
+- Personaggio: **Ganon Calamità** · Scena: un mostro di malvagità rossa e nera attorcigliato attorno al castello di Hyrule
+- Prompt: `Ganon Calamità from the video game "The Legend of Zelda: Breath of the Wild" (2017), un mostro di malvagità rossa e nera attorcigliato attorno al castello di Hyrule. Palette: toxic green and purple. Collectible card key art, poster style.`
+
+### Elden Ring — livello 10
+- id: `malenia`
+- Personaggio: **Malenia** · Scena: una guerriera con l'elmo alato e la protesi di spada che fiorisce di rosso
+- Prompt: `Malenia from the video game "Elden Ring" (2022), una guerriera con l'elmo alato e la protesi di spada che fiorisce di rosso. Palette: toxic green and purple. Collectible card key art, poster style.`

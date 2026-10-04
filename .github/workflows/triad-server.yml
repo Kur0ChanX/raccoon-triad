@@ -9,6 +9,7 @@ on:
       - 'tools/triad-server/**'
       - 'triad-core.js'
       - 'triad-cards.js'
+      - 'triad-exp.js'
       - 'triad-cosm.js'
 permissions:
   contents: write
