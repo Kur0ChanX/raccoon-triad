@@ -380,12 +380,111 @@
     say(steps[0].say); hlIv = setInterval(hl, 400); hl();
   };
 
+  // TORNEO TRA AMICI sullo stesso telefono: da 3 a 8 giocatori, eliminazione diretta, ci si passa il telefono.
+  // Mazzi: «Sorteggio» (ognuno sceglie 5 carte tra 3 proposte a caso, tutti alla pari) oppure «Album» (5 carte dalla collezione di questo telefono).
+  // Niente carte né monete in palio. Il torneo in corso resta salvato in jrpg_triad_fcup.
+  const FC_KEY = 'jrpg_triad_fcup';
+  const fcLoad = ()=> TT.LS.get(FC_KEY, null), fcSave = c=> TT.LS.set(FC_KEY, c);
+  TT.friendCup = function(){
+    const run = fcLoad();
+    if(run && !run.champ) return fcBracket(run);
+    const st = {names: ['', '', ''], mode: 'draft', lv: 5, R: {elemental: true, same: true, plus: false, sameWall: false, combo: true, sudden: true}};
+    const draw = ()=>{
+      TT.screen('Torneo tra amici', `<p class="mut" style="text-align:center">Scrivete i vostri nomi (da 3 a 8). Il tabellone si sorteggia, poi ogni partita si gioca passandosi il telefono.</p>
+        <div class="tt2-box">${st.names.map((n, i)=> `<div class="tt2-row" style="margin:4px 0;flex-wrap:nowrap"><span style="width:22px">${i + 1}.</span><input class="ed-in" data-nm="${i}" maxlength="14" placeholder="Giocatore ${i + 1}" value="${esc(n)}" style="margin:0;flex:1">${st.names.length > 3 ? `<button class="tt2-btn sm" data-del="${i}">✕</button>` : ''}</div>`).join('')}
+          ${st.names.length < 8 ? '<button class="tt2-btn sm" id="fcAdd" style="margin-top:6px">➕ Aggiungi un giocatore</button>' : ''}</div>
+        <div class="tt2-box"><b>Mazzi</b><div class="tt2-strip" style="margin-top:6px"><button class="tt2-chip${st.mode === 'draft' ? ' on' : ''}" data-md="draft">🎲 Sorteggio</button><button class="tt2-chip${st.mode === 'album' ? ' on' : ''}" data-md="album">📚 Dal mio album</button></div>
+          <p class="mut">${st.mode === 'draft' ? 'Ognuno sceglie 5 carte, una alla volta, tra 3 proposte a caso: tutti alla pari, conta chi gioca meglio.' : 'Ognuno sceglie 5 carte dalla collezione di questo telefono.'}</p>
+          ${st.mode === 'draft' ? `<div class="tt2-strip">${[[3, 'Facili'], [5, 'Medie'], [8, 'Forti']].map(x=> `<button class="tt2-chip${st.lv === x[0] ? ' on' : ''}" data-lv="${x[0]}">${x[1]}</button>`).join('')}</div>` : ''}</div>
+        <div class="tt2-box"><b>Regole</b>${Object.keys(RULE_N).map(k=> `<label class="chk"><input type="checkbox" data-r="${k}" ${st.R[k] ? 'checked' : ''} ${k === 'sameWall' && !st.R.same ? 'disabled' : ''}> ${RULE_N[k]}</label>`).join('')}</div>
+        <button class="tt2-btn pri w" id="fcGo">🏆 Sorteggia il tabellone</button>`);
+      $$('[data-nm]').forEach(i=> i.addEventListener('input', ()=>{ st.names[+i.dataset.nm] = i.value; }));
+      $$('[data-del]').forEach(b=> b.addEventListener('click', ()=>{ st.names.splice(+b.dataset.del, 1); draw(); }));
+      const ad = $('#fcAdd'); if(ad) ad.addEventListener('click', ()=>{ st.names.push(''); draw(); });
+      $$('[data-md]').forEach(b=> b.addEventListener('click', ()=>{ st.mode = b.dataset.md; draw(); }));
+      $$('[data-lv]').forEach(b=> b.addEventListener('click', ()=>{ st.lv = +b.dataset.lv; draw(); }));
+      $$('[data-r]').forEach(c=> c.addEventListener('change', ()=>{ st.R[c.dataset.r] = c.checked; if(!st.R.same) st.R.sameWall = false; draw(); }));
+      $('#fcGo').addEventListener('click', ()=>{
+        const names = st.names.map((n, i)=> n.trim() || 'Giocatore ' + (i + 1));
+        if(new Set(names.map(n=> n.toLowerCase())).size !== names.length){ TT.toast('Due giocatori hanno lo stesso nome'); return; }
+        if(st.mode === 'album' && localItems().length < 5){ TT.toast('Nell\'album servono almeno 5 carte'); return; }
+        TT.snd('combo'); const c = fcNew(names, st); fcSave(c); TT.replaceTop(fcDecks, c);
+      });
+    };
+    draw();
+  };
+  function fcNew(names, st){
+    const n = names.length, S = n <= 4 ? 4 : 8, ids = names.map((_, i)=> i).sort(()=> Math.random() - .5), slots = Array(S).fill(null);
+    for(let k = 0; k < n; k++){ const j = k < S / 2 ? 2 * k : 2 * (k - S / 2) + 1; slots[j] = ids[k]; }
+    const rounds = []; for(let r = 0; r < Math.log2(S); r++) rounds.push(Array.from({length: S >> (r + 1)}, (_, j)=> r === 0 ? {a: slots[2 * j], b: slots[2 * j + 1], w: null} : {a: null, b: null, w: null}));
+    return {players: names.map(nm=> ({n: nm, deck: null})), mode: st.mode, lv: st.lv, rules: Object.assign({trade: 'one'}, st.R), rounds, round: 0, champ: null, t: Date.now()};
+  }
+  // scelta dei mazzi, un giocatore alla volta
+  function fcDecks(c){
+    const i = c.players.findIndex(p=> !p.deck); if(i < 0){ fcAdvance(c); fcSave(c); return TT.replaceTop(fcBracket, c); }
+    const who = c.players[i].n;
+    const m = TT.modal(`<div style="text-align:center"><div style="font-size:2.4rem">📱</div><h3>Passa il telefono a ${esc(who)}</h3><p class="mut">Gli altri non guardano: ${esc(who)} sceglie il suo mazzo.</p><button class="tt2-btn pri w" data-go>Sono ${esc(who)}</button></div>`, {center: true, sticky: true});
+    $('[data-go]', m).addEventListener('click', ()=>{
+      m.remove();
+      const done = ids=>{ c.players[i].deck = ids; fcSave(c); fcDecks(c); };
+      if(c.mode === 'album') TT.pickDeck({title: who + ': le tue 5 carte', sub: 'Gli altri non guardano!', items: localItems(), ok: 'Fatto', back: ()=> fcDecks(c), onDone: k=> done(k.map(x=> x.split('#')[0]))});
+      else fcDraft(who, c.lv, done);
+    });
+  }
+  function fcDraft(who, lv, done){
+    const pool = TT.BASE.filter(x=> x.lv >= Math.max(1, lv - 2) && x.lv <= Math.min(10, lv + 1)), picked = [];
+    const step = ()=>{
+      const opts = pool.filter(x=> !picked.includes(x.id)).sort(()=> Math.random() - .5).slice(0, 3);
+      TT.screen(who + ': carta ' + (picked.length + 1) + ' di 5', `<p class="mut" style="text-align:center">Scegli una carta tra queste tre. Gli altri non guardano!</p>
+        <div class="tt2-grid s" style="grid-template-columns:repeat(3,1fr)">${opts.map(o=> `<div class="cw" data-pk="${o.id}" style="cursor:pointer">${cardHtml(o.id, {})}</div>`).join('')}</div>
+        ${picked.length ? `<h3>Il tuo mazzo</h3><div class="tt2-grid s">${picked.map(id=> `<div class="cw">${cardHtml(id, {})}</div>`).join('')}</div>` : ''}`, {back: false});
+      $$('[data-pk]').forEach(el=> el.addEventListener('click', ()=>{ TT.snd('click'); picked.push(el.dataset.pk); if(picked.length < 5) step(); else done(picked); }));
+    };
+    step();
+  }
+  // i riposi avanzano da soli; a turno finito si passa al successivo
+  function fcAdvance(c){
+    for(let guard = 0; guard < 4; guard++){
+      const ms = c.rounds[c.round];
+      ms.forEach(m=>{ if(m.w == null && (m.a == null) !== (m.b == null)) m.w = m.a != null ? m.a : m.b; });
+      if(!ms.every(m=> m.w != null)) return;
+      if(c.round === c.rounds.length - 1){ c.champ = ms[0].w; return; }
+      ms.forEach((m, j)=>{ const nx = c.rounds[c.round + 1][j >> 1]; if(j % 2 === 0) nx.a = m.w; else nx.b = m.w; });
+      c.round++;
+    }
+  }
+  function fcBracket(c){
+    const RN = i=> ['Finale', 'Semifinale', 'Quarti di finale'][c.rounds.length - 1 - i], nm = i=> i == null ? '<i class="mut">—</i>' : esc(c.players[i].n);
+    const next = c.champ == null ? c.rounds[c.round].find(m=> m.w == null && m.a != null && m.b != null) : null;
+    TT.screen('🏆 Torneo tra amici', `
+      ${c.champ != null ? `<div class="tt2-tower-hd"><div style="font-size:2.8rem">🏆</div><div class="fl">${esc(c.players[c.champ].n)}</div><div class="mut">è il campione del torneo!</div></div>` : ''}
+      ${next ? `<button class="tt2-btn gold w" id="fcPlay" style="margin:6px 0 10px">▶️ ${RN(c.round)}: ${nm(next.a)} contro ${nm(next.b)}</button>` : ''}
+      ${c.rounds.map((r, i)=> `<h3>${RN(i)}</h3><div class="tt2-list">${r.map(m=> `<div class="tt2-item tn-m"><div class="tx"><span class="${m.w != null && m.w === m.a ? 'tn-w' : ''}">${nm(m.a)}</span> <span class="mut">contro</span> <span class="${m.w != null && m.w === m.b ? 'tn-w' : ''}">${nm(m.b)}</span>${(m.a == null) !== (m.b == null) && m.w != null ? ' <small class="mut">(passa il turno)</small>' : ''}</div><div class="rt">${m.sc || ''}</div></div>`).join('')}</div>`).join('')}
+      <div class="tt2-row c" style="margin-top:12px"><button class="tt2-btn ${c.champ != null ? 'pri' : 'red'}" id="fcEnd">${c.champ != null ? 'Nuovo torneo' : 'Abbandona il torneo'}</button></div>`);
+    if(c.champ != null){ TT.snd('win'); }
+    const pb = $('#fcPlay'); if(pb) pb.addEventListener('click', ()=> fcMatch(c, next));
+    $('#fcEnd').addEventListener('click', async ()=>{ if(c.champ == null && !await TT.ask('Abbandonate il torneo? Si perde il tabellone.', 'Abbandona', 'Continua')) return; fcSave(null); TT.replaceTop(TT.friendCup); });
+  }
+  function fcMatch(c, m){
+    const A = c.players[m.a], B = c.players[m.b];
+    startLocal({title: '🏆 ' + A.n + ' contro ' + B.n, hot: true, names: [{nick: A.n, av: '🔵', sub: 'Blu'}, {nick: B.n, av: '🔴', sub: 'Rosso'}], hands: [A.deck.slice(), B.deck.slice()], rules: c.rules,
+      onEnd: (won, draw, sc)=>{
+        if(draw){ TT.toast('Pareggio: si rigioca!', 2500); return fcMatch(c, m); }
+        m.w = won ? m.a : m.b; m.sc = Math.max(sc[0], sc[1]) + '-' + Math.min(sc[0], sc[1]);
+        fcAdvance(c); fcSave(c);
+        TT.toast('🏆 Vince ' + c.players[m.w].n + '!', 2500);
+        TT.replaceTop(fcBracket, c);
+      }});
+  }
+
   TT.hotseat = function(){
     const S = TT.save(), R = {elemental: true, same: true, plus: false, sameWall: false, combo: true, sudden: true};
     const draw = ()=>{
       TT.screen('Due giocatori', `<p class="mut" style="text-align:center">Si gioca in due sullo stesso telefono, con le carte del tuo album. Prima sceglie il giocatore 1 (il 2 non guarda), poi il giocatore 2.</p>
         <div class="tt2-box">${Object.keys(RULE_N).map(k=> `<label class="chk"><input type="checkbox" data-r="${k}" ${R[k] ? 'checked' : ''} ${k === 'sameWall' && !R.same ? 'disabled' : ''}> ${RULE_N[k]}</label>`).join('')}</div>
-        <button class="tt2-btn pri w" id="hsGo">Avanti: scelta dei mazzi</button>`);
+        <button class="tt2-btn pri w" id="hsGo">Avanti: scelta dei mazzi</button>
+        <div class="tt2-box" style="margin-top:14px;text-align:center"><b>🏆 Siete in tanti?</b><p class="mut" style="margin:6px 0">Torneo a eliminazione da 3 a 8 amici, passandovi il telefono.</p><button class="tt2-btn" id="hsCup">Organizza un torneo tra amici</button></div>`);
+      $('#hsCup').addEventListener('click', ()=>{ TT.snd('click'); TT.go(TT.friendCup); });
       $$('[data-r]').forEach(c=> c.addEventListener('change', ()=>{ R[c.dataset.r] = c.checked; if(!R.same) R.sameWall = false; draw(); }));
       $('#hsGo').addEventListener('click', ()=>{
         const items = localItems(); if(items.length < 10){ TT.toast('Servono almeno 10 carte nell\'album per giocare in due'); return; }

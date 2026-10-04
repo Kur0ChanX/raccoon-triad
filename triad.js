@@ -1,5 +1,5 @@
 // ---- Triple Triad di Frugu 2.0: sala, album, carte con 6 stili grafici, mazzi, impostazioni (si carica solo quando lo apri) ----
-// 200 carte di giochi famosi (triad-cards.js), regole FF8 (triad-core.js), immagini (triad-art.js), partite (triad-play.js), online (triad-online.js).
+// 320 personaggi dei videogiochi (triad-cards.js + triad-exp.js), regole FF8 (triad-core.js), immagini (triad-art.js), partite (triad-play.js), online (triad-online.js).
 (function(){
   'use strict';
   if(window.TT && window.TT.loaded) return;
@@ -275,17 +275,17 @@
     }
     if(!home.nag && st.w + st.l >= 10 && Date.now() - (P.lastBackup || 0) > 14 * 864e5){ home.nag = 1; setTimeout(()=> tToast('💾 Ricordati di salvare i progressi: Tavolo e suoni → Salva i progressi', 4500), 1200); }
     screen('Triple Triad', `
-      <div class="tt2-hero"><div class="tt2-title">TRIPLE TRIAD</div><div class="mut">di Frugu · 200 carte di giochi famosi</div>${fanHtml()}</div>
-      <div class="tt2-stats"><div><b>${ownedCount()}</b>carte</div><div><b>${uniq}/200</b>diverse</div><div><b>${S.coins || 0}</b>🪙 monete</div><div><b>${st.w}</b>vittorie</div></div>
+      <div class="tt2-hero"><div class="tt2-title">TRIPLE TRIAD</div><div class="mut">di Frugu · ${LIST.length} personaggi dei videogiochi</div>${fanHtml()}</div>
+      <div class="tt2-stats"><div><b>${ownedCount()}</b>carte</div><div><b>${uniq}/${LIST.length}</b>diverse</div><div><b>${S.coins || 0}</b>🪙 monete</div><div><b>${st.w}</b>vittorie</div></div>
       <div class="tt2-menu">
         <button class="tt2-tile big" data-go="online"><span class="ic">🌐</span><b>Sfida i tuoi amici online</b><small>Con codice, QR o richiesta d'amicizia. Se vinci ti prendi le loro carte migliori!</small><span class="bd" id="ttOnBd" style="display:none"></span></button>
         <button class="tt2-tile" data-go="npc"><span class="ic">🤖</span><b>Allenamento</b><small>11 avversari, IA da 1 a 5</small></button>
         <button class="tt2-tile" data-go="tower"><span class="ic">🗼</span><b>Torre infinita</b><small>Sali senza fine, carte in premio</small></button>
         <button class="tt2-tile" data-go="arena"><span class="ic">🏟️</span><b>Arena</b><small>Pesca il mazzo: tutti alla pari</small></button>
         <button class="tt2-tile" data-go="tourn"><span class="ic">🏆</span><b>Torneo</b><small>8 sfidanti, 3 turni, coppe e trofei</small></button>
-        <button class="tt2-tile" data-go="hot"><span class="ic">👥</span><b>Due giocatori</b><small>Sullo stesso telefono</small></button>
+        <button class="tt2-tile" data-go="hot"><span class="ic">👥</span><b>Due o più giocatori</b><small>Partita o torneo sullo stesso telefono</small></button>
         <button class="tt2-tile" data-go="shop"><span class="ic">🎁</span><b>Scrigno e Bottega</b><small>${(S.chest || {}).last === dayKey() ? 'Buste con le monete' : '🔔 Scrigno del giorno da aprire!'}</small></button>
-        <button class="tt2-tile" data-go="album"><span class="ic">📚</span><b>Album</b><small>${uniq} di 200 carte</small></button>
+        <button class="tt2-tile" data-go="album"><span class="ic">📚</span><b>Album</b><small>${uniq} di ${LIST.length} carte</small></button>
         <button class="tt2-tile" data-go="gfx"><span class="ic">🎨</span><b>Grafica delle carte</b><small>6 stili e l'immagine di ogni carta</small></button>
         <button class="tt2-tile" data-go="cosm"><span class="ic">🎭</span><b>Cosmetici</b><small>Dorsi, cornici e titoli</small></button>
         <button class="tt2-tile" data-go="replay"><span class="ic">🎞️</span><b>Replay</b><small>Rivedi le ultime partite</small></button>

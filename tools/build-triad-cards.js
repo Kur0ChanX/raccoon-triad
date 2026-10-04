@@ -12,6 +12,7 @@
 //
 // Uso: node tools/build-triad-cards.js                 genera (le carte nuove ricevono valori di partenza)
 //      node tools/build-triad-cards.js --balance [N]   simula e corregge (N partite per livello e per giro, predefinito 3000)
+//      node tools/build-triad-cards.js --balance 3000 --exp   corregge solo le espansioni (il set base non si tocca)
 //      node tools/build-triad-cards.js --fresh --balance  rifà da zero tutti i lati (solo se cambiano le regole dei numeri)
 //      node tools/build-triad-cards.js --report        solo il rapporto (equilibrio, vantaggio del primo, salto tra livelli)
 const fs = require('fs'), path = require('path');
@@ -87,12 +88,12 @@ for(let L = 1; L <= 10; L++){
     base.push({id, chr, game, year, plat, L, genre, el: el || null, scene: scene || ''});
   });
 }
-const EXP = require('./triad-exp-src.js'), CH = require('./triad-chars-src.js'), exp = [];
-EXP.forEach(e=>{ for(let L = 1; L <= 10; L++) (e.cards[L] || []).forEach(([game, year, plat, genre])=>{
-  const id = slug(game); if(seen.has(id)) throw new Error('id doppio ' + id); seen.add(id);
-  const ch = CH[game]; if(!ch) throw new Error('manca il personaggio di ' + game);
-  const R = rng(hash(id)), G = GEN[genre]; if(!G) throw new Error('genere sconosciuto ' + genre);
-  exp.push({id, chr: ch[0], game, year, plat, L, genre, el: G[0] && R() < G[1] ? G[0] : null, scene: ch[1], set: e.id});
+const EXP = require('./triad-exp-src.js'), exp = [];
+// espansioni: stesso formato del set base [personaggio, gioco, anno, piattaforma, genere, elemento, scena, id facoltativo]
+EXP.forEach(e=>{ for(let L = 1; L <= 10; L++) (e.cards[L] || []).forEach(([chr, game, year, plat, genre, el, scene, oid])=>{
+  const id = oid || slug(chr); if(seen.has(id)) throw new Error('id doppio ' + id + ' (' + chr + ')'); seen.add(id);
+  if(!GEN[genre]) throw new Error('genere sconosciuto ' + genre + ' (' + chr + ')');
+  exp.push({id, chr, game, year, plat, L, genre, el: el || null, scene: scene || '', set: e.id});
 }); });
 const ALL = base.concat(exp);
 
@@ -167,7 +168,7 @@ const args = process.argv.slice(2);
 let rep = null;
 if(args.includes('--balance')){
   const N = +args[args.indexOf('--balance') + 1] || 3000;
-  const sets = [['base', base]].concat(EXP.map(e=> [e.id, exp.filter(c=> c.set === e.id)]));
+  const sets = (args.includes('--exp') ? [] : [['base', base]]).concat(EXP.map(e=> [e.id, exp.filter(c=> c.set === e.id)]));   // --exp: corregge solo le espansioni (il set base resta com'è)
   for(const [name, cards] of sets){
     for(let L = 1; L <= 10; L++){
       const list = cards.filter(c=> c.L === L); if(!list.length) continue;
@@ -196,6 +197,16 @@ let legacy = {}; try{ legacy = JSON.parse(fs.readFileSync(LEGACY, 'utf8')); }cat
     old.forEach(o=>{ if(seen.has(o[0])) return; const same = base.filter(c=> c.L === o[4]); legacy[o[0]] = same[hash(o[0]) % same.length].id; });
   }catch(e2){}
 }
+// carte tolte dalle espansioni -> carta nuova della stessa espansione (in ordine) e dello stesso livello
+try{
+  const oldX = require(path.join(ROOT, 'triad-exp.js')), oldSets = (oldX.sets || []).map(x=> x.id);
+  (oldX.cards || []).forEach(o=>{
+    if(seen.has(o[0]) || legacy[o[0]]) return;
+    const si = oldSets.indexOf(o[8]), set = EXP[si] ? EXP[si].id : null;
+    const same = exp.filter(c=> c.L === o[4] && (!set || c.set === set)), pool = same.length ? same : base.filter(c=> c.L === o[4]);
+    legacy[o[0]] = pool[hash(o[0]) % pool.length].id;
+  });
+}catch(e){}
 fs.writeFileSync(LEGACY, JSON.stringify(legacy, null, 0));
 const row = c=> [c.id, c.game, c.year, c.plat, c.L, c.v, c.el, c.genre];
 const header = `// Triple Triad di Frugu: le 200 carte base (generato da tools/build-triad-cards.js, non modificare a mano).

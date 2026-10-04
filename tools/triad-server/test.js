@@ -289,7 +289,7 @@ const rnd = st=>{ const mv = Core.legalMoves(st); return mv[Math.floor(Math.rand
   await test('il negozio mostra monete, buste ed espansioni (alcune chiuse per livello)', async ()=>{
     const sh = await api('GET', '/api/shop', null, U.a.tok);
     assert(sh.coins >= 5000, 'monete ' + sh.coins); assert.strictEqual(sh.packs.length, 4); assert.strictEqual(sh.expansions.length, 4);
-    assert.strictEqual(sh.expansions.find(x=> x.id === 'jrpg').locked, false); assert.strictEqual(sh.expansions.find(x=> x.id === 'horror').locked, true);
+    assert.strictEqual(sh.expansions.find(x=> x.id === 'pokemon').locked, false); assert.strictEqual(sh.expansions.find(x=> x.id === 'ring').locked, true);
     assert(sh.event && (sh.event.mul === 1 || sh.event.mul === 2)); assert.strictEqual(sh.event.mul, [0, 6].includes(new Date().getUTCDay()) ? 2 : 1);
     const me = await api('GET', '/api/me', null, U.a.tok); assert(me.level >= 1 && me.xp && me.xp.need > 0 && me.tickets && typeof me.dust === 'number');
   });
@@ -307,8 +307,8 @@ const rnd = st=>{ const mv = Core.legalMoves(st); return mv[Math.floor(Math.rand
     assert(best >= 6, 'massimo livello in 10 buste: ' + best);
   });
   await test('espansioni: la busta dà solo carte di quell\'espansione; chiusa se il livello è basso; monete finite = errore', async ()=>{
-    const r = await api('POST', '/api/packs/open', {type: 'exp:jrpg', coins: true}, U.a.tok); assert.strictEqual(r._s, 200, JSON.stringify(r)); assert(r.cards.every(c=> EXPIDS[c.cid] === 'jrpg'));
-    await expectErr(api('POST', '/api/packs/open', {type: 'exp:horror', coins: true}, U.a.tok), 403, 'locked');
+    const r = await api('POST', '/api/packs/open', {type: 'exp:pokemon', coins: true}, U.a.tok); assert.strictEqual(r._s, 200, JSON.stringify(r)); assert(r.cards.every(c=> EXPIDS[c.cid] === 'pokemon'));
+    await expectErr(api('POST', '/api/packs/open', {type: 'exp:ring', coins: true}, U.a.tok), 403, 'locked');
     await expectErr(api('POST', '/api/packs/open', {type: 'oro'}, U.a.tok), 400, 'pack');
     let last; for(let i = 0; i < 6; i++){ last = await api('POST', '/api/packs/open', {type: 'leg', coins: true}, U.c.tok); if(last._s !== 200) break; }
     assert.strictEqual(last._s, 402); assert.strictEqual(last.code, 'coins');
@@ -333,7 +333,7 @@ const rnd = st=>{ const mv = Core.legalMoves(st); return mv[Math.floor(Math.rand
   });
   await test('collezioni: elenco con i set base, per livello, per espansione e l\'album completo', async ()=>{
     const d = await api('GET', '/api/sets', null, U.a.tok), ids = d.sets.map(x=> x.id);
-    ['all', 'l:1', 'l:10', 'g:rpg', 'x:jrpg', 'x:indie'].forEach(k=> assert(ids.includes(k), k)); assert(d.sets.every(x=> x.total > 0 && x.n <= x.total));
+    ['all', 'l:1', 'l:10', 'g:rpg', 'x:pokemon', 'x:fantasy'].forEach(k=> assert(ids.includes(k), k)); assert(d.sets.every(x=> x.total > 0 && x.n <= x.total));
     const inc = d.sets.find(x=> !x.ready && !x.claimed); await expectErr(api('POST', '/api/sets/claim', {id: inc.id}, U.a.tok), 409, 'todo'); await expectErr(api('POST', '/api/sets/claim', {id: 'boh'}, U.a.tok), 404);
   });
   await test('traguardi: elenco con avanzamento e premio automatico', async ()=>{
@@ -411,6 +411,43 @@ const rnd = st=>{ const mv = Core.legalMoves(st); return mv[Math.floor(Math.rand
   await test('vittorie e livello sbloccano da soli i cosmetici dei traguardi', async ()=>{
     const c = await api('GET', '/api/cosmetics', null, U.w.tok), w = c.items.find(i=> i.id === 'f_bronzo'), me = await api('GET', '/api/me', null, U.w.tok);
     assert.strictEqual(w.stat, 'wins'); assert.strictEqual(w.prog, Math.min(w.target, me.wins)); assert.strictEqual(w.owned, me.wins >= w.target);
+  });
+
+  console.log('Tornei tra amici');
+  await test('torneo da 5: codice, iscrizioni, riposi, tabellone fino al campione', async ()=>{
+    const P = []; for(let i = 0; i < 5; i++) P.push(await reg('Torneo' + i + Math.floor(Math.random() * 999)));
+    const deck = async p=> (await cards(p)).slice(0, 5).map(x=> x.uid);
+    const host = P[0], c = await api('POST', '/api/tourn/create', {name: 'Coppa <b>Prova</b>', size: 8, rules: {same: true, cap: 0}, cards: await deck(host)}, host.tok);
+    assert.strictEqual(c._s, 200, JSON.stringify(c)); const T = c.tourn; assert(T.code && T.status === 'open' && T.players.length === 1 && !/[<>]/.test(T.name));
+    await expectErr(api('POST', '/api/tourn/' + T.id + '/start', {}, host.tok), 400, 'few');
+    for(const p of P.slice(1)){ const j = await api('POST', '/api/tourn/join', {code: T.code.toLowerCase(), cards: await deck(p)}, p.tok); assert.strictEqual(j._s, 200, JSON.stringify(j)); }
+    await expectErr(api('POST', '/api/tourn/join', {code: T.code, cards: await deck(P[1])}, P[1].tok), 400, 'already');
+    await expectErr(api('POST', '/api/tourn/' + T.id + '/start', {}, P[1].tok), 403, 'forbidden');
+    const s = await api('POST', '/api/tourn/' + T.id + '/start', {}, host.tok); assert.strictEqual(s._s, 200, JSON.stringify(s));
+    assert.strictEqual(s.tourn.status, 'run'); assert.strictEqual(s.tourn.rounds.length, 3); assert(!s.tourn.code, 'il codice sparisce');
+    const r0 = s.tourn.rounds[0]; assert.strictEqual(r0.filter(m=> m.m).length, 1, 'con 5 giocatori una sola partita al primo turno'); assert.strictEqual(r0.filter(m=> m.w).length, 3, 'tre riposi');
+    // gioco tutte le partite finché c'è un campione
+    const byId = {}; P.forEach(p=> byId[p.me.id] = p);
+    for(let k = 0; k < 10; k++){
+      const v = (await api('GET', '/api/tourn/' + T.id, null, host.tok)).tourn; if(v.status === 'done') break;
+      const open = v.rounds[v.round].filter(m=> m.m && !m.w);
+      for(const x of open){ const mm = (await api('GET', '/api/match/' + x.m, null, byId[x.a].tok)).match; assert.strictEqual(mm.mode, 'tourn'); await playOut(mm, byId[x.a], byId[x.b], rnd, rnd); }
+    }
+    const fin = (await api('GET', '/api/tourn/' + T.id, null, host.tok)).tourn; assert.strictEqual(fin.status, 'done', JSON.stringify(fin.rounds)); assert(fin.champion && fin.championNick);
+    const champ = byId[fin.champion], n = await api('GET', '/api/news', null, champ.tok); assert(n.news.some(x=> x.kind === 'tourn_end' && x.data.me), 'notizia della vittoria');
+    const l = await api('GET', '/api/tourns', null, P[3].tok); assert(l.tourns.some(t=> t.id === T.id));
+    const cs = await cards(P[1]); assert(cs.every(x=> !x.lock), 'nessuna carta resta bloccata');
+  });
+  await test('torneo: limite di punti, uscita e annullamento di chi lo crea', async ()=>{
+    const h = await reg('Org' + Math.floor(Math.random() * 999)), g = await reg('Ospite' + Math.floor(Math.random() * 999));
+    const hc = (await cards(h)).slice(0, 5).map(x=> x.uid);
+    await expectErr(api('POST', '/api/tourn/create', {rules: {cap: 20}, cards: hc.slice(0, 4)}, h.tok), 400, 'cards');
+    const t = (await api('POST', '/api/tourn/create', {size: 4, rules: {cap: 20}, cards: hc}, h.tok)).tourn; assert.strictEqual(t.rules.cap, 20); assert.strictEqual(t.size, 4);
+    await expectErr(api('POST', '/api/tourn/join', {code: t.code, cards: hc}, g.tok), 403, 'cards');
+    const j = await api('POST', '/api/tourn/join', {code: t.code, cards: (await cards(g)).slice(0, 5).map(x=> x.uid)}, g.tok); assert.strictEqual(j._s, 200, JSON.stringify(j));
+    const lv = await api('POST', '/api/tourn/' + t.id + '/leave', {}, g.tok); assert(lv.ok);
+    const c = await api('POST', '/api/tourn/' + t.id + '/leave', {}, h.tok); assert(c.cancelled);
+    await expectErr(api('POST', '/api/tourn/join', {code: t.code, cards: hc}, g.tok), 404, 'nf');
   });
 
   console.log('Limiti e sicurezza');
