@@ -330,3 +330,17 @@ html.tt2-open,html.tt2-open body{overflow:hidden !important}
 .tut-box{position:fixed; left:10px; right:10px; top:58px; z-index:30; max-width:540px; margin:0 auto; padding:10px 14px; border-radius:16px; background:rgba(20,16,60,.94); border:2px solid #ffd75e; box-shadow:0 8px 28px rgba(0,0,0,.5); font-size:.9rem; line-height:1.4; pointer-events:none}
 .tut-hl{animation:tutP 1s ease-in-out infinite; outline:3px solid #ffd75e; outline-offset:2px; border-radius:12px; position:relative; z-index:2}
 @keyframes tutP{0%,100%{box-shadow:0 0 0 0 rgba(255,215,94,.7)} 50%{box-shadow:0 0 0 10px rgba(255,215,94,0)}}
+
+/* Scrigno e Bottega (triad-shop.js) */
+.sh-coins{text-align:center; font-size:1.3rem; margin:4px 0 8px}
+.sh-days{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin:8px 0}
+.sh-days div{display:grid; justify-items:center; gap:2px; padding:6px 2px; border-radius:10px; background:rgba(255,255,255,.07); font-size:.62rem; text-align:center}
+.sh-days div b{font-size:1.1rem} .sh-days .got{opacity:.45} .sh-days .now{background:linear-gradient(135deg,#7c5cff,#3b82f6); box-shadow:0 0 12px rgba(124,92,255,.7)}
+.sh-cards{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:6px 0}
+.sh-c{width:30%; max-width:150px; aspect-ratio:5/7.6; perspective:600px; cursor:pointer; position:relative}
+.sh-back,.sh-face{position:absolute; inset:0; backface-visibility:hidden; transition:transform .5s}
+.sh-back{border-radius:10px; background:repeating-linear-gradient(45deg,#3b2f9f 0 7px,#2a2075 7px 14px); box-shadow:inset 0 0 0 2px rgba(255,255,255,.4); animation:shW 1.4s ease-in-out infinite}
+.sh-back::after{content:'?'; position:absolute; inset:0; display:grid; place-items:center; font-size:2rem; color:#ffd75e}
+.sh-face{transform:rotateY(180deg)} .sh-face .ttc{width:100%} .sh-face small{display:block; margin-top:4px; font-size:.7rem} .sh-new{color:#7dffa3; font-weight:800}
+.sh-c.on .sh-back{transform:rotateY(-180deg)} .sh-c.on .sh-face{transform:rotateY(0)}
+@keyframes shW{0%,100%{transform:rotate(-1.5deg)} 50%{transform:rotate(1.5deg)}}

@@ -356,8 +356,8 @@
       if(over) return; over = true; end(); await sleep(P.fast ? 200 : 700);
       const sc = st.result.score, won = st.result.winner === 0, S = TT.save();
       let gift = null;
-      if(!P.tutDone){ const l = TT.LIST.filter(c=> c.set === 'base' && c.lv === 3); gift = l[Math.floor(Math.random() * l.length)].id; S.owned[gift] = (S.owned[gift] || 0) + 1; TT.saveS(); P.tutDone = 1; TT.saveP(); }
-      board.showEnd({kind: won ? 'win' : 'draw', title: won ? 'HAI VINTO!' : 'BEN FATTO!', sub: `${sc[0]} a ${sc[1]}<br>Hai imparato le basi. ${gift ? 'Ecco un regalo per il tuo album:' : ''}`, cards: gift ? [{cid: gift, label: '🎁 Regalo'}] : [],
+      if(!P.tutDone){ const l = TT.LIST.filter(c=> c.set === 'base' && c.lv === 3); gift = l[Math.floor(Math.random() * l.length)].id; S.owned[gift] = (S.owned[gift] || 0) + 1; TT.saveS(); TT.earn(60); P.tutDone = 1; TT.saveP(); }
+      board.showEnd({kind: won ? 'win' : 'draw', title: won ? 'HAI VINTO!' : 'BEN FATTO!', sub: `${sc[0]} a ${sc[1]}<br>Hai imparato le basi. ${gift ? 'Regalo: questa carta e 🪙 60 monete per la tua prima busta (Scrigno e Bottega).' : ''}`, cards: gift ? [{cid: gift, label: '🎁 Regalo'}] : [],
         buttons: [{label: 'Riprova', fn: ()=>{ board.destroy(); TT.replaceTop(TT.tutorial); }}, {label: 'Sfida il primo avversario', cls: 'pri', fn: ()=>{ board.destroy(); TT.replaceTop(TT.npcList); }}]});
     }
     board = TT.mountBoard({
@@ -441,7 +441,7 @@
       const res = st.result, S = TT.save(), w = res.winner, sc = res.score;
       const won = w === 0, draw = w == null, info = Core.tradeInfo(st);
       const rid = TT.saveReplay(cfg.hot ? 'hot' : cfg.arena || cfg.onEnd ? 'cup' : 'npc', cfg.title, cfg.names, st0, st);
-      if(!cfg.hot && !cfg.arena){ S.stats[won ? 'w' : draw ? 'd' : 'l']++; if(won){ S.stats.streak++; S.stats.best = Math.max(S.stats.best || 0, S.stats.streak); } else if(!draw) S.stats.streak = 0; if(cfg.npc && cfg.npc.daily && won) dailyWin(); if(cfg.npc){ const r = S.npc[cfg.npc.id] = S.npc[cfg.npc.id] || {w: 0, l: 0}; if(won) r.w++; else if(!draw) r.l++; } }
+      if(!cfg.hot && !cfg.arena){ S.stats[won ? 'w' : draw ? 'd' : 'l']++; if(won){ S.stats.streak++; S.stats.best = Math.max(S.stats.best || 0, S.stats.streak); } else if(!draw) S.stats.streak = 0; if(cfg.npc && cfg.npc.daily && won){ dailyWin(); TT.earn(40); } if(!cfg.onEnd) TT.earnGame(won ? 6 + 3 * (cfg.ai || 1) : draw ? 3 : 2); if(cfg.npc){ const r = S.npc[cfg.npc.id] = S.npc[cfg.npc.id] || {w: 0, l: 0}; if(won) r.w++; else if(!draw) r.l++; } }
       const btns = (rid ? [{label: '🎞️ Replay', fn: ()=>{ const e = (TT.LS.get(RP_KEY, []) || []).find(x=> x.id === rid); if(e){ board.destroy(); TT.watchReplay(e, ()=>{ TT.back(); }); } }}] : []).concat([{label: 'Rivincita', cls: 'pri', fn: ()=>{ board.destroy(); if(cfg.npc) cfg.hands[1] = npcDeck(cfg.npc, cfg.hands[0]); startLocal(cfg); }}, {label: 'Esci', fn: ()=>{ board.destroy(); TT.saveS(); TT.back(); }}]);
       const gain = ids=>{ ids.forEach(id=>{ S.owned[id] = (S.owned[id] || 0) + 1; }); TT.saveS(); };
       if(cfg.arena || cfg.onEnd){ board.destroy(); (cfg.arena || cfg.onEnd)(won, draw, sc, rid); return; }
@@ -509,6 +509,7 @@
   }
   function towerEnd(T, cleared, quit){
     const rw = towerRewards(cleared), S = TT.save(); rw.forEach(id=>{ S.owned[id] = (S.owned[id] || 0) + 1; }); TT.saveS();
+    const tc = TT.earn(4 * cleared); if(tc) setTimeout(()=> TT.toast('🪙 +' + tc + ' monete'), 900);
     T.best = Math.max(T.best, cleared); T.runs++; T.run = null; tsave(T);
     const R = TT.root();
     R.innerHTML = ''; TT.screen('Torre infinita', `<div class="tt2-tower-hd"><div style="font-size:2.4rem">${cleared >= T.best && cleared > 0 ? '🏆' : '🗼'}</div><div class="fl">${cleared}</div><div class="mut">piani superati${cleared >= T.best && cleared > 0 ? ' · NUOVO RECORD!' : ' · record ' + T.best}</div></div>
@@ -603,7 +604,7 @@
         const A = arLoad(); A.best = Math.max(A.best, run.wins);
         const end = run.wins >= 3 || run.losses >= 2;
         if(!end){ arSave(A); const m = TT.modal(`<div style="text-align:center"><div style="font-size:2rem">${won ? '🏆' : draw ? '🤝' : '💥'}</div><h3>${won ? 'Vittoria' : draw ? 'Pareggio' : 'Sconfitta'} ${sc[0]}–${sc[1]}</h3><p class="mut">${run.wins} vittorie · ${run.losses} sconfitte</p><button class="tt2-btn pri w" data-y>Prossimo incontro</button></div>`, {center: true, sticky: true}); $('[data-y]', m).addEventListener('click', ()=>{ m.remove(); arenaFight(run); }); return; }
-        A.runs++; let prize = '';
+        A.runs++; let prize = ''; const ac = TT.earn(15 * run.wins); if(ac) setTimeout(()=> TT.toast('🪙 +' + ac + ' monete'), 900);
         if(run.wins >= 3){ if(run.losses === 0) A.perfect++; const S = TT.save(); const ids = TT.LIST.filter(x=> x.set === 'base' && x.lv >= 4 && x.lv <= (run.losses ? 7 : 9)); const pick = ids[Math.floor(Math.random() * ids.length)]; S.owned[pick.id] = (S.owned[pick.id] || 0) + 1; TT.saveS(); prize = `<div class="cw" style="width:120px;margin:8px auto">${cardHtml(pick.id, {})}</div><p>Premio: <b>${esc(pick.name)}</b> nel tuo album!</p>`; }
         arSave(A);
         TT.screen('Arena · fine corsa', `<div class="tt2-tower-hd"><div style="font-size:2.6rem">${run.wins >= 3 ? '🏆' : '🏟️'}</div><div class="fl">${run.wins}V ${run.losses}S</div></div>${prize}<button class="tt2-btn pri w" id="arAgain">Nuova corsa</button>`, {back: false});

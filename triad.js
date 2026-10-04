@@ -196,6 +196,17 @@
   const ownedCount = ()=> ownedIds().reduce((a, k)=> a + S.owned[k], 0);
   function refill(){ let n = ownedCount(); while(n < 5){ const l = LIST.filter(c=> c.lv <= 2); const c = l[Math.floor(Math.random() * l.length)]; S.owned[c.id] = (S.owned[c.id] || 0) + 1; n++; } saveS(); }
   Object.assign(TT, {save: ()=> S || loadSave(), saveS, ownedIds, ownedCount, refill});
+  // monete dell'allenamento (senza internet), in S.coins. Si spendono nella Bottega (triad-shop.js).
+  // earnGame: premio di una partita; dopo 12 partite premiate nello stesso giorno vale la metà (la crescita resta lenta anche giocando tanto)
+  const dayKey = ()=>{ const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+  TT.dayKey = dayKey;
+  TT.earn = function(n){ const s = TT.save(); n = Math.max(0, Math.round(n || 0)); if(!n) return 0; s.coins = (s.coins || 0) + n; saveS(); return n; };
+  TT.earnGame = function(n){
+    const s = TT.save(), k = dayKey(); if(!s.eday || s.eday.d !== k) s.eday = {d: k, n: 0};
+    s.eday.n++; const got = TT.earn(s.eday.n > 12 ? n / 2 : n);
+    if(got) setTimeout(()=> tToast('🪙 +' + got + ' monete'), 900);
+    return got;
+  };
 
   // ---------------------------------------------------------------- schermate e finestre
   let root = null, hist = [], onClose = null;
@@ -265,7 +276,7 @@
     if(!home.nag && st.w + st.l >= 10 && Date.now() - (P.lastBackup || 0) > 14 * 864e5){ home.nag = 1; setTimeout(()=> tToast('💾 Ricordati di salvare i progressi: Tavolo e suoni → Salva i progressi', 4500), 1200); }
     screen('Triple Triad', `
       <div class="tt2-hero"><div class="tt2-title">TRIPLE TRIAD</div><div class="mut">di Frugu · 200 carte di giochi famosi</div>${fanHtml()}</div>
-      <div class="tt2-stats"><div><b>${ownedCount()}</b>carte</div><div><b>${uniq}/200</b>diverse</div><div><b>${st.w}</b>vittorie</div><div><b>${st.best || 0}</b>serie record</div></div>
+      <div class="tt2-stats"><div><b>${ownedCount()}</b>carte</div><div><b>${uniq}/200</b>diverse</div><div><b>${S.coins || 0}</b>🪙 monete</div><div><b>${st.w}</b>vittorie</div></div>
       <div class="tt2-menu">
         <button class="tt2-tile big" data-go="online"><span class="ic">🌐</span><b>Sfida i tuoi amici online</b><small>Con codice, QR o richiesta d'amicizia. Se vinci ti prendi le loro carte migliori!</small><span class="bd" id="ttOnBd" style="display:none"></span></button>
         <button class="tt2-tile" data-go="npc"><span class="ic">🤖</span><b>Allenamento</b><small>11 avversari, IA da 1 a 5</small></button>
@@ -273,6 +284,7 @@
         <button class="tt2-tile" data-go="arena"><span class="ic">🏟️</span><b>Arena</b><small>Pesca il mazzo: tutti alla pari</small></button>
         <button class="tt2-tile" data-go="tourn"><span class="ic">🏆</span><b>Torneo</b><small>8 sfidanti, 3 turni, coppe e trofei</small></button>
         <button class="tt2-tile" data-go="hot"><span class="ic">👥</span><b>Due giocatori</b><small>Sullo stesso telefono</small></button>
+        <button class="tt2-tile" data-go="shop"><span class="ic">🎁</span><b>Scrigno e Bottega</b><small>${(S.chest || {}).last === dayKey() ? 'Buste con le monete' : '🔔 Scrigno del giorno da aprire!'}</small></button>
         <button class="tt2-tile" data-go="album"><span class="ic">📚</span><b>Album</b><small>${uniq} di 200 carte</small></button>
         <button class="tt2-tile" data-go="gfx"><span class="ic">🎨</span><b>Grafica delle carte</b><small>6 stili e l'immagine di ogni carta</small></button>
         <button class="tt2-tile" data-go="cosm"><span class="ic">🎭</span><b>Cosmetici</b><small>Dorsi, cornici e titoli</small></button>
@@ -280,7 +292,7 @@
         <button class="tt2-tile" data-go="rules"><span class="ic">📖</span><b>Regole</b><small>Same, Plus, Combo, Elementi…</small></button>
         <button class="tt2-tile" data-go="settings"><span class="ic">⚙️</span><b>Tavolo e suoni</b><small>Temi, volume, salvataggio</small></button>
       </div>`, {back: false});
-    $$('[data-go]', root).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const k = b.dataset.go; if(k === 'online') openOnline(); else if(k === 'npc') go(TT.npcList); else if(k === 'tower') go(TT.tower); else if(k === 'arena') go(TT.arena); else if(k === 'hot') go(TT.hotseat); else if(k === 'album') go(albumLocal); else if(k === 'gfx') go(gfxPage); else if(k === 'rules') go(rulesPage); else if(k === 'settings') go(settingsPage); else openExtra(k); }));
+    $$('[data-go]', root).forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); const k = b.dataset.go; if(k === 'online') openOnline(); else if(k === 'npc') go(TT.npcList); else if(k === 'tower') go(TT.tower); else if(k === 'arena') go(TT.arena); else if(k === 'hot') go(TT.hotseat); else if(k === 'album') go(albumLocal); else if(k === 'gfx') go(gfxPage); else if(k === 'rules') go(rulesPage); else if(k === 'settings') go(settingsPage); else if(k === 'shop') loadJS('triad-shop.js').then(()=> go(TT.shop)).catch(()=> tToast('Non riesco ad aprire la Bottega')); else openExtra(k); }));
     try{ if(LS.get('jrpg_triad_acct', null)){ if(window.TT_ONLINE_BADGE) window.TT_ONLINE_BADGE(); else loadJS('triad-online.js').then(()=> window.TT_ONLINE_BADGE && window.TT_ONLINE_BADGE()).catch(()=>{}); } }catch(e){}
   }
   function fanHtml(){
