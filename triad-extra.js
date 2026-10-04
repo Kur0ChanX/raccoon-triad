@@ -251,6 +251,7 @@
     const cup = cupOf(run.cup), S = TT.save(), rw = tnCards(cup, run.won);
     rw.forEach(id=>{ S.owned[id] = (S.owned[id] || 0) + 1; }); TT.saveS();
     if(champion){ T.wins++; T.cups[cup.id] = (T.cups[cup.id] || 0) + 1; }
+    const tc = TT.earn ? TT.earn(20 * (run.won || 0) + (champion ? 100 : 0)) : 0; if(tc) setTimeout(()=> TT.toast('🪙 +' + tc + ' monete'), 900);
     T.run = null; tnSave(T);
     const place = champion ? 'CAMPIONE!' : run.won === 2 ? 'Finalista' : run.won === 1 ? 'Semifinalista' : 'Eliminato ai quarti';
     TT.screen(cup.n, `${tnBracket(Object.assign({}, run, {round: Math.min(2, run.round)}))}
