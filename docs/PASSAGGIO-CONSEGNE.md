@@ -1,6 +1,6 @@
 # Passaggio di consegne — Raccoon Triad
 
-Aggiornato il 3/10/2026, build online **t6** (https://kur0chanx.github.io/raccoon-triad/).
+Aggiornato il 3/10/2026, build **t7** (https://kur0chanx.github.io/raccoon-triad/).
 
 ## Utente
 Mario, italiano, non programmatore. Vuole un gioco «live service» che duri anni: progressione lunga e gratificante, ogni giorno un motivo per giocare e vincere qualcosa, sfide tra amici. Le carte devono essere personaggi che riconosce anche chi non è appassionato (mai oggetti, mai giochi di nicchia o cult). Ha dato il permesso di modificare tutti i dati.
@@ -11,7 +11,7 @@ Mario, italiano, non programmatore. Vuole un gioco «live service» che duri ann
 
 ## Prossimi passi (ordine concordato)
 1. **Espansioni da rifare** (`tools/triad-exp-src.js`, 120 carte): sono ancora a giochi, con molti titoli di nicchia (Tapper, Mappy, Night Trap, Splatterhouse, Lost Odyssey, l'intero set «Indie & Cult»…). Rifarle a personaggi riconoscibili, con temi nuovi, poi `node tools/build-triad-cards.js --balance 3000`. Attenzione ai doppioni con il set base (es. Luigi è nel base al livello 8 ed è anche in `luigi-s-mansion` dell'espansione horror).
-2. **Primo avversario troppo forte:** in `triad-play.js` la Sfida del giorno (`dailyNpc`) sta in cima alla lista dell'Allenamento, con carte dal livello 3 al 9 e regole extra. Va spostata in fondo e sbloccata dopo 3 avversari battuti. `npcDeck` deve costruirsi in base al mazzo del giocatore; ogni regola va introdotta con una lezione e ogni avversario va descritto con il suo carattere.
+2. ~~Primo avversario troppo forte~~ **fatto in t7** (`triad-play.js`): ogni avversario ha carattere (`d`), regola insegnata (`teach`, lezioni in `LESSON`, mostrate la prima volta e rivedibili col pulsante 📖; viste in `S.lessons` di `jrpg_triad2`) e scarto di livello (`adj`). `npcDeck(n, mine)` punta alla somma dei livelli del mazzo del giocatore + `adj`, dentro `n.lv`. Sfida del giorno in fondo, sbloccata dopo 3 avversari diversi battuti.
 3. **Campagna a regioni con stelle** (strada C concordata: campagna + modalità infinite). Ogni regione introduce una regola, ha un limite di livello del mazzo (`cap` esiste già nel motore) e una versione Eroica.
 4. **Server online:** mancano i segreti `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` nel repository (lo deve fare Mario). Poi: missioni giornaliere, scrigno con serie, leghe con limite di livello, pass stagionale, eventi.
 5. Principio fisso: le espansioni non aggiungono potenza (stesse regole dei numeri), solo varietà. Crescita senza fine via collezione, foil, padronanza delle carte, livello dell'account, formati a rotazione.

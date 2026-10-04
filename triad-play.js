@@ -206,25 +206,55 @@
   // PARTITE LOCALI: allenamento (contro l'IA) e due giocatori sullo stesso telefono
   // =====================================================================================================
   const NPC = [
-    {id: 'frugu', n: 'Frugu', r: 'Il Bidone', lv: [1, 2], ai: 1, rules: {}, trade: 'one', face: '🦝'},
-    {id: 'studente', n: 'Studente del Garden', r: 'Balamb', lv: [1, 3], ai: 1, rules: {elemental: true}, trade: 'one', face: '🧑‍🎓'},
-    {id: 'soldato', n: 'Soldato di Galbadia', r: 'Galbadia', lv: [2, 4], ai: 2, rules: {same: true}, trade: 'one', face: '💂'},
-    {id: 'bardo', n: 'Bardo di Dollet', r: 'Dollet', lv: [3, 5], ai: 2, rules: {elemental: true, same: true}, trade: 'one', face: '🎻'},
-    {id: 'ribelle', n: 'Ribelle di Timber', r: 'Timber', lv: [4, 6], ai: 3, rules: {same: true, plus: true, combo: true}, trade: 'one', face: '🧢'},
-    {id: 'nonna', n: 'Nonna di Trabia', r: 'Trabia', lv: [5, 7], ai: 3, rules: {plus: true, combo: true, elemental: true}, trade: 'one', face: '👵'},
-    {id: 'esploratore', n: 'Esploratore di Centra', r: 'Centra', lv: [6, 8], ai: 4, rules: {same: true, plus: true, combo: true}, trade: 'diff', face: '🧭'},
-    {id: 'scienziata', n: 'Scienziata di Esthar', r: 'Esthar', lv: [7, 9], ai: 4, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'diff', face: '🔬'},
-    {id: 'regina', n: 'Regina delle Carte', r: 'Ovunque', lv: [7, 10], ai: 5, rules: {special: true, elemental: true, same: true, plus: true, combo: true}, trade: 'direct', face: '👸'},
-    {id: 're', n: 'Re del Club', r: 'Club delle Carte', lv: [8, 10], ai: 5, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'one', face: '🤴'},
-    {id: 'leggenda', n: 'Il Procione Leggendario', r: 'Base Lunare', lv: [9, 10], ai: 5, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'all', face: '🌕'}
+    {id: 'frugu', n: 'Frugu', r: 'Il Bidone', lv: [1, 2], ai: 1, rules: {}, trade: 'one', face: '🦝', d: 'Un procione che gioca con le carte trovate nel bidone. Distratto e generoso: perfetto per imparare.', teach: 'base', adj: -2},
+    {id: 'studente', n: 'Studente del Garden', r: 'Balamb', lv: [1, 3], ai: 1, rules: {elemental: true}, trade: 'one', face: '🧑‍🎓', d: "Ha appena imparato gli elementi a lezione e non vede l'ora di mostrarli.", teach: 'elemental', adj: -1},
+    {id: 'soldato', n: 'Soldato di Galbadia', r: 'Galbadia', lv: [2, 4], ai: 2, rules: {same: true}, trade: 'one', face: '💂', d: "Disciplinato e prevedibile: ama mettere numeri uguali uno accanto all'altro.", teach: 'same', adj: 0},
+    {id: 'bardo', n: 'Bardo di Dollet', r: 'Dollet', lv: [3, 5], ai: 2, rules: {elemental: true, same: true}, trade: 'one', face: '🎻', d: 'Mescola elementi e Same come note di una canzone. Gioca per divertirsi.', teach: '', adj: 0},
+    {id: 'ribelle', n: 'Ribelle di Timber', r: 'Timber', lv: [4, 6], ai: 3, rules: {same: true, plus: true, combo: true}, trade: 'one', face: '🧢', d: "Ama i colpi a sorpresa: somme, catene e ribaltoni all'ultimo turno.", teach: 'plus', adj: 1},
+    {id: 'nonna', n: 'Nonna di Trabia', r: 'Trabia', lv: [5, 7], ai: 3, rules: {plus: true, combo: true, elemental: true}, trade: 'one', face: '👵', d: 'Gioca da cinquant\'anni e conosce ogni trucco. Non farti ingannare dal sorriso.', teach: '', adj: 1},
+    {id: 'esploratore', n: 'Esploratore di Centra', r: 'Centra', lv: [6, 8], ai: 4, rules: {same: true, plus: true, combo: true}, trade: 'diff', face: '🧭', d: 'Cerca carte rare in ogni angolo del mondo. Se vince di tanto, si porta via più carte.', teach: 'diff', adj: 2},
+    {id: 'scienziata', n: 'Scienziata di Esthar', r: 'Esthar', lv: [7, 9], ai: 4, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'diff', face: '🔬', d: 'Calcola tutto, anche i bordi del tavolo. Non lascia niente al caso.', teach: 'sameWall', adj: 2},
+    {id: 'regina', n: 'Regina delle Carte', r: 'Ovunque', lv: [7, 10], ai: 5, rules: {special: true, elemental: true, same: true, plus: true, combo: true}, trade: 'direct', face: '👸', d: 'Viaggia ovunque con un tavolo pieno di trappole. Chi gira una carta se la tiene.', teach: 'special', adj: 3},
+    {id: 're', n: 'Re del Club', r: 'Club delle Carte', lv: [8, 10], ai: 5, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'one', face: '🤴', d: 'Il padrone del Club delle Carte: tutte le regole insieme, nessuna pietà.', teach: '', adj: 3},
+    {id: 'leggenda', n: 'Il Procione Leggendario', r: 'Base Lunare', lv: [9, 10], ai: 5, rules: {elemental: true, same: true, sameWall: true, plus: true, combo: true}, trade: 'all', face: '🌕', d: 'Il procione più forte che sia mai esistito. Chi vince si prende tutto.', teach: 'all', adj: 4}
   ];
   const AI_N = ['', 'Principiante', 'Normale', 'Esperto', 'Maestro', 'Campione'];
   TT.NPC = NPC;
-  function npcDeck(n){
-    const pool = TT.LIST.filter(c=> c.lv >= n.lv[0] && c.lv <= n.lv[1]).sort(()=> Math.random() - .5), high = pool.filter(c=> c.lv >= n.lv[1] - 1);
-    const out = []; [high, pool].forEach(l=> l.forEach(c=>{ if(out.length < 5 && !out.includes(c.id) && (l !== high || out.length < 2)) out.push(c.id); }));
-    return out.slice(0, 5);
+  // mazzo dell'avversario: si adatta alla somma dei livelli del mazzo del giocatore (più lo scarto adj del personaggio), restando nei suoi livelli lv
+  function npcDeck(n, mine){
+    const lo = n.lv[0], hi = n.lv[1], pool = TT.LIST.filter(c=> c.lv >= lo && c.lv <= hi).sort(()=> Math.random() - .5);
+    const my = (mine || []).reduce((a, id)=> a + ((CARD()[id] || {}).lv || 0), 0);
+    let target = mine && mine.length ? my + (n.adj || 0) : Math.round(5 * (lo + hi) / 2 + .5);
+    target = Math.max(5 * lo, Math.min(5 * hi, target));
+    const out = [];
+    for(let k = 0; k < 5; k++){                                   // a ogni carta punto al livello che serve per arrivare al totale
+      const left = 5 - k, need = target - out.reduce((a, id)=> a + CARD()[id].lv, 0);
+      const want = Math.max(lo, Math.min(hi, Math.round(need / left)));
+      const c = pool.filter(x=> !out.includes(x.id)).sort((a, b)=> Math.abs(a.lv - want) - Math.abs(b.lv - want))[0];
+      if(c) out.push(c.id);
+    }
+    return out;
   }
+  // lezioni: la prima volta che un avversario usa una regola nuova la spiega (si rivedono dal pulsante 📖)
+  const LESSON = {
+    base: ['🃏', 'Come si gioca', 'Ognuno ha 5 carte. A turno metti una carta su una casella libera del tavolo 3×3. Ogni carta ha 4 numeri (alto, destra, basso, sinistra; A vale 10). Se il tuo numero è <b>più alto</b> di quello della carta avversaria che tocca, quella carta diventa tua. A tavolo pieno vince chi ha più carte del proprio colore.<br><br>Se finisce pari si rigioca (<b>Morte improvvisa</b>). Se vinci, prendi una carta dell\'avversario; contro l\'IA non perdi mai le tue.'],
+    elemental: ['🔥', 'Elementale', 'Alcune caselle hanno un elemento (🔥 ❄️ ⚡ 🪨 ☠️ 🌪️ 💧 ✨). Se ci metti una carta con lo <b>stesso elemento</b> i suoi numeri salgono di 1; con un elemento diverso, o senza elemento, scendono di 1.<br><br>Consiglio: guarda le caselle prima di giocare e tieni le carte giuste per le caselle giuste.'],
+    same: ['🟰', 'Same (Uguale)', 'Se la carta che giochi ha <b>2 o più numeri uguali</b> a quelli delle carte che tocca, tutte le carte avversarie toccate da quei lati diventano tue, anche se sono più forti.<br><br>Anche le tue carte contano per far scattare la regola: preparale apposta!'],
+    plus: ['➕', 'Plus e Combo', 'Somma ogni numero della tua carta con il numero che tocca. Se <b>2 o più somme sono uguali</b> (per esempio 3+5 e 2+6), le carte avversarie di quelle somme diventano tue.<br><br><b>Combo</b>: le carte girate così girano a loro volta le vicine più deboli, a catena. È così che si ribaltano le partite!'],
+    diff: ['⚖️', 'Scambio Diff', 'Con questo avversario chi vince prende <b>tante carte quanti punti di scarto</b> (al massimo 5). Vincere di poco basta, ma vincere di tanto rende molto di più.'],
+    sameWall: ['🧱', 'Muro', 'Come il Same, ma il <b>bordo del tavolo vale A (10)</b>: un lato con A rivolto verso il bordo conta come numero uguale.<br><br>Le carte con una A sul lato giusto diventano preziose negli angoli.'],
+    special: ['💥', 'Caselle speciali', 'Sul tavolo ci sono caselle <b>potenziate</b> (+2 a tutti i numeri della carta che ci metti) e <b>trappole</b> (−2). Metti lì le carte deboli per rafforzarle, oppure lascia le trappole all\'avversario.<br><br>Con lo scambio <b>Diretto</b> ognuno si tiene le carte che ha girato all\'altro.'],
+    all: ['🌕', 'Scambio Tutto', 'La sfida finale: chi vince prende <b>tutte e 5 le carte</b> dell\'avversario. Contro l\'IA tu non perdi niente, ma lui sì!']
+  };
+  TT.LESSON = LESSON;
+  TT.lesson = k=> showLesson(k);
+  function showLesson(key, then){
+    const l = LESSON[key]; if(!l){ then && then(); return; }
+    TT.modal(`<div style="text-align:center"><div style="font-size:2.6rem">${l[0]}</div><h3 style="margin:2px 0 8px">Lezione · ${l[1]}</h3><p style="text-align:left;line-height:1.5">${l[2]}</p><button class="tt2-btn pri w" data-mclose>Ho capito</button></div>`, {center: true, onClose: then});
+  }
+  // la Sfida del giorno si sblocca dopo aver battuto 3 avversari diversi
+  const DAILY_NEED = 3;
+  const beaten = S=> NPC.filter(n=> (S.npc[n.id] || {}).w > 0).length;
   // Sfida del giorno: regole speciali uguali per tutti, decise dalla data (serie di vittorie in jrpg_triad_daily)
   const dayKey = ()=> new Date().toISOString().slice(0, 10);
   function dailyNpc(){
@@ -239,7 +269,7 @@
     ], d = sets[h % sets.length], ai = 2 + (h >>> 3) % 3, lv = 3 + (h >>> 5) % 4;
     let st = {}; try{ st = JSON.parse(localStorage.getItem('jrpg_triad_daily') || '{}') || {}; }catch(e){}
     const done = st.last === k;
-    return {id: 'daily', daily: true, n: 'Sfida del giorno · ' + d.n, r: done ? 'Già vinta oggi ✔ · serie ' + (st.streak || 0) : 'Serie ' + (st.streak || 0) + ' giorni', lv: [lv, lv + 3], ai, rules: d.rules, trade: 'one', face: '🎯'};
+    return {id: 'daily', daily: true, n: 'Sfida del giorno · ' + d.n, r: done ? 'Già vinta oggi ✔ · serie ' + (st.streak || 0) : 'Serie ' + (st.streak || 0) + ' giorni', lv: [2, lv + 3], adj: 1, ai, rules: d.rules, trade: 'one', face: '🎯'};
   }
   function dailyWin(){
     let st = {}; try{ st = JSON.parse(localStorage.getItem('jrpg_triad_daily') || '{}') || {}; }catch(e){}
@@ -251,17 +281,21 @@
   }
   TT.dailyNpc = dailyNpc;
   TT.npcList = function(){
-    const S = TT.save();
-    TT.screen('Allenamento', `<p class="mut" style="text-align:center">Sfida gli avversari con la tua collezione dell'album. Contro l'IA non perdi mai carte: se vinci, ne prendi una.</p><div class="tt2-list">${[dailyNpc()].concat(NPC).map((n, i0)=>{ const i = i0 - 1, rec = S.npc[n.id] || {w: 0, l: 0}; return `<button class="tt2-item" data-n="${i}"><div class="av">${n.face}</div><div class="tx"><b>${esc(n.n)}</b><small>${esc(n.r)} · IA ${AI_N[n.ai]} · carte livello ${n.lv[0]}–${n.lv[1]}</small><div style="margin-top:3px">${ruleChips(Object.assign({sudden: true}, n.rules), n.trade)}</div></div><div class="rt">${rec.w}V ${rec.l}S</div></button>`; }).join('')}</div>`);
+    const S = TT.save(), b = beaten(S), open = b >= DAILY_NEED;
+    const item = (n, i)=>{ const rec = S.npc[n.id] || {w: 0, l: 0}; return `<button class="tt2-item" data-n="${i}"><div class="av">${n.face}</div><div class="tx"><b>${esc(n.n)}</b><small>${esc(n.r)} · IA ${AI_N[n.ai]} · carte livello ${n.lv[0]}–${n.lv[1]}</small>${n.d ? `<small style="display:block;opacity:.85;font-style:italic">${esc(n.d)}</small>` : ''}<div style="margin-top:3px">${ruleChips(Object.assign({sudden: true}, n.rules), n.trade)}</div></div><div class="rt">${rec.w}V ${rec.l}S</div></button>`; };
+    const dn = dailyNpc(), daily = open ? item(dn, -1) : `<div class="tt2-item" style="opacity:.55"><div class="av">🔒</div><div class="tx"><b>Sfida del giorno</b><small>Si sblocca battendo ${DAILY_NEED} avversari diversi (${b}/${DAILY_NEED})</small></div></div>`;
+    TT.screen('Allenamento', `<p class="mut" style="text-align:center">Sfida gli avversari con la tua collezione dell'album. Contro l'IA non perdi mai carte: se vinci, ne prendi una. Il loro mazzo si adatta al tuo.</p><div class="tt2-list">${NPC.map(item).join('')}${daily}</div>`);
     $$('[data-n]').forEach(b=> b.addEventListener('click', ()=>{ TT.snd('click'); TT.go(npcSetup, +b.dataset.n); }));
   };
   function localItems(){ const S = TT.save(); const items = []; Object.keys(S.owned).forEach(cid=>{ if(CARD()[cid]) for(let i = 0; i < S.owned[cid]; i++) items.push({key: cid + '#' + i, cid}); }); return items; }
   function npcSetup(i){
     const n = i < 0 ? dailyNpc() : NPC[i]; TT.refill();
-    TT.pickDeck({title: 'Contro ' + n.n, sub: `${n.face} ${esc(n.n)} · ${esc(n.r)}<br>${ruleChips(Object.assign({sudden: true}, n.rules), n.trade)}<br><small>${esc(TRADE_D[n.trade])}</small>`, items: localItems(), ok: 'Gioca', onDone: keys=>{
+    const S = TT.save(); S.lessons = S.lessons || {};
+    TT.pickDeck({title: 'Contro ' + n.n, sub: `${n.face} ${esc(n.n)} · ${esc(n.r)}${n.d ? `<br><i>${esc(n.d)}</i>` : ''}<br>${ruleChips(Object.assign({sudden: true}, n.rules), n.trade)}<br><small>${esc(TRADE_D[n.trade])}</small>${LESSON[n.teach] ? `<br><button class="tt2-btn" onclick="TT.snd('click');TT.lesson('${n.teach}')" style="margin-top:6px">📖 Lezione: ${LESSON[n.teach][1]}</button>` : ''}`, items: localItems(), ok: 'Gioca', onDone: keys=>{
       const mine = keys.map(k=> k.split('#')[0]);
-      startLocal({title: n.n, names: [{nick: 'Tu', av: '🦝', sub: 'Blu'}, {nick: n.n, av: n.face, sub: n.r}], hands: [mine, npcDeck(n)], rules: Object.assign({sudden: true, trade: n.trade}, n.rules), ai: n.ai, npc: n, back: ()=> TT.go(npcSetup, i)});
+      startLocal({title: n.n, names: [{nick: 'Tu', av: '🦝', sub: 'Blu'}, {nick: n.n, av: n.face, sub: n.r}], hands: [mine, npcDeck(n, mine)], rules: Object.assign({sudden: true, trade: n.trade}, n.rules), ai: n.ai, npc: n, back: ()=> TT.go(npcSetup, i)});
     }});
+    if(n.teach && LESSON[n.teach] && !S.lessons[n.teach]){ S.lessons[n.teach] = 1; TT.saveS(); showLesson(n.teach); }
   }
   TT.hotseat = function(){
     const S = TT.save(), R = {elemental: true, same: true, plus: false, sameWall: false, combo: true, sudden: true};
@@ -325,7 +359,7 @@
       const won = w === 0, draw = w == null, info = Core.tradeInfo(st);
       const rid = TT.saveReplay(cfg.hot ? 'hot' : cfg.arena || cfg.onEnd ? 'cup' : 'npc', cfg.title, cfg.names, st0, st);
       if(!cfg.hot && !cfg.arena){ S.stats[won ? 'w' : draw ? 'd' : 'l']++; if(won){ S.stats.streak++; S.stats.best = Math.max(S.stats.best || 0, S.stats.streak); } else if(!draw) S.stats.streak = 0; if(cfg.npc && cfg.npc.daily && won) dailyWin(); if(cfg.npc){ const r = S.npc[cfg.npc.id] = S.npc[cfg.npc.id] || {w: 0, l: 0}; if(won) r.w++; else if(!draw) r.l++; } }
-      const btns = (rid ? [{label: '🎞️ Replay', fn: ()=>{ const e = (TT.LS.get(RP_KEY, []) || []).find(x=> x.id === rid); if(e){ board.destroy(); TT.watchReplay(e, ()=>{ TT.back(); }); } }}] : []).concat([{label: 'Rivincita', cls: 'pri', fn: ()=>{ board.destroy(); if(cfg.npc) cfg.hands[1] = npcDeck(cfg.npc); startLocal(cfg); }}, {label: 'Esci', fn: ()=>{ board.destroy(); TT.saveS(); TT.back(); }}]);
+      const btns = (rid ? [{label: '🎞️ Replay', fn: ()=>{ const e = (TT.LS.get(RP_KEY, []) || []).find(x=> x.id === rid); if(e){ board.destroy(); TT.watchReplay(e, ()=>{ TT.back(); }); } }}] : []).concat([{label: 'Rivincita', cls: 'pri', fn: ()=>{ board.destroy(); if(cfg.npc) cfg.hands[1] = npcDeck(cfg.npc, cfg.hands[0]); startLocal(cfg); }}, {label: 'Esci', fn: ()=>{ board.destroy(); TT.saveS(); TT.back(); }}]);
       const gain = ids=>{ ids.forEach(id=>{ S.owned[id] = (S.owned[id] || 0) + 1; }); TT.saveS(); };
       if(cfg.arena || cfg.onEnd){ board.destroy(); (cfg.arena || cfg.onEnd)(won, draw, sc, rid); return; }
       if(!cfg.hot && won && info.pick > 0){
