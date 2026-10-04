@@ -307,3 +307,21 @@ html.tt2-open,html.tt2-open body{overflow:hidden !important}
 .ttc[data-o].sel:not([data-st=neon]):not([data-st=pixel]){box-shadow:inset 0 0 0 .35cqw rgba(255,255,255,.5), 0 0 0 .8cqw #ffe27a, 0 4cqw 9cqw rgba(0,0,0,.6), 0 0 9cqw rgba(255,226,122,.8)}
 .ttc[data-o] .ttc-in::after{box-shadow:inset 0 0 0 .5cqw rgba(255,255,255,.28), inset 0 0 4cqw rgba(0,0,0,.25)}
 .ttc[data-o] .ttc-nm::before{background:linear-gradient(90deg,transparent,var(--own),transparent)}
+
+/* editor delle carte, bilanciamento e retro (triad-edit.js) */
+.ed-top{display:flex; gap:12px; align-items:center; margin:6px 0 10px}
+.ed-card{width:42%; max-width:190px; flex:none} .ed-card .ttc{width:100%}
+.ed-sides{flex:1; display:grid; gap:6px}
+.ed-side{display:grid; grid-template-columns:62px 38px 30px 38px; align-items:center; gap:6px; font-size:.85rem}
+.ed-side b{text-align:center; font-size:1.2rem}
+.ed-lbl{display:block; font-size:.8rem; font-weight:800; margin:8px 0 4px; opacity:.85}
+.ed-in{display:block; width:100%; box-sizing:border-box; margin-top:4px; padding:9px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.3); color:inherit; font:inherit; font-size:.95rem}
+.ed-eval{font-size:.85rem; line-height:1.45}
+.ed-ok{color:#7ee2a0} .ed-mid{color:#ffc35c} .ed-bad{color:#ff7a7a}
+.ed-bar{height:8px; border-radius:8px; background:rgba(255,255,255,.12); overflow:hidden; margin:8px 0 4px} .ed-bar i{display:block; height:100%; background:linear-gradient(90deg,#7c5cff,#3b82f6); transition:width .2s}
+.ed-tab{display:grid; grid-template-columns:auto auto 1fr auto auto; gap:3px 10px; font-size:.8rem; margin-top:6px} .ed-tab span:nth-child(-n+5){opacity:.6; font-weight:800}
+.ed-bks{display:grid; grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); gap:8px}
+.ed-bks button{background:none; border:2px solid transparent; border-radius:12px; padding:4px; color:inherit; font:inherit; cursor:pointer} .ed-bks button.on{border-color:#ffd75e}
+.ed-bks small{display:block; font-size:.68rem; margin-top:3px}
+.ed-bk{aspect-ratio:5/7; border-radius:8px; background:var(--bk,repeating-linear-gradient(45deg,#3b2f9f 0 6px,#2a2075 6px 12px)); display:grid; place-items:center; font-size:1.4rem; color:rgba(255,226,122,.85); box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.ed-bk::after{content:var(--bki,'★')}
