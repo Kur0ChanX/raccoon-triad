@@ -47,7 +47,8 @@ Obiettivi: token economy, contesto pulito, codice funzionante, zero regressioni 
 
 ## DIVIETO ASSOLUTO DI COMANDI DISTRUTTIVI E FORCE PUSH (POLITICA ZERO RISCHIO)
 
-- BANNATI TASSATIVAMENTE (Non usarli MAI e non proporli):
+- ECCEZIONE CON AUTORIZZAZIONE ESPLICITA (regola fissa): i comandi qui sotto restano vietati di default, ma posso usarne UNO per UNA singola volta solo se prima ti chiedo l'autorizzazione spiegando in italiano semplice quale comando voglio usare e PERCHÉ, e tu rispondi di sì. L'autorizzazione vale solo per quel comando e quella volta: per la volta dopo devo chiedere di nuovo. Senza il tuo sì esplicito restano BANNATI.
+- BANNATI TASSATIVAMENTE (di default non usarli e non proporli, salvo l'eccezione qui sopra):
   - `git push -f`, `git push --force`
   - `git reset --hard`
   - `git clean -fd`
