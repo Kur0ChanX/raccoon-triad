@@ -59,6 +59,11 @@ Obiettivi: token economy, contesto pulito, codice funzionante, zero regressioni 
   - Se un comando normale o un push fallisce, NON forzare e non usare comandi pericolosi. Trova tu un'alternativa sicura. Se non esiste, FERMATI e spiegami l'intoppo in italiano semplice, proponendo le opzioni possibili.
 
 
+## TIMER "." (FINESTRA LIMITI)
+
+- Quando arriva una notifica di un trigger chiamato "Timer finestra ..." con testo ".": chiama `ReadNotifications`, poi programma il prossimo con `send_later` (`delay_minutes: 300`, `message: "."`, `name: "Timer finestra 300 min"`, `initiation: "human_schedule"`) e rispondi SOLO con ".". Nessun altro testo né altri strumenti.
+- Si ferma solo se Mario lo chiede. Se Mario cambia i tempi, aggiorna o ricrea il trigger e aggiorna questa regola.
+
 ## COMUNICAZIONE
 
 - Report del lavoro (Cosa hai fatto tu): Spiega in modo chiaro e diretto cosa hai modificato, i problemi trovati e le soluzioni adottate. Prendi tutto lo spazio che ti serve per farti capire bene, ma evita di allungare il brodo. Niente gergo informatico complesso se non indispensabile.
